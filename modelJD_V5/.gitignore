@@ -1,0 +1,20 @@
+# Python cache & artifacts
+__pycache__/
+*.py[cod]
+*$py.class
+*.log
+
+# Environments
+venv/
+env/
+.env
+
+# Scratch and Temporary files
+scratch/
+archive/
+
+# IDE & OS files
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
