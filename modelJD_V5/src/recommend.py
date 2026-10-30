@@ -12,7 +12,6 @@ from typing import List, Dict, Any, Optional
 import numpy as np
 import pandas as pd
 import joblib
-from sklearn.metrics.pairwise import cosine_similarity
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 if str(BASE_DIR) not in sys.path:
@@ -144,23 +143,12 @@ class JobRecommender:
         else:
             self.model = joblib.load(model_path)
 
-        # 3. เตรียม TF-IDF Matrix ของตำแหน่งงานทั้งหมด (ใช้ทักษะที่ผ่าน Normalization แล้ว)
-        self.vectorizer = self.model.named_steps['tfidf']
-        clean_corpus = []
-        for _, row in self.df_jobs.iterrows():
-            norm_skills_str = " ".join(parse_skills(str(row.get('Skills', ''))))
-            t = f"{row.get('Title', '')} {norm_skills_str} {row.get('Keywords', '')}".lower()
-            clean_corpus.append(t)
-        # 🎯 [หัวใจหลัก]: แปลง Corpus งานทั้งหมดเป็น TF-IDF Sparse Matrix ล่วงหน้าเพียงครั้งเดียวตอนเริ่มระบบ
-        # 💡 [ทำไมต้องแบบนี้]: คำนวณเวกเตอร์ไว้ล่วงหน้าเพื่อลดภาระ CPU ทำให้คำขอถัดไปหา Cosine Similarity ได้ทันที
-        self.job_tfidf_matrix = self.vectorizer.transform(clean_corpus)
-
         # =========================================================================
         # [จุดสำคัญที่ 5: การลด Latency ด้วย In-Memory Pre-parsing Cache]
         # ปัญหาเดิม: การใช้ pandas .iloc วนลูปและตัดคำด้วย regex ซ้ำๆ ทุกครั้งที่มี request
         # ทำให้ระบบหน่วงกินเวลาถึง 50+ ms ต่อคำขอ
-        # วิธีแก้: เราแยก parse ทักษะของ 253 ตำแหน่งงานเป็น set() และ dict เก็บไว้ใน RAM
-        # ตั้งแต่ตอนเปิดเซิร์ฟเวอร์ครั้งเดียว ส่งผลให้ Latency ลดลงเหลือเพียง ~6 ms (Real-time)
+        # วิธีแก้: เราแยก parse ทักษะของ 115 ตำแหน่งงานจริงเป็น set() และ dict เก็บไว้ใน RAM
+        # ตั้งแต่ตอนเปิดเซิร์ฟเวอร์ครั้งเดียว ส่งผลให้ Latency ลดลงเหลือเพียง ~1-2 ms (Real-time)
         # =========================================================================
         self.cached_jobs = []
         for idx in range(len(self.df_jobs)):

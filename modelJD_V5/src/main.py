@@ -16,7 +16,7 @@ if str(BASE_DIR) not in sys.path:
 
 from pydantic import BaseModel
 from src.recommend import JobRecommender
-from src.skills_taxonomy import normalize_skill, normalize_skills_list, SKILL_SYNONYMS
+from src.skills_taxonomy import normalize_skill, normalize_skills_list, parse_and_normalize_skills, SKILL_SYNONYMS
 
 # ---------------------------------------------------------
 # 1. INITIALIZATION & APP CONFIG
@@ -270,9 +270,9 @@ print(f"⏳ กำลังโหลดและทำความสะอา�
 df_jobs = pd.read_csv(CSV_PATH).fillna("")
 df_jobs = df_jobs[df_jobs["Title"].str.strip() != ""].reset_index(drop=True)
 
-# สกัดทักษะเดี่ยว Atomic Skills สำหรับตลาดงานไทย (253 ตำแหน่งงาน)
+# สกัดทักษะมาตรฐาน Canonical Skills สำหรับตลาดงานไทย (115 ตำแหน่งงานจริง ครบ 8 สายงาน มคอ.2)
 THAI_MARKET_SKILLS = sorted(list(set(
-    s for _, row in df_jobs.iterrows() for s in extract_atomic_skills(str(row["Skills"]))
+    s for _, row in df_jobs.iterrows() for s in parse_and_normalize_skills(str(row.get("Skills", "")))
 )))
 
 # สกัดทักษะประวัติศาสตร์ (สำหรับเป็นพจนานุกรมสำรองในการ Validate คำค้นหา)
@@ -384,7 +384,7 @@ def favicon():
 
 @app.get("/api/skills")
 def get_skills():
-    """ส่งคืนรายการคำศัพท์ทักษะเฉพาะที่มีตำแหน่งงานรองรับจริงในตลาดไอทีไทย (216 ทักษะ)"""
+    """ส่งคืนรายการคำศัพท์ทักษะเฉพาะที่มีตำแหน่งงานรองรับจริงในตลาดไอทีไทย (446 ทักษะมาตรฐาน)"""
     return {
         "skills": THAI_MARKET_SKILLS,
         "total": len(THAI_MARKET_SKILLS)

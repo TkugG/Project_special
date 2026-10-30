@@ -7,7 +7,7 @@ Welcome AI Agent! Before making any changes or recommendations in this repositor
 2. **Key Invariants:**
    - **Frontend:** Vanilla JavaScript (ES6+), NO build step (no Vite, no React, no Tailwind build). Bump `?v=X.X.X` in `index.html` after editing `js/`.
    - **8 Tracks Naming:** Always use `ชื่อไทย (English Title)` (e.g. `นักพัฒนาและออกแบบสื่อผสม (Multimedia Designer & Developer)`).
-   - **Skills:** 216 Thai market skills in `data/thai_jobs_dataset.csv`. Do NOT re-introduce Kaggle's 1,784 skills text into the UI.
+   - **Skills:** 444 Thai market canonical skills (normalized from 115 real jobs in `data/thai_jobs_dataset.csv`). Do NOT re-introduce Kaggle's 1,784 skills text into the UI.
    - **Demarcation:**
      - 8.3 is Creative Media, UI/UX, Motion, 3D, Game. NO `html` or `css` in 8.3!
      - 8.7 is Web Developer, Frontend, CMS, Responsive Web, HTML5, CSS3, JS.

@@ -13,7 +13,7 @@
 * **สถาปัตยกรรม:** Client-Server แบบ SPA (Single Page Application)
   * **Frontend:** Vanilla JavaScript (ES6+ Modules), Tailwind CSS (CDN), FontAwesome 6, SweetAlert2 (ไม่มี Node/Vite Build Step ใดๆ ทั้งสิ้น)
   * **Backend:** Python FastAPI, Uvicorn, Scikit-Learn, Pandas, NumPy
-  * **ML Model:** TF-IDF Vectorizer + Multi-Class Logistic Regression ($C=0.3$)
+  * **ML Model:** TF-IDF Vectorizer + Multi-Class Logistic Regression ($C=0.5$)
 
 ---
 
@@ -48,7 +48,7 @@
 เมื่อ AI หรือผู้พัฒนาคนใหม่เข้ามาทำงาน **ห้ามละเมิดกฎเหล่านี้โดยเด็ดขาด**:
 
 1. **เรื่องทักษะในระบบ (Taxonomy & Atomic Skills):**
-   * ในระบบตลาดงานไทยมี **216 ทักษะจริง** (ดึงจาก `data/thai_jobs_dataset.csv`)
+   * ในระบบตลาดงานไทยมี **444 ทักษะมาตรฐาน** (Canonical Skills แปลงคำพ้องแล้วจาก 115 ตำแหน่งงานจริงใน `data/thai_jobs_dataset.csv`)
    * **ห้ามนำข้อความ "1,784 / 1,785 ทักษะ" จากชุดข้อมูล Kaggle เข้ามาแสดงใน UI อีก** ผู้ใช้ได้ตัดออกไปแล้ว และต้องการมุ่งเน้นเฉพาะทักษะที่มีงานรองรับจริงในไทย
    * ทักษะทุกตัวต้องเป็น Atomic Skill ห้ามเขียนคำรวม เช่น **ห้ามใช้ `html/css` เด็ดขาด** ให้แยกเป็น `html` และ `css` สองตัว
 2. **เรื่องการแบ่งสาย 8.3 (สื่อผสม) vs 8.7 (เว็บไซต์):**
@@ -59,7 +59,7 @@
    * ต้องขึ้นต้นด้วยภาษาไทยเสมอ: `นักพัฒนาและออกแบบสื่อผสม (Multimedia Designer & Developer)` ไม่ใช่อังกฤษนำ
 4. **เรื่อง Frontend Architecture:**
    * เป็น **Vanilla JS เพียวๆ** ไม่มีการ Build (No Webpack, No Vite, No React)
-   * หากแก้ไขไฟล์ใน `js/` ต้องปรับ Query String Cache-Buster ใน `index.html` เสมอ (เช่น `?v=4.6.0`) เพื่อป้องกันบราวเซอร์จำแคชเดิม
+   * หากแก้ไขไฟล์ใน `js/` ต้องปรับ Query String Cache-Buster ใน `index.html` เสมอ (เช่น `?v=5.0.0`) เพื่อป้องกันบราวเซอร์จำแคชเดิม
 5. **เรื่องการรันและการทดสอบ:**
    * Backend ทำงานบนพอร์ต `8000` (`http://127.0.0.1:8000`)
    * หลังแก้ไขโค้ด Backend หรือ Dataset ต้องรัน `python src/validate.py` เสมอ (ต้องผ่านครบ 5/5 ข้อ 100%)
@@ -78,7 +78,7 @@ modelJD_V4/
 ├── requirements.txt              # รายการ Python dependencies (FastAPI, scikit-learn, etc.)
 │
 ├── data/                         # ชุดข้อมูลหลัก
-│   ├── thai_jobs_dataset.csv     # ⭐️ ชุดข้อมูลงานไทย 253 งาน (8 สาย x ~30 งาน) มี 216 ทักษะจริง
+│   ├── thai_jobs_dataset.csv     # ⭐️ ชุดข้อมูลงานไทย 115 งานจริง (ครบ 8 สายงาน มคอ.2) มี 444 ทักษะมาตรฐาน
 │   ├── job_dataset.csv           # ข้อมูลดิบ/สำรอง
 │   └── taxonomy_synonyms.json    # พจนานุกรมแปลงคำพ้อง (Synonyms: golang->go, k8s->kubernetes, ฯลฯ)
 │

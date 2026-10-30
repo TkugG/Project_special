@@ -177,7 +177,7 @@ window.SkillsView = {
             return;
         }
 
-        // Render all matching market skills (216 clean skills)
+        // Render all matching market skills (444 clean canonical skills)
         container.innerHTML = skills.map(skill => {
             const isSelected = AppState.userSkills.includes(skill.toLowerCase());
             return `
