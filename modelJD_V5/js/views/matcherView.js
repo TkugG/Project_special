@@ -22,21 +22,37 @@ window.MatcherView = {
                     <!-- Quick Demo Presets for Mobile & Live Defense -->
                     <div class="flex items-center gap-1.5 flex-wrap">
                         <span class="text-[11px] font-bold text-slate-400 mr-0.5">ตัวอย่าง:</span>
+                        <button type="button" onclick="MatcherView.fillPreset('dev')"
+                            class="px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-rose-50 hover:text-rose-700 text-slate-700 text-xs font-semibold border border-slate-200 active:scale-95 transition cursor-pointer">
+                            💻 Dev (G1)
+                        </button>
+                        <button type="button" onclick="MatcherView.fillPreset('dba')"
+                            class="px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-rose-50 hover:text-rose-700 text-slate-700 text-xs font-semibold border border-slate-200 active:scale-95 transition cursor-pointer">
+                            🗄️ DBA (G2)
+                        </button>
+                        <button type="button" onclick="MatcherView.fillPreset('sa')"
+                            class="px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-rose-50 hover:text-rose-700 text-slate-700 text-xs font-semibold border border-slate-200 active:scale-95 transition cursor-pointer">
+                            📐 SA (G3)
+                        </button>
+                        <button type="button" onclick="MatcherView.fillPreset('tech')"
+                            class="px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-rose-50 hover:text-rose-700 text-slate-700 text-xs font-semibold border border-slate-200 active:scale-95 transition cursor-pointer">
+                            🛠️ Tech (G4)
+                        </button>
+                        <button type="button" onclick="MatcherView.fillPreset('admin')"
+                            class="px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-rose-50 hover:text-rose-700 text-slate-700 text-xs font-semibold border border-slate-200 active:scale-95 transition cursor-pointer">
+                            🖥️ Admin (G5)
+                        </button>
                         <button type="button" onclick="MatcherView.fillPreset('web')"
                             class="px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-rose-50 hover:text-rose-700 text-slate-700 text-xs font-semibold border border-slate-200 active:scale-95 transition cursor-pointer">
-                            💻 Web
+                            🌐 Web (G6)
                         </button>
-                        <button type="button" onclick="MatcherView.fillPreset('network')"
+                        <button type="button" onclick="MatcherView.fillPreset('pm')"
                             class="px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-rose-50 hover:text-rose-700 text-slate-700 text-xs font-semibold border border-slate-200 active:scale-95 transition cursor-pointer">
-                            ⚙️ Network
+                            📋 PM (G7)
                         </button>
-                        <button type="button" onclick="MatcherView.fillPreset('design')"
+                        <button type="button" onclick="MatcherView.fillPreset('content')"
                             class="px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-rose-50 hover:text-rose-700 text-slate-700 text-xs font-semibold border border-slate-200 active:scale-95 transition cursor-pointer">
-                            🎨 UI/UX
-                        </button>
-                        <button type="button" onclick="MatcherView.fillPreset('data')"
-                            class="px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-rose-50 hover:text-rose-700 text-slate-700 text-xs font-semibold border border-slate-200 active:scale-95 transition cursor-pointer">
-                            📊 Data/AI
+                            🎨 Content (G8)
                         </button>
                         <button type="button" onclick="MatcherView.fillPreset('random')"
                             class="px-2.5 py-1 rounded-lg bg-rose-50 hover:bg-rose-100 text-rose-700 text-xs font-semibold border border-rose-200 active:scale-95 transition cursor-pointer">
@@ -64,14 +80,14 @@ window.MatcherView = {
                             onchange="MatcherView.selectRole(this.value)"
                             class="w-full py-2.5 px-3 pl-9 pr-8 text-xs sm:text-sm font-semibold text-slate-900 border border-slate-200 rounded-xl focus:ring-2 focus:ring-rose-500/20 focus:border-rose-500 outline-none bg-slate-50/60 focus:bg-white transition cursor-pointer appearance-none">
                             <option value="">-- ให้ระบบวิเคราะห์อัตโนมัติ (แนะนำทุกสายงาน) --</option>
-                            <option value="8.1" ${AppState.selectedRole === '8.1' ? 'selected' : ''}>Track 8.1: เจ้าหน้าที่คอมพิวเตอร์ (Computer Officer / IT Support)</option>
-                            <option value="8.2" ${AppState.selectedRole === '8.2' ? 'selected' : ''}>Track 8.2: ผู้ดูแลระบบเครือข่ายคอมพิวเตอร์ (Network Administrator / Engineer)</option>
-                            <option value="8.3" ${AppState.selectedRole === '8.3' ? 'selected' : ''}>Track 8.3: นักพัฒนาและออกแบบสื่อผสม (Multimedia Designer & Developer)</option>
-                            <option value="8.4" ${AppState.selectedRole === '8.4' ? 'selected' : ''}>Track 8.4: นักจัดการโครงการสารสนเทศ (IT Project Manager / Coordinator)</option>
-                            <option value="8.5" ${AppState.selectedRole === '8.5' ? 'selected' : ''}>Track 8.5: นักวิเคราะห์และออกแบบระบบงาน (System Analyst / Business Analyst)</option>
-                            <option value="8.6" ${AppState.selectedRole === '8.6' ? 'selected' : ''}>Track 8.6: นักพัฒนาซอฟต์แวร์ (Software Developer / Engineer)</option>
-                            <option value="8.7" ${AppState.selectedRole === '8.7' ? 'selected' : ''}>Track 8.7: นักออกแบบและพัฒนาเว็บไซต์ (Web Designer & Developer)</option>
-                            <option value="8.8" ${AppState.selectedRole === '8.8' ? 'selected' : ''}>Track 8.8: ผู้เชี่ยวชาญด้านเทคโนโลยีสารสนเทศ (Specialized IT / AI / Cloud)</option>
+                            <option value="G1" ${AppState.selectedRole === 'G1' || AppState.selectedRole === '8.6' ? 'selected' : ''}>G1: นักพัฒนาซอฟต์แวร์ (Software Developer)</option>
+                            <option value="G2" ${AppState.selectedRole === 'G2' || AppState.selectedRole === '8.8' ? 'selected' : ''}>G2: ผู้ดูแลระบบฐานข้อมูล (Database Administrator)</option>
+                            <option value="G3" ${AppState.selectedRole === 'G3' || AppState.selectedRole === '8.5' ? 'selected' : ''}>G3: นักวิเคราะห์และออกแบบระบบ (System Analyst / Designer)</option>
+                            <option value="G4" ${AppState.selectedRole === 'G4' || AppState.selectedRole === '8.1' ? 'selected' : ''}>G4: เจ้าหน้าที่เทคนิคคอมพิวเตอร์ (Computer Technical Officer)</option>
+                            <option value="G5" ${AppState.selectedRole === 'G5' || AppState.selectedRole === '8.2' ? 'selected' : ''}>G5: ผู้ดูแลระบบ (System Administrator)</option>
+                            <option value="G6" ${AppState.selectedRole === 'G6' || AppState.selectedRole === '8.7' ? 'selected' : ''}>G6: นักพัฒนาเว็บไซต์ (Web Developer)</option>
+                            <option value="G7" ${AppState.selectedRole === 'G7' || AppState.selectedRole === '8.4' ? 'selected' : ''}>G7: ผู้ช่วยผู้จัดการโครงการสารสนเทศ (IT Project Assistant)</option>
+                            <option value="G8" ${AppState.selectedRole === 'G8' || AppState.selectedRole === '8.3' ? 'selected' : ''}>G8: ผู้สร้างสรรค์เนื้อหาดิจิทัล (Content Creator)</option>
                         </select>
                         <span class="absolute left-3 top-3 text-slate-400 text-xs pointer-events-none">
                             <i class="fa-solid fa-filter text-rose-500"></i>
@@ -375,18 +391,30 @@ window.MatcherView = {
     fillPreset(type) {
         let skills = [];
         let role = '';
-        if (type === 'web') {
-            skills = ['html5', 'css3', 'javascript', 'react', 'tailwind', 'git'];
-            role = 'นักออกแบบและพัฒนาเว็บไซต์ (Web Designer & Developer)';
-        } else if (type === 'network') {
-            skills = ['cisco', 'tcp/ip', 'routing', 'switching', 'firewall', 'linux'];
-            role = 'ผู้ดูแลระบบเครือข่ายคอมพิวเตอร์ (Network Administrator / Engineer)';
-        } else if (type === 'design') {
-            skills = ['figma', 'ui/ux', 'photoshop', 'illustrator', 'premiere pro', 'after effects'];
-            role = 'นักพัฒนาและออกแบบสื่อผสม (Multimedia Designer & Developer)';
-        } else if (type === 'data') {
-            skills = ['python', 'sql', 'machine learning', 'pandas', 'data analysis'];
-            role = 'ผู้เชี่ยวชาญด้านเทคโนโลยีสารสนเทศ (Specialized IT Professional)';
+        if (type === 'dev') {
+            skills = ['python', 'sql', 'rest api', 'git', 'c#'];
+            role = 'G1';
+        } else if (type === 'dba') {
+            skills = ['oracle', 'sql', 'postgresql', 'mysql', 'ssis'];
+            role = 'G2';
+        } else if (type === 'sa') {
+            skills = ['api', 'sql', 'uat', 'system analysis'];
+            role = 'G3';
+        } else if (type === 'tech') {
+            skills = ['windows', 'vpn', 'microsoft 365', 'printers'];
+            role = 'G4';
+        } else if (type === 'admin') {
+            skills = ['linux', 'windows server', 'active directory', 'vmware'];
+            role = 'G5';
+        } else if (type === 'web') {
+            skills = ['html5', 'css3', 'javascript', 'react', 'next.js'];
+            role = 'G6';
+        } else if (type === 'pm') {
+            skills = ['erp', 'sap', 'powerpoint', 'excel', 'ms office'];
+            role = 'G7';
+        } else if (type === 'content') {
+            skills = ['tiktok', 'canva', 'capcut', 'premiere pro'];
+            role = 'G8';
         } else {
             this.fillSampleSkills();
             return;
@@ -398,30 +426,14 @@ window.MatcherView = {
 
     fillSampleSkills() {
         const samples = [
-            {
-                role: "นักออกแบบและพัฒนาเว็บไซต์ (Web Designer & Developer)",
-                skills: ["html5", "css3", "javascript", "php", "wordpress", "tailwind", "responsive web design", "mysql"]
-            },
-            {
-                role: "นักพัฒนาซอฟต์แวร์ (Software Developer / Engineer)",
-                skills: ["python", "fastapi", "react", "sql", "docker", "git", "rest api", "oop"]
-            },
-            {
-                role: "เจ้าหน้าที่คอมพิวเตอร์ (Computer Officer / IT Support)",
-                skills: ["windows", "linux", "hardware", "troubleshooting", "basic networking", "helpdesk", "active directory"]
-            },
-            {
-                role: "ผู้ดูแลระบบเครือข่ายคอมพิวเตอร์ (Network Administrator / Engineer)",
-                skills: ["cisco", "tcp/ip", "routing", "switching", "firewall", "vpn", "linux server"]
-            },
-            {
-                role: "นักพัฒนาและออกแบบสื่อผสม (Multimedia Designer & Developer)",
-                skills: ["ui/ux", "figma", "photoshop", "illustrator", "premiere pro", "3d animation", "unity"]
-            },
-            {
-                role: "นักวิเคราะห์และออกแบบระบบงาน (System Analyst / Business Analyst)",
-                skills: ["system analysis", "uml", "dfd", "er diagram", "sql", "database design", "requirement gathering"]
-            }
+            { role: "G1", skills: ["python", "sql", "git", "rest api", "c#"] },
+            { role: "G2", skills: ["oracle", "sql", "postgresql", "mysql", "ssis"] },
+            { role: "G3", skills: ["api", "sql", "uat", "system analysis"] },
+            { role: "G4", skills: ["windows", "vpn", "microsoft 365", "printers"] },
+            { role: "G5", skills: ["linux", "windows server", "active directory", "vmware"] },
+            { role: "G6", skills: ["html5", "css3", "javascript", "react", "next.js"] },
+            { role: "G7", skills: ["erp", "sap", "powerpoint", "excel", "ms office"] },
+            { role: "G8", skills: ["tiktok", "canva", "capcut", "premiere pro"] }
         ];
         const randomSample = samples[Math.floor(Math.random() * samples.length)];
         this.selectRole(randomSample.role);

@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Sarabun:wght@400;500;600;700&display=swap');
+  * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Sarabun', 'Leelawadee UI', Tahoma, sans-serif; }
+  body {
+    background: #FFFFFF;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 15px;
+  }
+  .canvas {
+    width: 1040px;
+    height: 570px;
+    background: #FFFFFF;
+    position: relative;
+    border: 1px solid #E2E8F0;
+    border-radius: 10px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.04);
+    overflow: hidden;
+  }
+  svg {
+    width: 100%;
+    height: 100%;
+  }
+</style>
+</head>
+<body>
+<div class="canvas">
+  <svg viewBox="0 0 1040 570">
+    <defs>
+      <marker id="arrow-blue" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+        <path d="M 0 1.5 L 9 5 L 0 8.5 z" fill="#2563EB"/>
+      </marker>
+      <marker id="arrow-green" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+        <path d="M 0 1.5 L 9 5 L 0 8.5 z" fill="#059669"/>
+      </marker>
+      <marker id="arrow-purple" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+        <path d="M 0 1.5 L 9 5 L 0 8.5 z" fill="#7C3AED"/>
+      </marker>
+      <filter id="shadow" x="-5%" y="-5%" width="110%" height="110%">
+        <feDropShadow dx="0" dy="2" stdDeviation="3" flood-opacity="0.05"/>
+      </filter>
+    </defs>
+
+    <!-- COLUMN 1: CLIENT SPA -->
+    <g transform="translate(18, 18)" filter="url(#shadow)">
+      <rect width="175" height="534" rx="8" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="1.5"/>
+      <rect width="175" height="42" rx="8" fill="#DBEAFE"/>
+      <path d="M 0,34 h 175 v 8 h -175 z" fill="#DBEAFE"/>
+      <text x="87" y="26" text-anchor="middle" font-size="14" font-weight="700" fill="#1E3A8A">ส่วนผู้ใช้งาน (Client SPA)</text>
+
+      <!-- Input box -->
+      <rect x="10" y="55" width="155" height="155" rx="6" fill="#FFFFFF" stroke="#E2E8F0"/>
+      <text x="18" y="77" font-size="12" font-weight="700" fill="#0F172A">ข้อมูลนำเข้า (User Input)</text>
+      <text x="18" y="97" font-size="11" fill="#475569">• ทักษะที่ผู้ใช้เลือก (S_user)</text>
+      <text x="18" y="117" font-size="11" fill="#475569">• เลือกจากคลัง 216 ทักษะ</text>
+      <text x="18" y="137" font-size="11" fill="#475569">• ตัวอย่าง: python, sql,</text>
+      <text x="18" y="155" font-size="11" fill="#475569">  docker, fastapi</text>
+      <text x="18" y="188" font-size="11" font-weight="600" fill="#2563EB">JSON: {skills: [...]}</text>
+
+      <!-- UI Output box -->
+      <rect x="10" y="230" width="155" height="280" rx="6" fill="#FFFFFF" stroke="#E2E8F0"/>
+      <text x="18" y="252" font-size="12" font-weight="700" fill="#0F172A">การแสดงผลลัพธ์ (UI)</text>
+      <text x="18" y="276" font-size="11" font-weight="600" fill="#1E3A8A">1. สายงานแนะนำ (G1-G8)</text>
+      <text x="18" y="294" font-size="11" fill="#475569">   แสดงชื่อไทย + อังกฤษ</text>
+      <text x="18" y="320" font-size="11" font-weight="600" fill="#059669">2. ระดับความพร้อม (%)</text>
+      <text x="18" y="338" font-size="11" fill="#475569">   เกจวัด Career Readiness</text>
+      <text x="18" y="364" font-size="11" font-weight="600" fill="#D97706">3. การ์ดงาน Top 5</text>
+      <text x="18" y="382" font-size="11" fill="#475569">   เรียงลำดับ Match Score</text>
+      <text x="18" y="408" font-size="11" font-weight="600" fill="#7C3AED">4. ชิปชี้เป้า Skill Gap</text>
+      <text x="18" y="428" font-size="11" fill="#059669">   • สีเขียว: ทักษะที่ตรงกัน</text>
+      <text x="18" y="446" font-size="11" fill="#64748B">   • สีเทา: ทักษะที่ยังขาด</text>
+      <text x="18" y="480" font-size="10" font-weight="600" fill="#3B82F6">✓ SPA Real-time Render</text>
+    </g>
+
+    <!-- ARROW 1: Client -> Backend (HTTP POST) with white pill -->
+    <path d="M 193,125 H 227" stroke="#2563EB" stroke-width="2" marker-end="url(#arrow-blue)"/>
+    <g transform="translate(191, 100)">
+      <rect width="45" height="18" rx="4" fill="#EFF6FF" stroke="#BFDBFE"/>
+      <text x="22" y="13" text-anchor="middle" font-size="9" font-weight="700" fill="#1E40AF">POST</text>
+    </g>
+
+    <!-- ARROW 2: Backend -> Client (JSON Data) with white pill -->
+    <path d="M 233,430 H 199" stroke="#059669" stroke-width="2" marker-end="url(#arrow-green)"/>
+    <g transform="translate(191, 438)">
+      <rect width="45" height="18" rx="4" fill="#ECFDF5" stroke="#A7F3D0"/>
+      <text x="22" y="13" text-anchor="middle" font-size="9" font-weight="700" fill="#065F46">JSON</text>
+    </g>
+
+    <!-- COLUMN 2: FASTAPI BACKEND GATEWAY -->
+    <g transform="translate(235, 18)" filter="url(#shadow)">
+      <rect width="180" height="534" rx="8" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="1.5"/>
+      <rect width="180" height="42" rx="8" fill="#E0E7FF"/>
+      <path d="M 0,34 h 180 v 8 h -180 z" fill="#E0E7FF"/>
+      <text x="90" y="26" text-anchor="middle" font-size="14" font-weight="700" fill="#3730A3">ส่วนบริการ (FastAPI)</text>
+
+      <rect x="12" y="55" width="156" height="135" rx="6" fill="#FFFFFF" stroke="#E2E8F0"/>
+      <text x="20" y="77" font-size="12" font-weight="700" fill="#0F172A">API Gateway Router</text>
+      <text x="20" y="97" font-size="11" fill="#475569">• Route: /api/recommend</text>
+      <text x="20" y="117" font-size="11" fill="#475569">• Input Validation</text>
+      <text x="20" y="137" font-size="11" fill="#475569">• ดักจับทักษะว่างเปล่า</text>
+      <text x="20" y="165" font-size="10" font-weight="600" fill="#4338CA">✓ Pydantic Data Schema</text>
+
+      <rect x="12" y="205" width="156" height="185" rx="6" fill="#FFFFFF" stroke="#E2E8F0"/>
+      <text x="20" y="227" font-size="12" font-weight="700" fill="#0F172A">In-Memory Cache</text>
+      <text x="20" y="249" font-size="11" fill="#475569">• Pre-parsed Job Data</text>
+      <text x="20" y="269" font-size="11" fill="#475569">• โหลดเก็บใน RAM</text>
+      <text x="20" y="289" font-size="11" fill="#475569">• เก็บชุดทักษะเป็น set()</text>
+      <text x="20" y="309" font-size="11" fill="#475569">• ตรวจสอบเซตที่ O(1)</text>
+      <text x="20" y="329" font-size="11" fill="#475569">• ความเร็วเฉลี่ย &lt; 5 ms</text>
+      <text x="20" y="360" font-size="10" font-weight="600" fill="#059669">✓ Real-time Performance</text>
+
+      <rect x="12" y="405" width="156" height="105" rx="6" fill="#FFFFFF" stroke="#E2E8F0"/>
+      <text x="20" y="427" font-size="12" font-weight="700" fill="#0F172A">Response Formatter</text>
+      <text x="20" y="449" font-size="11" fill="#475569">• รวบรวม Top 5 + Gap</text>
+      <text x="20" y="469" font-size="11" fill="#475569">• ประกอบ JSON Response</text>
+      <text x="20" y="492" font-size="10" font-weight="600" fill="#059669">✓ Response Latency &lt; 10ms</text>
+    </g>
+
+    <!-- ARROW TO STAGE 1 (FastAPI -> Stage 1) with pill -->
+    <path d="M 415,125 H 455" stroke="#2563EB" stroke-width="2" marker-end="url(#arrow-blue)"/>
+    <g transform="translate(412, 100)">
+      <rect width="50" height="18" rx="4" fill="#EFF6FF" stroke="#BFDBFE"/>
+      <text x="25" y="13" text-anchor="middle" font-size="9" font-weight="700" fill="#1E40AF">S_user</text>
+    </g>
+
+    <!-- COLUMN 3 (UPPER): STAGE 1 (PARENT - ML CLASSIFICATION) -->
+    <g transform="translate(460, 18)" filter="url(#shadow)">
+      <rect width="260" height="235" rx="8" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="1.5"/>
+      <rect width="260" height="42" rx="8" fill="#FEF3C7"/>
+      <path d="M 0,34 h 260 v 8 h -260 z" fill="#FEF3C7"/>
+      <text x="130" y="26" text-anchor="middle" font-size="14" font-weight="700" fill="#92400E">Stage 1: Parent (ML Classifier)</text>
+
+      <rect x="12" y="55" width="236" height="165" rx="6" fill="#FFFFFF" stroke="#E2E8F0"/>
+      <text x="20" y="77" font-size="12" font-weight="700" fill="#0F172A">TF-IDF + Logistic Regression</text>
+      <text x="20" y="99" font-size="11" fill="#475569">1. แปลง S_user เป็นเวกเตอร์ 1,000 มิติ</text>
+      <text x="20" y="119" font-size="11" fill="#475569">2. คำนวณความน่าจะเป็น 8 สายงาน (Softmax)</text>
+      <text x="20" y="139" font-size="11" fill="#475569">3. เลือกสายงานที่คะแนนสูงสุด (Argmax):</text>
+      <text x="30" y="163" font-size="12" font-weight="700" fill="#B45309">&rarr; ทำนายกลุ่มอาชีพเป้าหมาย (G_pred)</text>
+      <text x="20" y="195" font-size="10" font-weight="600" fill="#059669">✓ ชี้ขาดสายงานที่เหมาะสมตามหลักสูตร</text>
+    </g>
+
+    <!-- ARROW STAGE 1 -> STAGE 2 (Vertical Clean) with pill -->
+    <path d="M 590,253 V 283" stroke="#7C3AED" stroke-width="2.5" marker-end="url(#arrow-purple)"/>
+    <g transform="translate(600, 258)">
+      <rect width="80" height="20" rx="4" fill="#F5F3FF" stroke="#DDD6FE"/>
+      <text x="40" y="14" text-anchor="middle" font-size="10" font-weight="700" fill="#6D28D9">ส่งค่า G_pred</text>
+    </g>
+
+    <!-- COLUMN 3 (LOWER): STAGE 2 (CHILD - EXACT SET OVERLAP MATCHING) -->
+    <g transform="translate(460, 288)" filter="url(#shadow)">
+      <rect width="260" height="264" rx="8" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="1.5"/>
+      <rect width="260" height="42" rx="8" fill="#D1FAE5"/>
+      <path d="M 0,34 h 260 v 8 h -260 z" fill="#D1FAE5"/>
+      <text x="130" y="26" text-anchor="middle" font-size="14" font-weight="700" fill="#065F46">Stage 2: Child (Set Overlap Match)</text>
+
+      <rect x="12" y="55" width="236" height="195" rx="6" fill="#FFFFFF" stroke="#E2E8F0"/>
+      <text x="20" y="77" font-size="12" font-weight="700" fill="#0F172A">การกรองและจับคู่ด้วยทฤษฎีเซต</text>
+      <text x="20" y="99" font-size="11" fill="#475569">1. กรองเฉพาะงานที่มี RoleID == G_pred</text>
+      <text x="20" y="119" font-size="11" fill="#475569">2. ทักษะตรงกัน: S_matched = S_user &cap; S_job</text>
+      <text x="20" y="139" font-size="11" fill="#475569">3. ทักษะที่ยังขาด: S_gap = S_job \ S_user</text>
+      <text x="20" y="161" font-size="11" font-weight="700" fill="#065F46">4. Match % = (|S_matched| / |S_job|) &times; 100</text>
+      <text x="20" y="183" font-size="11" fill="#475569">5. Diversity Ranking: เรียงคะแนน &amp; กรองซ้ำ</text>
+      <text x="20" y="217" font-size="10" font-weight="600" fill="#059669">✓ ได้รายการตำแหน่งงานแนะนำ Top 5</text>
+    </g>
+
+    <!-- ARROW STAGE 2 -> FASTAPI (Top 5 + Gap) placed cleanly above line -->
+    <path d="M 460,455 H 425" stroke="#059669" stroke-width="2" marker-end="url(#arrow-green)"/>
+    <g transform="translate(415, 432)">
+      <rect width="68" height="18" rx="4" fill="#ECFDF5" stroke="#A7F3D0"/>
+      <text x="34" y="13" text-anchor="middle" font-size="9" font-weight="700" fill="#065F46">Top 5 + Gap</text>
+    </g>
+
+    <!-- ARROW STAGE 2 -> COLUMN 4 (Evaluate Readiness) with pill -->
+    <path d="M 720,410 H 753" stroke="#7C3AED" stroke-width="2" marker-end="url(#arrow-purple)"/>
+    <g transform="translate(712, 388)">
+      <rect width="45" height="18" rx="4" fill="#F5F3FF" stroke="#DDD6FE"/>
+      <text x="22" y="13" text-anchor="middle" font-size="9" font-weight="700" fill="#6D28D9">วัดผล</text>
+    </g>
+
+    <!-- COLUMN 4: CAREER READINESS EVALUATOR -->
+    <g transform="translate(760, 18)" filter="url(#shadow)">
+      <rect width="262" height="534" rx="8" fill="#FAF5FF" stroke="#E9D5FF" stroke-width="1.5"/>
+      <rect width="262" height="42" rx="8" fill="#F3E8FF"/>
+      <path d="M 0,34 h 262 v 8 h -262 z" fill="#F3E8FF"/>
+      <text x="131" y="26" text-anchor="middle" font-size="14" font-weight="700" fill="#6B21A8">การประเมิน Career Readiness</text>
+
+      <rect x="12" y="55" width="238" height="175" rx="6" fill="#FFFFFF" stroke="#E9D5FF"/>
+      <text x="20" y="77" font-size="12" font-weight="700" fill="#0F172A">วัดความพร้อมระดับสายอาชีพ</text>
+      <text x="20" y="99" font-size="11" fill="#475569">• ชุดทักษะแกนหลัก (S_core)</text>
+      <text x="20" y="117" font-size="11" fill="#475569">  Top-10 สกิลความถี่สูงสุดของสายงาน</text>
+      <text x="20" y="141" font-size="11" font-weight="600" fill="#6B21A8">สูตรคำนวณ:</text>
+      <text x="20" y="161" font-size="10" font-weight="600" fill="#1E293B">Readiness % = (|S_user &cap; S_core| / |S_core|) &times; 100</text>
+      <text x="20" y="195" font-size="10" font-weight="600" fill="#059669">✓ ชี้วัดความพร้อมโดยรวมของนักศึกษา</text>
+
+      <rect x="12" y="245" width="238" height="270" rx="6" fill="#FFFFFF" stroke="#E9D5FF"/>
+      <text x="20" y="267" font-size="12" font-weight="700" fill="#0F172A">เกณฑ์การจำแนก 3 ระดับ</text>
+      
+      <rect x="18" y="280" width="224" height="65" rx="4" fill="#FEF2F2" stroke="#FECACA"/>
+      <text x="26" y="300" font-size="11" font-weight="700" fill="#991B1B">ระดับเริ่มต้น (Foundational)</text>
+      <text x="26" y="318" font-size="10" fill="#7F1D1D">&lt; 50% &bull; มีทักษะพื้นฐานบางส่วน</text>
+      <text x="26" y="334" font-size="10" fill="#7F1D1D">จำเป็นต้องพัฒนาทักษะแกนหลักเพิ่มเติม</text>
+
+      <rect x="18" y="355" width="224" height="65" rx="4" fill="#FEFCE8" stroke="#FEF08A"/>
+      <text x="26" y="375" font-size="11" font-weight="700" fill="#854D0E">ระดับพร้อมทำงาน (Job-Ready)</text>
+      <text x="26" y="393" font-size="10" fill="#713F12">50% &ndash; 79% &bull; พร้อมทำงานระดับ Entry</text>
+      <text x="26" y="409" font-size="10" fill="#713F12">มีทักษะจำเป็นครบถ้วนตามเกณฑ์</text>
+
+      <rect x="18" y="430" width="224" height="70" rx="4" fill="#F0FDF4" stroke="#BBF7D0"/>
+      <text x="26" y="450" font-size="11" font-weight="700" fill="#166534">ระดับเชี่ยวชาญ (Advanced)</text>
+      <text x="26" y="468" font-size="10" fill="#14532D">&ge; 80% &bull; มีทักษะครอบคลุมสูง</text>
+      <text x="26" y="484" font-size="10" fill="#14532D">มีความพร้อมแข่งขันสูงในตลาดแรงงาน</text>
+    </g>
+
+    <!-- CLEAN ROUTED ARROW: Career Readiness -> Response Formatter (Around the bottom, clear path) -->
+    <path d="M 890,552 C 890,566 325,566 325,520" fill="none" stroke="#7C3AED" stroke-width="2" stroke-dasharray="4,4" marker-end="url(#arrow-purple)"/>
+    <g transform="translate(560, 554)">
+      <rect width="90" height="15" rx="3" fill="#FFFFFF" stroke="#DDD6FE"/>
+      <text x="45" y="11" text-anchor="middle" font-size="9" font-weight="600" fill="#6D28D9">Readiness Level</text>
+    </g>
+
+  </svg>
+</div>
+</body>
+</html>

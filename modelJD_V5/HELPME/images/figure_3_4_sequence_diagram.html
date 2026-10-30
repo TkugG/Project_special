@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Sarabun:wght@400;500;600;700&display=swap');
+  * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Sarabun', 'Leelawadee UI', Tahoma, sans-serif; }
+  body {
+    background: #FFFFFF;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 15px;
+  }
+  .canvas {
+    width: 1060px;
+    height: 640px;
+    background: #FFFFFF;
+    position: relative;
+    border: 1px solid #E2E8F0;
+    border-radius: 10px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.04);
+    overflow: hidden;
+  }
+  svg {
+    width: 100%;
+    height: 100%;
+  }
+</style>
+</head>
+<body>
+<div class="canvas">
+  <svg viewBox="0 0 1060 640">
+    <defs>
+      <marker id="arrow-solid" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+        <path d="M 0 1.5 L 9 5 L 0 8.5 z" fill="#1E293B"/>
+      </marker>
+      <marker id="arrow-dashed" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+        <path d="M 0 1.5 L 9 5 L 0 8.5 z" fill="#059669"/>
+      </marker>
+      <filter id="shadow" x="-5%" y="-5%" width="110%" height="110%">
+        <feDropShadow dx="0" dy="2" stdDeviation="3" flood-opacity="0.05"/>
+      </filter>
+    </defs>
+
+    <!-- LIFELINE HEADERS -->
+    <!-- 1. User -->
+    <g transform="translate(35, 15)" filter="url(#shadow)">
+      <rect width="100" height="40" rx="6" fill="#EFF6FF" stroke="#3B82F6" stroke-width="1.5"/>
+      <text x="50" y="25" text-anchor="middle" font-size="13" font-weight="700" fill="#1E40AF">ผู้ใช้ (User)</text>
+    </g>
+
+    <!-- 2. SPA Client -->
+    <g transform="translate(215, 15)" filter="url(#shadow)">
+      <rect width="115" height="40" rx="6" fill="#EFF6FF" stroke="#3B82F6" stroke-width="1.5"/>
+      <text x="57" y="25" text-anchor="middle" font-size="13" font-weight="700" fill="#1E40AF">เว็บแอป (SPA)</text>
+    </g>
+
+    <!-- 3. FastAPI Gateway -->
+    <g transform="translate(420, 15)" filter="url(#shadow)">
+      <rect width="125" height="40" rx="6" fill="#F5F3FF" stroke="#8B5CF6" stroke-width="1.5"/>
+      <text x="62" y="25" text-anchor="middle" font-size="13" font-weight="700" fill="#5B21B6">FastAPI Backend</text>
+    </g>
+
+    <!-- 4. Stage 1 ML Classifier -->
+    <g transform="translate(615, 15)" filter="url(#shadow)">
+      <rect width="135" height="40" rx="6" fill="#FEF3C7" stroke="#F59E0B" stroke-width="1.5"/>
+      <text x="67" y="25" text-anchor="middle" font-size="13" font-weight="700" fill="#92400E">Stage 1 (ML Model)</text>
+    </g>
+
+    <!-- 5. Stage 2 Matching Engine -->
+    <g transform="translate(795, 15)" filter="url(#shadow)">
+      <rect width="135" height="40" rx="6" fill="#ECFDF5" stroke="#10B981" stroke-width="1.5"/>
+      <text x="67" y="25" text-anchor="middle" font-size="13" font-weight="700" fill="#065F46">Stage 2 (Set Engine)</text>
+    </g>
+
+    <!-- VERTICAL LIFELINES (Dashed Lines) -->
+    <line x1="85" y1="57" x2="85" y2="600" stroke="#CBD5E1" stroke-width="1.5" stroke-dasharray="4,4"/>
+    <line x1="272" y1="57" x2="272" y2="600" stroke="#CBD5E1" stroke-width="1.5" stroke-dasharray="4,4"/>
+    <line x1="482" y1="57" x2="482" y2="600" stroke="#CBD5E1" stroke-width="1.5" stroke-dasharray="4,4"/>
+    <line x1="682" y1="57" x2="682" y2="600" stroke="#CBD5E1" stroke-width="1.5" stroke-dasharray="4,4"/>
+    <line x1="862" y1="57" x2="862" y2="600" stroke="#CBD5E1" stroke-width="1.5" stroke-dasharray="4,4"/>
+
+    <!-- ACTIVATION BARS -->
+    <rect x="80" y="75" width="10" height="515" fill="#E2E8F0" stroke="#94A3B8"/>
+    <rect x="267" y="75" width="10" height="515" fill="#DBEAFE" stroke="#3B82F6"/>
+    <rect x="477" y="105" width="10" height="465" fill="#EDE9FE" stroke="#8B5CF6"/>
+    <rect x="677" y="295" width="10" height="75" fill="#FEF3C7" stroke="#F59E0B"/>
+    <rect x="857" y="380" width="10" height="110" fill="#D1FAE5" stroke="#10B981"/>
+
+    <!-- MESSAGE 1: Open browser (User -> SPA) -->
+    <line x1="90" y1="85" x2="262" y2="85" stroke="#1E293B" stroke-width="1.5" marker-end="url(#arrow-solid)"/>
+    <text x="176" y="78" text-anchor="middle" font-size="10.5" font-weight="600" fill="#0F172A">1. เข้าใช้งานหน้าเว็บ (GET /ui)</text>
+
+    <!-- MESSAGE 2: SPA fetches skills (SPA -> FastAPI) -->
+    <line x1="277" y1="120" x2="472" y2="120" stroke="#1E293B" stroke-width="1.5" marker-end="url(#arrow-solid)"/>
+    <text x="375" y="113" text-anchor="middle" font-size="10.5" font-weight="600" fill="#0F172A">2. ขอรายการทักษะไอที (GET /api/skills)</text>
+
+    <!-- MESSAGE 3: Backend returns skills (FastAPI -> SPA) -->
+    <line x1="477" y1="155" x2="282" y2="155" stroke="#059669" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#arrow-dashed)"/>
+    <text x="375" y="148" text-anchor="middle" font-size="10.5" fill="#059669">3. ส่งคืน 216 คำศัพท์ทักษะมาตรฐาน (JSON)</text>
+
+    <!-- MESSAGE 4: Render UI for user (SPA -> User) -->
+    <line x1="267" y1="190" x2="95" y2="190" stroke="#059669" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#arrow-dashed)"/>
+    <text x="176" y="183" text-anchor="middle" font-size="10.5" fill="#059669">4. แสดงคลังทักษะและช่องสืบค้น</text>
+
+    <!-- MESSAGE 5: User submits skills (User -> SPA) -->
+    <line x1="90" y1="225" x2="262" y2="225" stroke="#1E293B" stroke-width="1.5" marker-end="url(#arrow-solid)"/>
+    <text x="176" y="218" text-anchor="middle" font-size="10.5" font-weight="600" fill="#0F172A">5. เลือกทักษะ &amp; กดยืนยัน (User Skills)</text>
+
+    <!-- MESSAGE 6: SPA POST recommend (SPA -> FastAPI) -->
+    <line x1="277" y1="265" x2="472" y2="265" stroke="#1E293B" stroke-width="2" marker-end="url(#arrow-solid)"/>
+    <text x="375" y="258" text-anchor="middle" font-size="10.5" font-weight="700" fill="#2563EB">6. POST /api/recommend {skills: [...]}</text>
+
+    <!-- MESSAGE 7: Backend to Stage 1 (FastAPI -> Stage 1) -->
+    <line x1="487" y1="305" x2="672" y2="305" stroke="#1E293B" stroke-width="1.5" marker-end="url(#arrow-solid)"/>
+    <text x="580" y="298" text-anchor="middle" font-size="10" font-weight="600" fill="#B45309">7. ทำนายสายงาน (TF-IDF + ML)</text>
+
+    <!-- MESSAGE 8: Stage 1 returns predicted role (Stage 1 -> FastAPI) -->
+    <line x1="677" y1="345" x2="492" y2="345" stroke="#059669" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#arrow-dashed)"/>
+    <text x="580" y="338" text-anchor="middle" font-size="10" fill="#059669">8. คืนสายงานเป้าหมาย (G_pred, Softmax %)</text>
+
+    <!-- MESSAGE 9: Backend to Stage 2 (FastAPI -> Stage 2) - WITH SHIELDED PILL -->
+    <line x1="487" y1="395" x2="852" y2="395" stroke="#1E293B" stroke-width="1.5" marker-end="url(#arrow-solid)"/>
+    <g transform="translate(540, 383)">
+      <rect width="260" height="20" rx="4" fill="#FFFFFF" stroke="#CBD5E1"/>
+      <text x="130" y="14" text-anchor="middle" font-size="10" font-weight="600" fill="#065F46">9. กรองงานสาย G_pred &amp; คำนวณ Set Overlap %</text>
+    </g>
+
+    <!-- SELF CALL: Stage 2 calculate gap & readiness (CLEARLY WITHIN CANVAS) -->
+    <path d="M 867,405 C 895,405 895,430 867,430" fill="none" stroke="#1E293B" stroke-width="1.5" marker-end="url(#arrow-solid)"/>
+    <text x="900" y="422" font-size="10" font-weight="600" fill="#475569">ประเมิน Gap &amp; Readiness</text>
+
+    <!-- MESSAGE 10: Stage 2 returns Top 5 (Stage 2 -> FastAPI) - WITH SHIELDED PILL -->
+    <line x1="857" y1="465" x2="492" y2="465" stroke="#059669" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#arrow-dashed)"/>
+    <g transform="translate(530, 453)">
+      <rect width="280" height="20" rx="4" fill="#FFFFFF" stroke="#A7F3D0"/>
+      <text x="140" y="14" text-anchor="middle" font-size="10" font-weight="600" fill="#059669">10. ส่งคืน Top 5 Jobs + Skill Gap + Readiness Level</text>
+    </g>
+
+    <!-- MESSAGE 11: Backend responds JSON (FastAPI -> SPA) -->
+    <line x1="477" y1="515" x2="282" y2="515" stroke="#059669" stroke-width="2" stroke-dasharray="4,3" marker-end="url(#arrow-dashed)"/>
+    <text x="375" y="508" text-anchor="middle" font-size="10" font-weight="700" fill="#059669">11. ส่งผลลัพธ์แนะนำงาน JSON (&lt; 10 ms)</text>
+
+    <!-- MESSAGE 12: SPA renders UI (SPA -> User) -->
+    <line x1="267" y1="555" x2="95" y2="555" stroke="#1E293B" stroke-width="1.5" marker-end="url(#arrow-solid)"/>
+    <text x="176" y="548" text-anchor="middle" font-size="10" font-weight="600" fill="#1E40AF">12. แสดงการ์ด Top 5 &amp; ชิป Skill Gap</text>
+
+    <!-- Bottom summary banner -->
+    <rect x="35" y="598" width="990" height="30" rx="5" fill="#F8FAFC" stroke="#E2E8F0"/>
+    <text x="530" y="618" text-anchor="middle" font-size="11" font-weight="600" fill="#475569">
+      &bull; ระบบรองรับการทำงานแบบ Single Page Application (SPA) ตอบสนองทันทีโดยไม่ต้องรีโหลดหน้าเว็บ
+    </text>
+
+  </svg>
+</div>
+</body>
+</html>

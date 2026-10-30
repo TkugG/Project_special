@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Sarabun:wght@400;500;600;700&display=swap');
+  * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Sarabun', 'Leelawadee UI', Tahoma, sans-serif; }
+  body {
+    background: #FFFFFF;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 30px;
+  }
+  .canvas {
+    width: 960px;
+    height: 750px;
+    background: #FFFFFF;
+    position: relative;
+    border: 1px solid #CBD5E1;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+  }
+  .title {
+    text-align: center;
+    font-size: 21px;
+    font-weight: 700;
+    color: #0F172A;
+    margin-top: 22px;
+  }
+  .subtitle {
+    text-align: center;
+    font-size: 14px;
+    color: #475569;
+    margin-top: 4px;
+  }
+  svg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
+</style>
+</head>
+<body>
+<div class="canvas">
+  <div class="title">วงจรชีวิตการดำเนินงานตามกระบวนการมาตรฐาน CRISP-DM</div>
+  <div class="subtitle">(Cross-Industry Standard Process for Data Mining)</div>
+  
+  <svg viewBox="0 0 960 750">
+    <defs>
+      <!-- Arrow markers with auto-start-reverse for bidirectional arrows -->
+      <marker id="arrow-blue" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse">
+        <path d="M 0 1.5 L 9 5 L 0 8.5 z" fill="#1D4ED8"/>
+      </marker>
+      <marker id="arrow-green" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse">
+        <path d="M 0 1.5 L 9 5 L 0 8.5 z" fill="#047857"/>
+      </marker>
+      <marker id="arrow-red" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse">
+        <path d="M 0 1.5 L 9 5 L 0 8.5 z" fill="#DC2626"/>
+      </marker>
+      <marker id="arrow-slate" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse">
+        <path d="M 0 1.5 L 9 5 L 0 8.5 z" fill="#475569"/>
+      </marker>
+      <marker id="arrow-outer-bold" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="10" markerHeight="10" orient="auto-start-reverse">
+        <path d="M 0 1.5 L 9 5 L 0 8.5 z" fill="#334155"/>
+      </marker>
+      
+      <!-- Gradients -->
+      <linearGradient id="blueBox" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stop-color="#EFF6FF"/>
+        <stop offset="100%" stop-color="#DBEAFE"/>
+      </linearGradient>
+      <linearGradient id="greenBox" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stop-color="#ECFDF5"/>
+        <stop offset="100%" stop-color="#D1FAE5"/>
+      </linearGradient>
+      <linearGradient id="dataGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stop-color="#F8FAFC"/>
+        <stop offset="100%" stop-color="#E2E8F0"/>
+      </linearGradient>
+      <filter id="shadow" x="-5%" y="-5%" width="110%" height="115%" filterUnits="userSpaceOnUse">
+        <feDropShadow dx="0" dy="2" stdDeviation="3" flood-opacity="0.08"/>
+      </filter>
+    </defs>
+
+    <!-- Outer Cycle Circle: Bold Solid Circular Arrow enclosing all 6 boxes (Strict Wirth & Hipp, 2000) -->
+    <path d="M 485,82 A 302,302 0 1,1 465,82" fill="none" stroke="#334155" stroke-width="5" marker-end="url(#arrow-outer-bold)"/>
+
+    <!-- Central Data Cylinder (Single Clean Lid, No Overlapping Ellipses) -->
+    <g transform="translate(405, 320)" filter="url(#shadow)">
+      <!-- Cylinder Body & Bottom Curve -->
+      <path d="M 0,30 v 52 a 75,25 0 0,0 150,0 v -52 z" fill="url(#dataGrad)" stroke="#334155" stroke-width="2"/>
+      <!-- Single Top Lid -->
+      <ellipse cx="75" cy="30" rx="75" ry="25" fill="#E2E8F0" stroke="#334155" stroke-width="2"/>
+      <!-- Text centered cleanly in cylinder body -->
+      <text x="75" y="52" text-anchor="middle" font-size="16" font-weight="700" fill="#0F172A">ข้อมูล</text>
+      <text x="75" y="70" text-anchor="middle" font-size="12" font-weight="600" fill="#475569">(Data)</text>
+    </g>
+
+    <!-- Phase 1: Business Understanding (Top Left) -->
+    <g transform="translate(170, 130)" filter="url(#shadow)">
+      <rect width="230" height="90" rx="8" fill="url(#blueBox)" stroke="#1D4ED8" stroke-width="2"/>
+      <text x="115" y="28" text-anchor="middle" font-size="14" font-weight="700" fill="#1E3A8A">1. Business Understanding</text>
+      <text x="115" y="50" text-anchor="middle" font-size="12" fill="#0F172A">ความเข้าใจบริบททางธุรกิจ</text>
+      <text x="115" y="70" text-anchor="middle" font-size="11" fill="#475569">และเป้าหมายของระบบสนับสนุนการตัดสินใจ</text>
+    </g>
+
+    <!-- Phase 2: Data Understanding (Top Right) -->
+    <g transform="translate(560, 130)" filter="url(#shadow)">
+      <rect width="230" height="90" rx="8" fill="url(#blueBox)" stroke="#1D4ED8" stroke-width="2"/>
+      <text x="115" y="28" text-anchor="middle" font-size="14" font-weight="700" fill="#1E3A8A">2. Data Understanding</text>
+      <text x="115" y="50" text-anchor="middle" font-size="12" fill="#0F172A">ความเข้าใจในลักษณะข้อมูล</text>
+      <text x="115" y="70" text-anchor="middle" font-size="11" fill="#475569">สำรวจตำแหน่งงานไอทีและทักษะ 216 ด้าน</text>
+    </g>
+
+    <!-- Phase 3: Data Preparation (Middle Right) -->
+    <g transform="translate(630, 320)" filter="url(#shadow)">
+      <rect width="230" height="90" rx="8" fill="url(#blueBox)" stroke="#1D4ED8" stroke-width="2"/>
+      <text x="115" y="28" text-anchor="middle" font-size="14" font-weight="700" fill="#1E3A8A">3. Data Preparation</text>
+      <text x="115" y="50" text-anchor="middle" font-size="12" fill="#0F172A">การเตรียมและจัดการข้อมูล</text>
+      <text x="115" y="70" text-anchor="middle" font-size="11" fill="#475569">ทำความสะอาด ตัดคำ แปลงฟีเจอร์เวกเตอร์</text>
+    </g>
+
+    <!-- Phase 4: Modeling (Bottom Right) -->
+    <g transform="translate(550, 505)" filter="url(#shadow)">
+      <rect width="230" height="90" rx="8" fill="url(#blueBox)" stroke="#1D4ED8" stroke-width="2"/>
+      <text x="115" y="28" text-anchor="middle" font-size="14" font-weight="700" fill="#1E3A8A">4. Modeling</text>
+      <text x="115" y="50" text-anchor="middle" font-size="12" fill="#0F172A">การสร้างและฝึกสอนแบบจำลอง</text>
+      <text x="115" y="70" text-anchor="middle" font-size="11" fill="#475569">TF-IDF Vectorizer &amp; Logistic Regression</text>
+    </g>
+
+    <!-- Phase 5: Evaluation (Bottom Left) -->
+    <g transform="translate(190, 505)" filter="url(#shadow)">
+      <rect width="230" height="90" rx="8" fill="url(#blueBox)" stroke="#1D4ED8" stroke-width="2"/>
+      <text x="115" y="28" text-anchor="middle" font-size="14" font-weight="700" fill="#1E3A8A">5. Evaluation</text>
+      <text x="115" y="50" text-anchor="middle" font-size="12" fill="#0F172A">การประเมินประสิทธิภาพ</text>
+      <text x="115" y="70" text-anchor="middle" font-size="11" fill="#475569">วัดผลด้วย Accuracy, Precision, Recall, F1</text>
+    </g>
+
+    <!-- Phase 6: Deployment (Far Left Middle) -->
+    <g transform="translate(55, 320)" filter="url(#shadow)">
+      <rect width="230" height="90" rx="8" fill="url(#greenBox)" stroke="#047857" stroke-width="2"/>
+      <text x="115" y="28" text-anchor="middle" font-size="14" font-weight="700" fill="#065F46">6. Deployment</text>
+      <text x="115" y="50" text-anchor="middle" font-size="12" fill="#0F172A">การนำระบบไปประยุกต์ใช้งาน</text>
+      <text x="115" y="70" text-anchor="middle" font-size="11" fill="#047857">เว็บแอปพลิเคชัน SkillMatch IT สู่ผู้ใช้จริง</text>
+    </g>
+
+    <!-- FLOW ARROWS -->
+    <!-- 1 <-> 2 (Bi-directional top) -->
+    <path d="M 400,165 L 550,165" fill="none" stroke="#1D4ED8" stroke-width="2.5" marker-end="url(#arrow-blue)"/>
+    <path d="M 560,185 L 410,185" fill="none" stroke="#1D4ED8" stroke-width="2.5" marker-end="url(#arrow-blue)"/>
+
+    <!-- 2 -> 3 -->
+    <path d="M 710,220 C 735,250 745,280 745,310" fill="none" stroke="#1D4ED8" stroke-width="2.5" marker-end="url(#arrow-blue)"/>
+
+    <!-- 3 <-> 4 (Bi-directional right) -->
+    <path d="M 730,410 L 730,495" fill="none" stroke="#1D4ED8" stroke-width="2.5" marker-end="url(#arrow-blue)"/>
+    <path d="M 695,505 L 695,420" fill="none" stroke="#1D4ED8" stroke-width="2.5" marker-end="url(#arrow-blue)"/>
+
+    <!-- 4 <-> 5 (Clean Bidirectional Arrow on single axis with auto-start-reverse markers) -->
+    <line x1="428" y1="550" x2="542" y2="550" stroke="#1D4ED8" stroke-width="2.5" marker-start="url(#arrow-blue)" marker-end="url(#arrow-blue)"/>
+    <text x="485" y="538" text-anchor="middle" font-size="11" font-weight="700" fill="#1D4ED8">ประเมินผล</text>
+    <text x="485" y="568" text-anchor="middle" font-size="10" font-weight="600" fill="#2563EB">ปรับแต่งโมเดล</text>
+
+    <!-- 5 -> 6 (Deploy) -->
+    <path d="M 240,505 C 200,465 180,440 170,420" fill="none" stroke="#047857" stroke-width="3" marker-end="url(#arrow-green)"/>
+
+    <!-- 5 -> 1 (Feedback Loop to Business Understanding - Inner Curve) -->
+    <path d="M 330,505 C 355,430 355,300 330,230" fill="none" stroke="#DC2626" stroke-width="2" stroke-dasharray="6 4" marker-end="url(#arrow-red)"/>
+    <g transform="translate(310, 355)">
+      <rect x="-15" y="-12" width="90" height="24" rx="4" fill="#FEF2F2" stroke="#DC2626"/>
+      <text x="30" y="4" text-anchor="middle" font-size="11" font-weight="600" fill="#991B1B">วนลูปปรับปรุง</text>
+    </g>
+
+    <!-- Central Data Connections (STRICT BIDIRECTIONAL: ONLY Phase 2 and Phase 3 connect to Data) -->
+    <!-- Connection with Phase 2 (Data Understanding): Single Bidirectional Line with 2 arrowheads -->
+    <line x1="518" y1="322" x2="582" y2="225" stroke="#475569" stroke-width="2.5" stroke-dasharray="5 3" marker-start="url(#arrow-slate)" marker-end="url(#arrow-slate)"/>
+
+    <!-- Connection with Phase 3 (Data Preparation): Single Bidirectional Line with 2 arrowheads -->
+    <line x1="565" y1="365" x2="622" y2="365" stroke="#475569" stroke-width="2.5" stroke-dasharray="5 3" marker-start="url(#arrow-slate)" marker-end="url(#arrow-slate)"/>
+
+    <!-- Academic Source Label -->
+    <text x="480" y="705" text-anchor="middle" font-size="13" font-style="italic" fill="#64748B">
+      (ที่มา: ดัดแปลงจาก Wirth &amp; Hipp, 2000)
+    </text>
+  </svg>
+</div>
+</body>
+</html>

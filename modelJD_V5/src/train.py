@@ -1,7 +1,7 @@
 """
 train.py - การฝึกสอนโมเดลจำแนก 8 กลุ่มอาชีพ มคอ.2 (Career Classification)
 ใช้เทคนิค: TF-IDF Vectorizer + Multi-Class Logistic Regression
-ชุดข้อมูล: ตำแหน่งงานจริงในประเทศไทย 253 งาน (8 กลุ่มอาชีพตามมาตรฐานหลักสูตร มคอ.2 สาขา IT)
+ชุดข้อมูล: ตำแหน่งงานจริงในประเทศไทย 115 งาน (8 กลุ่มอาชีพตามมาตรฐานหลักสูตร มคอ.2 สาขา IT - ตารางที่ 3.1)
 """
 
 import sys
@@ -31,16 +31,16 @@ DATA_DIR = BASE_DIR / "data"
 MODELS_DIR = BASE_DIR / "models"
 MODELS_DIR.mkdir(parents=True, exist_ok=True)
 
-# นิยาม 8 กลุ่มอาชีพตามมาตรฐานหลักสูตร มคอ.2 สาขา IT
+# นิยาม 8 กลุ่มอาชีพตามมาตรฐานหลักสูตร มคอ.2 สาขา IT (ตารางที่ 3.1)
 ROLE_NAMES = {
-    "8.1": "เจ้าหน้าที่คอมพิวเตอร์ (IT Support)",
-    "8.2": "ผู้ดูแลระบบเครือข่าย (Network Admin)",
-    "8.3": "นักพัฒนาและออกแบบสื่อผสม (Multimedia)",
-    "8.4": "นักจัดการโครงการสารสนเทศ (Project Manager)",
-    "8.5": "นักวิเคราะห์และออกแบบระบบ (System Analyst)",
-    "8.6": "นักพัฒนาซอฟต์แวร์ (Software Developer)",
-    "8.7": "นักออกแบบและพัฒนาเว็บไซต์ (Web Developer)",
-    "8.8": "ผู้เชี่ยวชาญไอทีเฉพาะด้าน (AI/Data/Cyber)"
+    "G1": "นักพัฒนาซอฟต์แวร์ (Software Developer)",
+    "G2": "ผู้ดูแลระบบฐานข้อมูล (Database Administrator)",
+    "G3": "นักวิเคราะห์และออกแบบระบบ (System Analyst / Designer)",
+    "G4": "เจ้าหน้าที่เทคนิคคอมพิวเตอร์ (Computer Technical Officer)",
+    "G5": "ผู้ดูแลระบบ (System Administrator)",
+    "G6": "นักพัฒนาเว็บไซต์ (Web Developer)",
+    "G7": "ผู้ช่วยผู้จัดการโครงการสารสนเทศ (IT Project Assistant)",
+    "G8": "ผู้สร้างสรรค์เนื้อหาดิจิทัล (Content Creator)"
 }
 
 from src.skills_taxonomy import parse_and_normalize_skills
@@ -56,10 +56,10 @@ def train_career_model():
     print("🚀 เริ่มต้นฝึกสอนโมเดลจำแนกกลุ่มอาชีพไอที (TQF 8-Class Career Classifier)")
     print("=" * 75)
 
-    # 1. โหลดข้อมูลตำแหน่งงานไทย
-    csv_path = DATA_DIR / "thai_jobs_dataset.csv"
+    # 1. โหลดข้อมูลตำแหน่งงานไทยจริง (115 ตำแหน่ง ครบ 8 กลุ่มอาชีพ G1-G8)
+    csv_path = DATA_DIR / "เก็บข้อมูล.csv"
     if not csv_path.exists():
-        csv_path = DATA_DIR / "job_dataset.csv"
+        csv_path = DATA_DIR / "thai_jobs_dataset.csv"
 
     print(f"⏳ โหลดชุดข้อมูลจาก: {csv_path.name}")
     df = pd.read_csv(csv_path)
@@ -83,8 +83,8 @@ def train_career_model():
     # 2.1 token_pattern: ปกติ scikit-learn จะตัดเครื่องหมายวรรคตอนทิ้ง
     #     ทำให้คำว่า c++, c#, .net, node.js หายไปหมด เราจึงต้องเขียน regex พิเศษ
     #     r'(?u)[a-zA-Z0-9_+#.-]+' เพื่อรักษาชื่อภาษาและเทคโนโลยีสำคัญไว้
-    # 2.2 LogisticRegression C=0.3: ค่า C คือส่วนกลับของ L2 Regularization (1/lambda)
-    #     การลด C จาก 1.0 เหลือ 0.3 เป็นการ "ลงโทษค่าน้ำหนักที่สูงเกินไป" ป้องกัน Overfitting
+    # 2.2 LogisticRegression C=0.5: ค่า C คือส่วนกลับของ L2 Regularization (1/lambda)
+    #     การตั้ง C=0.5 เป็นการ "ลงโทษค่าน้ำหนักที่สูงเกินไป" ป้องกัน Overfitting
     #     บีบให้โมเดลมองภาพรวมของทักษะ ไม่ยึดติดกับคำคำเดียว
     # =========================================================================
     pipeline = Pipeline([
@@ -97,8 +97,9 @@ def train_career_model():
         ('clf', LogisticRegression(
             max_iter=1000,
             random_state=42,
-            # 🎯 [หัวใจหลัก]: ค่า C=0.3 เพิ่ม L2 Regularization ป้องกันโมเดล Overfitting และการท่องจำคำศัพท์เฉพาะ
-            C=0.3  # ปรับ Regularization C=0.3 เพื่อความสมจริงและป้องกันท่องจำ
+            # 🎯 [หัวใจหลัก]: ค่า C=0.5 และ class_weight='balanced' ชดเชยสัดส่วนข้อมูลจริง 8 อาชีพให้สมดุล
+            C=0.5,
+            class_weight='balanced'
         ))
     ])
 

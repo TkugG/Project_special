@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Sarabun:wght@400;500;600;700&display=swap');
+  * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Sarabun', 'Leelawadee UI', Tahoma, sans-serif; }
+  body {
+    background: #FFFFFF;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 15px;
+  }
+  .browser-window {
+    width: 1040px;
+    height: 640px;
+    background: #F8FAFC;
+    border: 1px solid #CBD5E1;
+    border-radius: 10px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+  /* Browser Chrome */
+  .browser-bar {
+    background: #F1F5F9;
+    padding: 8px 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    border-bottom: 1px solid #E2E8F0;
+  }
+  .dots { display: flex; gap: 6px; }
+  .dot { width: 10px; height: 10px; border-radius: 50%; }
+  .dot-red { background: #EF4444; }
+  .dot-yellow { background: #F59E0B; }
+  .dot-green { background: #10B981; }
+  .url-bar {
+    background: #FFFFFF;
+    flex: 1;
+    padding: 4px 12px;
+    border-radius: 6px;
+    font-size: 12px;
+    color: #475569;
+    border: 1px solid #CBD5E1;
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  /* App Header - Light Modern Clean */
+  .app-header {
+    background: #FFFFFF;
+    border-bottom: 1px solid #E2E8F0;
+    padding: 10px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .app-brand { display: flex; align-items: center; gap: 10px; }
+  .brand-logo { background: #2563EB; color: #FFF; font-weight: 700; padding: 3px 8px; border-radius: 6px; font-size: 13px; }
+  .brand-title { font-size: 15px; font-weight: 700; color: #0F172A; }
+  .curriculum-tag { font-size: 12px; background: #EFF6FF; border: 1px solid #BFDBFE; padding: 3px 10px; border-radius: 14px; color: #1E40AF; font-weight: 600; }
+
+  /* App Layout */
+  .main-layout {
+    display: grid;
+    grid-template-columns: 310px 1fr;
+    gap: 14px;
+    padding: 14px;
+    flex: 1;
+    overflow: hidden;
+  }
+
+  /* Left Panel */
+  .left-panel {
+    background: #FFFFFF;
+    border: 1px solid #E2E8F0;
+    border-radius: 8px;
+    padding: 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .panel-title { font-size: 13px; font-weight: 700; color: #0F172A; }
+  .search-box {
+    width: 100%;
+    padding: 7px 10px;
+    border: 1px solid #CBD5E1;
+    border-radius: 6px;
+    font-size: 11px;
+    color: #334155;
+    background: #F8FAFC;
+  }
+  .selected-chips-box {
+    background: #F8FAFC;
+    border-radius: 6px;
+    padding: 10px;
+    min-height: 130px;
+    border: 1px dashed #CBD5E1;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    align-content: flex-start;
+  }
+  .chip {
+    padding: 4px 9px;
+    border-radius: 12px;
+    font-size: 11px;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+  }
+  .chip-blue { background: #DBEAFE; color: #1E40AF; border: 1px solid #BFDBFE; }
+  .chip-green { background: #DCFCE7; color: #166534; border: 1px solid #BBF7D0; }
+  .chip-gray { background: #F1F5F9; color: #475569; border: 1px solid #E2E8F0; }
+  .btn-submit {
+    background: #2563EB;
+    color: #FFFFFF;
+    border: none;
+    padding: 9px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    text-align: center;
+    margin-top: auto;
+  }
+
+  /* Right Panel */
+  .right-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    overflow: hidden;
+  }
+
+  /* Prediction Banner */
+  .pred-banner {
+    background: #EFF6FF;
+    border: 1px solid #BFDBFE;
+    border-radius: 8px;
+    padding: 12px 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .pred-role-title { font-size: 15px; font-weight: 700; color: #1E3A8A; }
+  .pred-sub { font-size: 11px; color: #2563EB; margin-top: 2px; }
+  .readiness-meter {
+    background: #FFFFFF;
+    border: 1px solid #BFDBFE;
+    border-radius: 6px;
+    padding: 6px 12px;
+    text-align: right;
+  }
+  .readiness-label { font-size: 10px; color: #64748B; font-weight: 600; text-transform: uppercase; }
+  .readiness-val { font-size: 15px; font-weight: 700; color: #059669; }
+
+  /* Job Cards Grid */
+  .cards-title { font-size: 12px; font-weight: 700; color: #334155; }
+  .cards-list { display: flex; flex-direction: column; gap: 8px; overflow: hidden; }
+  .job-card {
+    background: #FFFFFF;
+    border: 1px solid #E2E8F0;
+    border-radius: 6px;
+    padding: 10px 14px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .job-info { flex: 1; }
+  .job-title { font-size: 12px; font-weight: 700; color: #0F172A; }
+  .job-company { font-size: 11px; color: #64748B; margin-top: 1px; }
+  .job-skills { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 5px; }
+  .match-badge {
+    text-align: center;
+    padding-left: 14px;
+    min-width: 75px;
+  }
+  .match-pct { font-size: 17px; font-weight: 700; color: #2563EB; }
+  .match-sub { font-size: 10px; color: #64748B; }
+</style>
+</head>
+<body>
+<div class="browser-window">
+  <!-- Chrome -->
+  <div class="browser-bar">
+    <div class="dots"><div class="dot dot-red"></div><div class="dot dot-yellow"></div><div class="dot dot-green"></div></div>
+    <div class="url-bar"><span>https://skillmatch-it.npru.ac.th/</span><span>🔒 ระบบจับคู่ทักษะและแนะนำตำแหน่งงานไอที</span></div>
+  </div>
+
+  <!-- Header -->
+  <div class="app-header">
+    <div class="app-brand">
+      <span class="brand-logo">SM</span>
+      <span class="brand-title">SkillMatch IT &bull; ระบบสนับสนุนการตัดสินใจในการแนะนำตำแหน่งงาน</span>
+    </div>
+    <div class="curriculum-tag">8 กลุ่มอาชีพตามหลักสูตร มรภ.นครปฐม</div>
+  </div>
+
+  <!-- Main Body -->
+  <div class="main-layout">
+    <!-- Left: Input -->
+    <div class="left-panel">
+      <div class="panel-title">ระบุทักษะของคุณ (User Skills)</div>
+      <input type="text" class="search-box" value="ค้นหาทักษะ... เช่น python, react, docker" readonly>
+      <div style="font-size: 11px; color: #64748B; font-weight: 600;">ทักษะที่เลือกแล้ว (5 ทักษะ):</div>
+      <div class="selected-chips-box">
+        <span class="chip chip-blue">python &times;</span>
+        <span class="chip chip-blue">fastapi &times;</span>
+        <span class="chip chip-blue">sql &times;</span>
+        <span class="chip chip-blue">git &times;</span>
+        <span class="chip chip-blue">docker &times;</span>
+      </div>
+      <div style="font-size: 10px; color: #64748B;">* เลือกทักษะจากคลัง 216 คำศัพท์มาตรฐาน</div>
+      <button class="btn-submit">ประมวลผลจับคู่ตำแหน่งงาน (Run Matching)</button>
+    </div>
+
+    <!-- Right: Results -->
+    <div class="right-panel">
+      <!-- Target Career Banner -->
+      <div class="pred-banner">
+        <div>
+          <div style="font-size: 10px; font-weight: 700; color: #2563EB; text-transform: uppercase;">Stage 1: สายงานที่ตรงกับคุณมากที่สุด</div>
+          <div class="pred-role-title">G1: นักพัฒนาซอฟต์แวร์ (Software Developer)</div>
+          <div class="pred-sub">ความเชื่อมั่นแบบจำลอง (Logistic Regression): 88.5%</div>
+        </div>
+        <div class="readiness-meter">
+          <div class="readiness-label">ระดับความพร้อมสายอาชีพ</div>
+          <div class="readiness-val">70% &bull; Job-Ready</div>
+        </div>
+      </div>
+
+      <!-- Top 5 Recommended Jobs -->
+      <div class="cards-title">Stage 2: ตำแหน่งงานแนะนำ 5 อันดับแรก พร้อมการวิเคราะห์ Skill Gap</div>
+      <div class="cards-list">
+        <!-- Card 1 -->
+        <div class="job-card">
+          <div class="job-info">
+            <div class="job-title">1. Backend Software Engineer [Junior / Mid-Level]</div>
+            <div class="job-company">บริษัท เน็กซ์เทค อินโนเวชั่น จำกัด &bull; กรุงเทพมหานคร (Hybrid)</div>
+            <div class="job-skills">
+              <span class="chip chip-green">✓ python</span>
+              <span class="chip chip-green">✓ fastapi</span>
+              <span class="chip chip-green">✓ sql</span>
+              <span class="chip chip-green">✓ docker</span>
+              <span class="chip chip-gray">✗ redis</span>
+              <span class="chip chip-gray">✗ kubernetes</span>
+            </div>
+          </div>
+          <div class="match-badge">
+            <div class="match-pct">67%</div>
+            <div class="match-sub">ตรง 4 / 6 ทักษะ</div>
+          </div>
+        </div>
+
+        <!-- Card 2 -->
+        <div class="job-card">
+          <div class="job-info">
+            <div class="job-title">2. Python Developer &amp; Data Integration</div>
+            <div class="job-company">บริษัท บลูเทค ซิสเต็มส์ จำกัด &bull; ปริมณฑล (On-site)</div>
+            <div class="job-skills">
+              <span class="chip chip-green">✓ python</span>
+              <span class="chip chip-green">✓ sql</span>
+              <span class="chip chip-green">✓ git</span>
+              <span class="chip chip-gray">✗ postgresql</span>
+              <span class="chip chip-gray">✗ airflow</span>
+            </div>
+          </div>
+          <div class="match-badge">
+            <div class="match-pct">60%</div>
+            <div class="match-sub">ตรง 3 / 5 ทักษะ</div>
+          </div>
+        </div>
+
+        <!-- Card 3 -->
+        <div class="job-card">
+          <div class="job-info">
+            <div class="job-title">3. Junior Full Stack Developer (Python &amp; API)</div>
+            <div class="job-company">บริษัท คลาวด์ลิงก์ เทคโนโลยี จำกัด &bull; กรุงเทพมหานคร (Work from Home)</div>
+            <div class="job-skills">
+              <span class="chip chip-green">✓ python</span>
+              <span class="chip chip-green">✓ fastapi</span>
+              <span class="chip chip-green">✓ git</span>
+              <span class="chip chip-gray">✗ react</span>
+              <span class="chip chip-gray">✗ tailwind</span>
+            </div>
+          </div>
+          <div class="match-badge">
+            <div class="match-pct">60%</div>
+            <div class="match-sub">ตรง 3 / 5 ทักษะ</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

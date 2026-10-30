@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Sarabun:wght@400;500;600;700&display=swap');
+  * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Sarabun', 'Leelawadee UI', Tahoma, sans-serif; }
+  body {
+    background: #FFFFFF;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 15px;
+  }
+  .browser-window {
+    width: 1040px;
+    height: 640px;
+    background: #F8FAFC;
+    border: 1px solid #CBD5E1;
+    border-radius: 10px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+  /* Browser Chrome */
+  .browser-bar {
+    background: #F1F5F9;
+    padding: 8px 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    border-bottom: 1px solid #E2E8F0;
+  }
+  .dots { display: flex; gap: 6px; }
+  .dot { width: 10px; height: 10px; border-radius: 50%; }
+  .dot-red { background: #EF4444; }
+  .dot-yellow { background: #F59E0B; }
+  .dot-green { background: #10B981; }
+  .url-bar {
+    background: #FFFFFF;
+    flex: 1;
+    padding: 4px 12px;
+    border-radius: 6px;
+    font-size: 12px;
+    color: #475569;
+    border: 1px solid #CBD5E1;
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  /* App Header - Light Modern Clean */
+  .app-header {
+    background: #FFFFFF;
+    border-bottom: 1px solid #E2E8F0;
+    padding: 10px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .app-brand { display: flex; align-items: center; gap: 10px; }
+  .brand-logo { background: #7C3AED; color: #FFF; font-weight: 700; padding: 3px 8px; border-radius: 6px; font-size: 13px; }
+  .brand-title { font-size: 15px; font-weight: 700; color: #0F172A; }
+  .catalog-count { font-size: 12px; background: #F5F3FF; border: 1px solid #DDD6FE; padding: 3px 12px; border-radius: 14px; color: #6D28D9; font-weight: 600; }
+
+  /* Content */
+  .content {
+    padding: 16px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    flex: 1;
+    overflow: hidden;
+  }
+
+  /* Search & Synonym Bar */
+  .search-banner {
+    background: #FFFFFF;
+    border: 1px solid #E2E8F0;
+    border-radius: 6px;
+    padding: 10px 16px;
+    display: flex;
+    gap: 14px;
+    align-items: center;
+  }
+  .search-input {
+    flex: 1;
+    padding: 7px 12px;
+    border: 1px solid #CBD5E1;
+    border-radius: 6px;
+    font-size: 12px;
+    background: #F8FAFC;
+  }
+  .synonym-hint {
+    font-size: 11px;
+    color: #475569;
+    background: #F1F5F9;
+    padding: 6px 10px;
+    border-radius: 6px;
+    border: 1px dashed #CBD5E1;
+  }
+
+  /* Categories Grid */
+  .categories-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    flex: 1;
+  }
+  .cat-card {
+    background: #FFFFFF;
+    border: 1px solid #E2E8F0;
+    border-radius: 6px;
+    padding: 10px 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .cat-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #F1F5F9;
+    padding-bottom: 5px;
+  }
+  .cat-title { font-size: 12px; font-weight: 700; color: #0F172A; }
+  .cat-count { font-size: 10px; font-weight: 600; padding: 2px 6px; border-radius: 10px; }
+  
+  .badge-blue { background: #DBEAFE; color: #1E40AF; }
+  .badge-purple { background: #F3E8FF; color: #6B21A8; }
+  .badge-emerald { background: #D1FAE5; color: #065F46; }
+  .badge-amber { background: #FEF3C7; color: #92400E; }
+  .badge-rose { background: #FFE4E6; color: #9F1239; }
+  .badge-indigo { background: #E0E7FF; color: #3730A3; }
+
+  .chips-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    align-content: flex-start;
+  }
+  .chip {
+    padding: 3px 7px;
+    border-radius: 4px;
+    font-size: 10px;
+    font-weight: 500;
+  }
+  .c-blue { background: #EFF6FF; color: #1D4ED8; border: 1px solid #BFDBFE; }
+  .c-purple { background: #FAF5FF; color: #7C3AED; border: 1px solid #E9D5FF; }
+  .c-emerald { background: #ECFDF5; color: #047857; border: 1px solid #A7F3D0; }
+  .c-amber { background: #FFFBEB; color: #B45309; border: 1px solid #FDE68A; }
+  .c-rose { background: #FFF1F2; color: #BE123C; border: 1px solid #FECDD3; }
+  .c-indigo { background: #EEF2FF; color: #4338CA; border: 1px solid #C7D2FE; }
+
+  /* Footer */
+  .catalog-footer {
+    background: #FFFFFF;
+    border: 1px solid #E2E8F0;
+    border-radius: 6px;
+    padding: 8px 14px;
+    display: flex;
+    justify-content: space-between;
+    font-size: 11px;
+    color: #475569;
+  }
+</style>
+</head>
+<body>
+<div class="browser-window">
+  <!-- Chrome -->
+  <div class="browser-bar">
+    <div class="dots"><div class="dot dot-red"></div><div class="dot dot-yellow"></div><div class="dot dot-green"></div></div>
+    <div class="url-bar"><span>https://skillmatch-it.npru.ac.th/#catalog</span><span>คลังคำศัพท์ทักษะไอทีมาตรฐาน</span></div>
+  </div>
+
+  <!-- Header -->
+  <div class="app-header">
+    <div class="app-brand">
+      <span class="brand-logo">SC</span>
+      <span class="brand-title">IT Skill Catalog Explorer &bull; คลังคำศัพท์ทักษะไอทีมาตรฐาน 216 คำ</span>
+    </div>
+    <div class="catalog-count">มาตรฐานคำเดี่ยว (Atomic Canonical Skills)</div>
+  </div>
+
+  <div class="content">
+    <!-- Search Banner -->
+    <div class="search-banner">
+      <input type="text" class="search-input" value="สืบค้นทักษะในคลัง เช่น react, postgresql, docker, figma..." readonly>
+      <div class="synonym-hint">
+        <strong>ระบบตรวจจับคำพ้อง (Canonical Mapping):</strong> golang &rarr; go | k8s &rarr; kubernetes | reactjs &rarr; react
+      </div>
+    </div>
+
+    <!-- 6 Categories Grid -->
+    <div class="categories-grid">
+      <!-- 1. Programming Languages -->
+      <div class="cat-card">
+        <div class="cat-header">
+          <span class="cat-title">ภาษาโปรแกรม (Languages)</span>
+          <span class="cat-count badge-blue">32 คำ</span>
+        </div>
+        <div class="chips-container">
+          <span class="chip c-blue">python</span>
+          <span class="chip c-blue">javascript</span>
+          <span class="chip c-blue">typescript</span>
+          <span class="chip c-blue">java</span>
+          <span class="chip c-blue">c#</span>
+          <span class="chip c-blue">c++</span>
+          <span class="chip c-blue">php</span>
+          <span class="chip c-blue">go</span>
+          <span class="chip c-blue">swift</span>
+          <span class="chip c-blue">kotlin</span>
+          <span class="chip c-blue">sql</span>
+        </div>
+      </div>
+
+      <!-- 2. Web & Frameworks -->
+      <div class="cat-card">
+        <div class="cat-header">
+          <span class="cat-title">เว็บและเฟรมเวิร์ก (Web &amp; Frameworks)</span>
+          <span class="cat-count badge-indigo">40 คำ</span>
+        </div>
+        <div class="chips-container">
+          <span class="chip c-indigo">react</span>
+          <span class="chip c-indigo">vue.js</span>
+          <span class="chip c-indigo">angular</span>
+          <span class="chip c-indigo">node.js</span>
+          <span class="chip c-indigo">fastapi</span>
+          <span class="chip c-indigo">express.js</span>
+          <span class="chip c-indigo">django</span>
+          <span class="chip c-indigo">spring boot</span>
+          <span class="chip c-indigo">.net core</span>
+          <span class="chip c-indigo">next.js</span>
+          <span class="chip c-indigo">tailwind</span>
+          <span class="chip c-indigo">html5</span>
+          <span class="chip c-indigo">css3</span>
+        </div>
+      </div>
+
+      <!-- 3. Database & Big Data -->
+      <div class="cat-card">
+        <div class="cat-header">
+          <span class="cat-title">ฐานข้อมูลและดาต้า (Data &amp; DB)</span>
+          <span class="cat-count badge-emerald">35 คำ</span>
+        </div>
+        <div class="chips-container">
+          <span class="chip c-emerald">mysql</span>
+          <span class="chip c-emerald">postgresql</span>
+          <span class="chip c-emerald">mongodb</span>
+          <span class="chip c-emerald">oracle</span>
+          <span class="chip c-emerald">sql server</span>
+          <span class="chip c-emerald">redis</span>
+          <span class="chip c-emerald">data warehouse</span>
+          <span class="chip c-emerald">etl/elt</span>
+          <span class="chip c-emerald">power bi</span>
+          <span class="chip c-emerald">tableau</span>
+        </div>
+      </div>
+
+      <!-- 4. DevOps, Cloud & OS -->
+      <div class="cat-card">
+        <div class="cat-header">
+          <span class="cat-title">คลาวด์และเซิร์ฟเวอร์ (Cloud &amp; DevOps)</span>
+          <span class="cat-count badge-amber">38 คำ</span>
+        </div>
+        <div class="chips-container">
+          <span class="chip c-amber">docker</span>
+          <span class="chip c-amber">kubernetes</span>
+          <span class="chip c-amber">aws</span>
+          <span class="chip c-amber">azure</span>
+          <span class="chip c-amber">gcp</span>
+          <span class="chip c-amber">linux server</span>
+          <span class="chip c-amber">windows server</span>
+          <span class="chip c-amber">cicd</span>
+          <span class="chip c-amber">git</span>
+          <span class="chip c-amber">active directory</span>
+          <span class="chip c-amber">terraform</span>
+        </div>
+      </div>
+
+      <!-- 5. Multimedia & UI/UX -->
+      <div class="cat-card">
+        <div class="cat-header">
+          <span class="cat-title">สื่อดิจิทัลและยูไอ (Multimedia &amp; UI/UX)</span>
+          <span class="cat-count badge-rose">36 คำ</span>
+        </div>
+        <div class="chips-container">
+          <span class="chip c-rose">figma</span>
+          <span class="chip c-rose">ui/ux</span>
+          <span class="chip c-rose">photoshop</span>
+          <span class="chip c-rose">illustrator</span>
+          <span class="chip c-rose">premiere pro</span>
+          <span class="chip c-rose">after effects</span>
+          <span class="chip c-rose">blender</span>
+          <span class="chip c-rose">unity</span>
+          <span class="chip c-rose">canva</span>
+          <span class="chip c-rose">wireframing</span>
+          <span class="chip c-rose">video editing</span>
+        </div>
+      </div>
+
+      <!-- 6. Management & Support -->
+      <div class="cat-card">
+        <div class="cat-header">
+          <span class="cat-title">การบริหารและซัพพอร์ต (Project &amp; Support)</span>
+          <span class="cat-count badge-purple">35 คำ</span>
+        </div>
+        <div class="chips-container">
+          <span class="chip c-purple">agile</span>
+          <span class="chip c-purple">scrum</span>
+          <span class="chip c-purple">jira</span>
+          <span class="chip c-purple">system analysis</span>
+          <span class="chip c-purple">troubleshooting</span>
+          <span class="chip c-purple">hardware</span>
+          <span class="chip c-purple">helpdesk</span>
+          <span class="chip c-purple">cisco</span>
+          <span class="chip c-purple">tcp/ip</span>
+          <span class="chip c-purple">firewall</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer Summary -->
+    <div class="catalog-footer">
+      <span>โครงสร้างข้อมูลจัดเก็บบน Hash Map (ค้นหา O(1)) &bull; ป้องกันคำสะกดผิดและอักขระพิเศษ (+, #, .)</span>
+      <span style="font-weight: 600; color: #1E3A8A;">แหล่งอ้างอิง: สถาบันคุณวุฒิวิชาชีพ (TPQI ICT Standards)</span>
+    </div>
+  </div>
+</div>
+</body>
+</html>

@@ -184,68 +184,8 @@ window.JobComponents = {
     },
 
     ROLE_THEMES: {
-        '8.1': {
-            roleId: '8.1',
-            icon: 'fa-solid fa-headset',
-            gradient: 'from-amber-500 to-orange-600',
-            barGradient: 'bg-gradient-to-r from-amber-500 to-orange-500',
-            badgeBg: 'bg-amber-50 text-amber-800 border-amber-300',
-            cardBorder: 'border-amber-200 hover:border-amber-300',
-            cardBg: 'bg-gradient-to-br from-amber-50/40 via-white to-orange-50/20',
-            accentText: 'text-amber-700',
-            iconBg: 'bg-amber-500 text-white',
-            tagLabel: 'IT Support & Systems'
-        },
-        '8.2': {
-            roleId: '8.2',
-            icon: 'fa-solid fa-network-wired',
-            gradient: 'from-blue-500 to-cyan-600',
-            barGradient: 'bg-gradient-to-r from-blue-500 to-cyan-500',
-            badgeBg: 'bg-blue-50 text-blue-700 border-blue-300',
-            cardBorder: 'border-blue-200 hover:border-blue-300',
-            cardBg: 'bg-gradient-to-br from-blue-50/40 via-white to-cyan-50/20',
-            accentText: 'text-blue-700',
-            iconBg: 'bg-blue-600 text-white',
-            tagLabel: 'Network & Infrastructure'
-        },
-        '8.3': {
-            roleId: '8.3',
-            icon: 'fa-solid fa-palette',
-            gradient: 'from-purple-500 to-violet-600',
-            barGradient: 'bg-gradient-to-r from-purple-500 to-violet-500',
-            badgeBg: 'bg-purple-50 text-purple-700 border-purple-300',
-            cardBorder: 'border-purple-200 hover:border-purple-300',
-            cardBg: 'bg-gradient-to-br from-purple-50/40 via-white to-violet-50/20',
-            accentText: 'text-purple-700',
-            iconBg: 'bg-purple-600 text-white',
-            tagLabel: 'Multimedia & UI/UX'
-        },
-        '8.4': {
-            roleId: '8.4',
-            icon: 'fa-solid fa-diagram-project',
-            gradient: 'from-orange-500 to-red-600',
-            barGradient: 'bg-gradient-to-r from-orange-500 to-red-500',
-            badgeBg: 'bg-orange-50 text-orange-700 border-orange-300',
-            cardBorder: 'border-orange-200 hover:border-orange-300',
-            cardBg: 'bg-gradient-to-br from-orange-50/40 via-white to-red-50/20',
-            accentText: 'text-orange-700',
-            iconBg: 'bg-orange-600 text-white',
-            tagLabel: 'IT Project Management'
-        },
-        '8.5': {
-            roleId: '8.5',
-            icon: 'fa-solid fa-chart-pie',
-            gradient: 'from-indigo-500 to-blue-600',
-            barGradient: 'bg-gradient-to-r from-indigo-500 to-blue-500',
-            badgeBg: 'bg-indigo-50 text-indigo-700 border-indigo-300',
-            cardBorder: 'border-indigo-200 hover:border-indigo-300',
-            cardBg: 'bg-gradient-to-br from-indigo-50/40 via-white to-blue-50/20',
-            accentText: 'text-indigo-700',
-            iconBg: 'bg-indigo-600 text-white',
-            tagLabel: 'System & Business Analysis'
-        },
-        '8.6': {
-            roleId: '8.6',
+        'G1': {
+            roleId: 'G1',
             icon: 'fa-solid fa-code',
             gradient: 'from-emerald-500 to-teal-600',
             barGradient: 'bg-gradient-to-r from-emerald-500 to-teal-500',
@@ -256,8 +196,56 @@ window.JobComponents = {
             iconBg: 'bg-emerald-600 text-white',
             tagLabel: 'Software Development'
         },
-        '8.7': {
-            roleId: '8.7',
+        'G2': {
+            roleId: 'G2',
+            icon: 'fa-solid fa-database',
+            gradient: 'from-amber-500 to-yellow-600',
+            barGradient: 'bg-gradient-to-r from-amber-500 to-yellow-500',
+            badgeBg: 'bg-amber-50 text-amber-800 border-amber-300',
+            cardBorder: 'border-amber-200 hover:border-amber-300',
+            cardBg: 'bg-gradient-to-br from-amber-50/40 via-white to-yellow-50/20',
+            accentText: 'text-amber-700',
+            iconBg: 'bg-amber-600 text-white',
+            tagLabel: 'Database Administration'
+        },
+        'G3': {
+            roleId: 'G3',
+            icon: 'fa-solid fa-chart-pie',
+            gradient: 'from-indigo-500 to-blue-600',
+            barGradient: 'bg-gradient-to-r from-indigo-500 to-blue-500',
+            badgeBg: 'bg-indigo-50 text-indigo-700 border-indigo-300',
+            cardBorder: 'border-indigo-200 hover:border-indigo-300',
+            cardBg: 'bg-gradient-to-br from-indigo-50/40 via-white to-blue-50/20',
+            accentText: 'text-indigo-700',
+            iconBg: 'bg-indigo-600 text-white',
+            tagLabel: 'System Analyst / Designer'
+        },
+        'G4': {
+            roleId: 'G4',
+            icon: 'fa-solid fa-headset',
+            gradient: 'from-slate-600 to-slate-800',
+            barGradient: 'bg-gradient-to-r from-slate-600 to-slate-700',
+            badgeBg: 'bg-slate-100 text-slate-800 border-slate-300',
+            cardBorder: 'border-slate-300 hover:border-slate-400',
+            cardBg: 'bg-gradient-to-br from-slate-50/40 via-white to-slate-100/20',
+            accentText: 'text-slate-800',
+            iconBg: 'bg-slate-700 text-white',
+            tagLabel: 'Computer Technical Officer'
+        },
+        'G5': {
+            roleId: 'G5',
+            icon: 'fa-solid fa-server',
+            gradient: 'from-blue-600 to-cyan-700',
+            barGradient: 'bg-gradient-to-r from-blue-600 to-cyan-600',
+            badgeBg: 'bg-blue-50 text-blue-700 border-blue-300',
+            cardBorder: 'border-blue-200 hover:border-blue-300',
+            cardBg: 'bg-gradient-to-br from-blue-50/40 via-white to-cyan-50/20',
+            accentText: 'text-blue-700',
+            iconBg: 'bg-blue-600 text-white',
+            tagLabel: 'System Administrator'
+        },
+        'G6': {
+            roleId: 'G6',
             icon: 'fa-solid fa-laptop-code',
             gradient: 'from-pink-500 to-rose-600',
             barGradient: 'bg-gradient-to-r from-pink-500 to-rose-500',
@@ -266,23 +254,50 @@ window.JobComponents = {
             cardBg: 'bg-gradient-to-br from-rose-50/40 via-white to-pink-50/20',
             accentText: 'text-rose-700',
             iconBg: 'bg-rose-600 text-white',
-            tagLabel: 'Web Design & Development'
+            tagLabel: 'Web Developer'
         },
-        '8.8': {
-            roleId: '8.8',
-            icon: 'fa-solid fa-brain',
-            gradient: 'from-fuchsia-500 to-pink-600',
-            barGradient: 'bg-gradient-to-r from-fuchsia-500 to-pink-500',
-            badgeBg: 'bg-fuchsia-50 text-fuchsia-700 border-fuchsia-300',
-            cardBorder: 'border-fuchsia-200 hover:border-fuchsia-300',
-            cardBg: 'bg-gradient-to-br from-fuchsia-50/40 via-white to-pink-50/20',
-            accentText: 'text-fuchsia-700',
-            iconBg: 'bg-fuchsia-600 text-white',
-            tagLabel: 'AI, Data & Cloud'
-        }
+        'G7': {
+            roleId: 'G7',
+            icon: 'fa-solid fa-diagram-project',
+            gradient: 'from-orange-500 to-red-600',
+            barGradient: 'bg-gradient-to-r from-orange-500 to-red-500',
+            badgeBg: 'bg-orange-50 text-orange-700 border-orange-300',
+            cardBorder: 'border-orange-200 hover:border-orange-300',
+            cardBg: 'bg-gradient-to-br from-orange-50/40 via-white to-red-50/20',
+            accentText: 'text-orange-700',
+            iconBg: 'bg-orange-600 text-white',
+            tagLabel: 'IT Project Assistant'
+        },
+        'G8': {
+            roleId: 'G8',
+            icon: 'fa-solid fa-palette',
+            gradient: 'from-purple-500 to-violet-600',
+            barGradient: 'bg-gradient-to-r from-purple-500 to-violet-500',
+            badgeBg: 'bg-purple-50 text-purple-700 border-purple-300',
+            cardBorder: 'border-purple-200 hover:border-purple-300',
+            cardBg: 'bg-gradient-to-br from-purple-50/40 via-white to-violet-50/20',
+            accentText: 'text-purple-700',
+            iconBg: 'bg-purple-600 text-white',
+            tagLabel: 'Content Creator'
+        },
+        '8.1': { roleId: 'G4', icon: 'fa-solid fa-headset', gradient: 'from-slate-600 to-slate-800', barGradient: 'bg-gradient-to-r from-slate-600 to-slate-700', badgeBg: 'bg-slate-100 text-slate-800 border-slate-300', cardBorder: 'border-slate-300', cardBg: 'bg-white', accentText: 'text-slate-800', iconBg: 'bg-slate-700 text-white', tagLabel: 'Computer Technical Officer' },
+        '8.2': { roleId: 'G5', icon: 'fa-solid fa-server', gradient: 'from-blue-600 to-cyan-700', barGradient: 'bg-gradient-to-r from-blue-600 to-cyan-600', badgeBg: 'bg-blue-50 text-blue-700 border-blue-300', cardBorder: 'border-blue-200', cardBg: 'bg-white', accentText: 'text-blue-700', iconBg: 'bg-blue-600 text-white', tagLabel: 'System Administrator' },
+        '8.3': { roleId: 'G8', icon: 'fa-solid fa-palette', gradient: 'from-purple-500 to-violet-600', barGradient: 'bg-gradient-to-r from-purple-500 to-violet-500', badgeBg: 'bg-purple-50 text-purple-700 border-purple-300', cardBorder: 'border-purple-200', cardBg: 'bg-white', accentText: 'text-purple-700', iconBg: 'bg-purple-600 text-white', tagLabel: 'Content Creator' },
+        '8.4': { roleId: 'G7', icon: 'fa-solid fa-diagram-project', gradient: 'from-orange-500 to-red-600', barGradient: 'bg-gradient-to-r from-orange-500 to-red-500', badgeBg: 'bg-orange-50 text-orange-700 border-orange-300', cardBorder: 'border-orange-200', cardBg: 'bg-white', accentText: 'text-orange-700', iconBg: 'bg-orange-600 text-white', tagLabel: 'IT Project Assistant' },
+        '8.5': { roleId: 'G3', icon: 'fa-solid fa-chart-pie', gradient: 'from-indigo-500 to-blue-600', barGradient: 'bg-gradient-to-r from-indigo-500 to-blue-500', badgeBg: 'bg-indigo-50 text-indigo-700 border-indigo-300', cardBorder: 'border-indigo-200', cardBg: 'bg-white', accentText: 'text-indigo-700', iconBg: 'bg-indigo-600 text-white', tagLabel: 'System Analyst / Designer' },
+        '8.6': { roleId: 'G1', icon: 'fa-solid fa-code', gradient: 'from-emerald-500 to-teal-600', barGradient: 'bg-gradient-to-r from-emerald-500 to-teal-500', badgeBg: 'bg-emerald-50 text-emerald-700 border-emerald-300', cardBorder: 'border-emerald-200', cardBg: 'bg-white', accentText: 'text-emerald-700', iconBg: 'bg-emerald-600 text-white', tagLabel: 'Software Development' },
+        '8.7': { roleId: 'G6', icon: 'fa-solid fa-laptop-code', gradient: 'from-pink-500 to-rose-600', barGradient: 'bg-gradient-to-r from-pink-500 to-rose-500', badgeBg: 'bg-rose-50 text-rose-700 border-rose-300', cardBorder: 'border-rose-200', cardBg: 'bg-white', accentText: 'text-rose-700', iconBg: 'bg-rose-600 text-white', tagLabel: 'Web Developer' },
+        '8.8': { roleId: 'G2', icon: 'fa-solid fa-database', gradient: 'from-amber-500 to-yellow-600', barGradient: 'bg-gradient-to-r from-amber-500 to-yellow-500', badgeBg: 'bg-amber-50 text-amber-800 border-amber-300', cardBorder: 'border-amber-200', cardBg: 'bg-white', accentText: 'text-amber-700', iconBg: 'bg-amber-600 text-white', tagLabel: 'Database Administrator' }
     },
 
     getRoleTheme(roleId) {
-        return this.ROLE_THEMES[roleId] || this.ROLE_THEMES['8.6'];
+        if (!roleId) return this.ROLE_THEMES['G1'];
+        const r = String(roleId).toUpperCase().trim();
+        const aliasMap = {
+            '8.1': 'G4', '8.2': 'G5', '8.3': 'G8', '8.4': 'G7',
+            '8.5': 'G3', '8.6': 'G1', '8.7': 'G6', '8.8': 'G2'
+        };
+        const mapped = aliasMap[roleId] || r;
+        return this.ROLE_THEMES[mapped] || this.ROLE_THEMES[roleId] || this.ROLE_THEMES['G1'];
     }
 };

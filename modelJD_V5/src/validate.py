@@ -32,35 +32,35 @@ def print_result(test_name: str, passed: bool, details: str = ""):
     print(f"[{icon}] {test_name:<40} | {details}")
 
 def test_dataset():
-    print_header("1. ตรวจสอบความสมดุลของชุดข้อมูล 8 อาชีพ มคอ.2")
-    csv_path = DATA_DIR / "thai_jobs_dataset.csv"
+    print_header("1. ตรวจสอบความสมบูรณ์ของชุดข้อมูลจริง 8 กลุ่มอาชีพ มคอ.2 (ตารางที่ 3.1 & 3.2)")
+    csv_path = DATA_DIR / "เก็บข้อมูล.csv"
     if not csv_path.exists():
-        csv_path = DATA_DIR / "job_dataset.csv"
+        csv_path = DATA_DIR / "thai_jobs_dataset.csv"
     df = pd.read_csv(csv_path)
 
     total_jobs = len(df)
     counts = df["CurriculumRoleID"].astype(str).str.strip().value_counts()
     has_8_roles = len(counts) == 8
-    is_balanced = all(c >= 25 for c in counts.values)
+    is_valid_distribution = all(c >= 10 for c in counts.values)
 
-    print_result("มีครบทั้ง 8 กลุ่มอาชีพตาม มคอ.2", has_8_roles, f"พบ {len(counts)} กลุ่มอาชีพ")
-    print_result("การกระจายตัวสมดุล (แต่ละกลุ่ม >= 25 งาน)", is_balanced, f"รวม {total_jobs} งาน, ต่ำสุด: {counts.min()}, สูงสุด: {counts.max()}")
+    print_result("มีครบทั้ง 8 กลุ่มอาชีพ (G1-G8) ตาม มคอ.2", has_8_roles, f"พบ {len(counts)} กลุ่มอาชีพ: {sorted(counts.index.tolist())}")
+    print_result("การกระจายตัวครบทุกกลุ่ม (แต่ละกลุ่ม >= 10 ตำแหน่ง)", is_valid_distribution, f"รวม {total_jobs} งานจริง, ต่ำสุด: {counts.min()}, สูงสุด: {counts.max()}")
 
-    return has_8_roles and is_balanced
+    return has_8_roles and is_valid_distribution
 
 def test_classifier():
-    print_header("2. ทดสอบโมเดล Logistic Regression (ทำนาย 8 กลุ่มอาชีพ)")
+    print_header("2. ทดสอบโมเดล Logistic Regression (ทำนาย 8 กลุ่มอาชีพจริง G1-G8)")
     rec = JobRecommender()
 
     test_cases = [
-        (["python", "fastapi", "docker", "sql"], "8.6", "นักพัฒนาซอฟต์แวร์"),
-        (["cisco", "routing", "switching", "firewall"], "8.2", "ผู้ดูแลระบบเครือข่าย"),
-        (["figma", "ui/ux", "adobe xd", "photoshop"], "8.3", "สื่อผสม / UI-UX"),
-        (["jira", "scrum", "agile", "project management"], "8.4", "จัดการโครงการ"),
-        (["uml", "use case", "er diagram", "system analysis"], "8.5", "วิเคราะห์ระบบ"),
-        (["html5", "css3", "wordpress", "responsive web design"], "8.7", "พัฒนาเว็บไซต์"),
-        (["machine learning", "deep learning", "pytorch", "nlp"], "8.8", "ผู้เชี่ยวชาญเฉพาะด้าน (AI)"),
-        (["troubleshooting", "hardware", "helpdesk", "windows"], "8.1", "เจ้าหน้าที่คอมพิวเตอร์")
+        (["python", "sql", "rest api", "git", "c#"], "G1", "นักพัฒนาซอฟต์แวร์ (G1)"),
+        (["oracle", "sql", "postgresql", "mysql", "ssis"], "G2", "ผู้ดูแลระบบฐานข้อมูล (G2)"),
+        (["api", "sql", "uat", "system analysis"], "G3", "นักวิเคราะห์และออกแบบระบบ (G3)"),
+        (["windows", "vpn", "microsoft 365", "printers"], "G4", "เจ้าหน้าที่เทคนิคคอมพิวเตอร์ (G4)"),
+        (["linux", "windows server", "active directory", "vmware"], "G5", "ผู้ดูแลระบบ (G5)"),
+        (["html5", "css3", "javascript", "react", "next.js"], "G6", "นักพัฒนาเว็บไซต์ (G6)"),
+        (["erp", "sap", "powerpoint", "excel", "ms office"], "G7", "ผู้ช่วยผู้จัดการโครงการสารสนเทศ (G7)"),
+        (["tiktok", "canva", "capcut", "premiere pro"], "G8", "ผู้สร้างสรรค์เนื้อหาดิจิทัล (G8)")
     ]
 
     all_correct = True
@@ -77,9 +77,9 @@ def test_classifier():
     return all_correct
 
 def test_recommendation_logic():
-    print_header("3. ทดสอบการคำนวณคะแนนและความสมบูรณ์ของผลลัพธ์")
+    print_header("3. ทดสอบการคำนวณคะแนนด้วยทฤษฎีเซตและความสมบูรณ์ของผลลัพธ์")
     rec = JobRecommender()
-    res = rec.recommend(["python", "fastapi", "docker", "sql"], preference_role_id="8.6")
+    res = rec.recommend(["python", "sql", "git"], preference_role_id="G1")
 
     top_jobs = res["skill_matched_recommendations"]
     has_5 = len(top_jobs) == 5
@@ -87,7 +87,7 @@ def test_recommendation_logic():
     sorted_correctly = all(top_jobs[i]["score"] >= top_jobs[i+1]["score"] for i in range(len(top_jobs)-1))
 
     print_result("ส่งคืนตำแหน่งงานครบ Top 5", has_5, f"จำนวนงานที่ได้: {len(top_jobs)}")
-    print_result("ช่วงคะแนนถูกต้อง (0 - 100 คะแนน)", scores_valid, f"คะแนนอันดับ 1: {top_jobs[0]['score']}")
+    print_result("ช่วงคะแนนถูกต้อง (0 - 100 คะแนน)", scores_valid, f"คะแนนอันดับ 1: {top_jobs[0]['score']}%")
     print_result("เรียงลำดับคะแนนจากมากไปน้อย", sorted_correctly, f"คะแนน: {[j['score'] for j in top_jobs]}")
 
     return has_5 and scores_valid and sorted_correctly
@@ -95,8 +95,8 @@ def test_recommendation_logic():
 def test_latency():
     print_header("4. ทดสอบความเร็วในการตอบสนอง (Latency Benchmark)")
     req = RecommendRequest(
-        preference="8.6",
-        skills=["python", "fastapi", "docker", "sql", "git"]
+        preference="G1",
+        skills=["python", "sql", "git"]
     )
 
     times = []

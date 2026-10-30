@@ -62,11 +62,6 @@
                         <i class="fa-solid fa-bullseye text-rose-500"></i>
                         <span>ค้นหางานที่ใช่</span>
                     </a>
-                    <a href="#/careers" data-route="#/careers"
-                        class="nav-link px-4 py-2 rounded-xl flex items-center gap-2">
-                        <i class="fa-solid fa-briefcase text-slate-500"></i>
-                        <span>สำรวจสายงาน</span>
-                    </a>
                     <a href="#/skills" data-route="#/skills"
                         class="nav-link px-4 py-2 rounded-xl flex items-center gap-2">
                         <i class="fa-solid fa-layer-group text-slate-500"></i>
@@ -74,8 +69,14 @@
                     </a>
                 </nav>
 
-                <!-- Right Live Status & Skill Basket Pill -->
-                <div class="flex items-center gap-2.5">
+                <!-- Right Live Status & Skill Basket Pill & Inspector Link -->
+                <div class="flex items-center gap-2">
+                    <a href="/inspect.html" target="_blank"
+                        class="text-xs font-bold text-slate-700 hover:text-rose-600 px-3 py-1.5 rounded-xl border border-slate-200 hover:border-rose-300 bg-white hover:bg-rose-50 flex items-center gap-1.5 shadow-2xs transition-all"
+                        title="เปิดหน้าจอแกะรอยข้อมูลจริงสำหรับเล่มวิทยานิพนธ์บทที่ 3-4">
+                        <i class="fa-solid fa-microscope text-rose-600"></i>
+                        <span class="hidden sm:inline">แกะรอยข้อมูล</span>
+                    </a>
                     <a href="#/matcher" id="headerSkillBadge"
                         class="hidden text-xs font-black bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 px-3.5 py-1.5 rounded-xl shadow-2xs transition-all items-center gap-1.5 animate__animated animate__fadeIn">
                         <i class="fa-solid fa-check-double text-rose-600"></i> 0 ทักษะ
@@ -92,15 +93,10 @@
                     <i class="fa-solid fa-bullseye"></i>
                     <span>ค้นหางาน</span>
                 </a>
-                <a href="#/careers" data-route="#/careers"
-                    class="nav-link px-3 py-2 rounded-xl whitespace-nowrap flex items-center gap-1.5 flex-1 justify-center">
-                    <i class="fa-solid fa-briefcase"></i>
-                    <span>สายงาน</span>
-                </a>
                 <a href="#/skills" data-route="#/skills"
                     class="nav-link px-3 py-2 rounded-xl whitespace-nowrap flex items-center gap-1.5 flex-1 justify-center">
                     <i class="fa-solid fa-layer-group"></i>
-                    <span>ทักษะ</span>
+                    <span>คลังทักษะ</span>
                 </a>
             </nav>
         </div>
@@ -122,14 +118,13 @@
     </footer>
 
     <!-- JAVASCRIPT MODULES & ROUTER SCRIPTS -->
-    <script src="js/state.js?v=4.7.0"></script>
-    <script src="js/api.js?v=4.7.0"></script>
-    <script src="js/components/jobCard.js?v=4.7.0"></script>
-    <script src="js/views/matcherView.js?v=4.7.0"></script>
-    <script src="js/views/careersView.js?v=4.7.0"></script>
-    <script src="js/views/skillsView.js?v=4.7.0"></script>
-    <script src="js/router.js?v=4.7.0"></script>
-    <script src="js/app.js?v=4.7.0"></script>
+    <script src="js/state.js?v=4.9.0"></script>
+    <script src="js/api.js?v=4.9.0"></script>
+    <script src="js/components/jobCard.js?v=4.9.0"></script>
+    <script src="js/views/matcherView.js?v=4.9.0"></script>
+    <script src="js/views/skillsView.js?v=4.9.0"></script>
+    <script src="js/router.js?v=4.9.0"></script>
+    <script src="js/app.js?v=4.9.0"></script>
 </body>
 
 </html>

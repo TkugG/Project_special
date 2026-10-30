@@ -1,0 +1,184 @@
+import os
+
+spa_html = """<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Sarabun:wght@400;500;600;700&display=swap');
+  * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Sarabun', 'Leelawadee UI', Tahoma, sans-serif; }
+  body {
+    background: #FFFFFF;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 30px;
+  }
+  .canvas {
+    width: 980px;
+    height: 630px;
+    background: #FFFFFF;
+    position: relative;
+    border: 1px solid #CBD5E1;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+    overflow: hidden;
+  }
+  .header {
+    background: #0F172A;
+    color: #FFFFFF;
+    padding: 16px 28px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .header h1 {
+    font-size: 18px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+  }
+  .header span {
+    font-size: 13px;
+    color: #94A3B8;
+  }
+  svg {
+    width: 100%;
+    height: 555px;
+  }
+</style>
+</head>
+<body>
+<div class="canvas">
+  <div class="header">
+    <h1>สถาปัตยกรรมเว็บแอปพลิเคชันแบบ Single Page Application (SPA)</h1>
+    <span>SkillMatch IT Architecture Overview</span>
+  </div>
+
+  <svg viewBox="0 0 980 555">
+    <defs>
+      <!-- Marker definitions -->
+      <marker id="arrow-req" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+        <path d="M 0 1.5 L 9 5 L 0 8.5 z" fill="#1D4ED8"/>
+      </marker>
+      <marker id="arrow-res" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+        <path d="M 0 1.5 L 9 5 L 0 8.5 z" fill="#047857"/>
+      </marker>
+      
+      <filter id="card-shadow" x="-5%" y="-5%" width="110%" height="110%" filterUnits="userSpaceOnUse">
+        <feDropShadow dx="0" dy="2" stdDeviation="3" flood-opacity="0.06"/>
+      </filter>
+    </defs>
+
+    <!-- TIER 1: CLIENT (FRONTEND SPA) -->
+    <g transform="translate(25, 20)" filter="url(#card-shadow)">
+      <!-- Outer Card -->
+      <rect width="320" height="495" rx="10" fill="#F8FAFC" stroke="#94A3B8" stroke-width="1.5"/>
+      
+      <!-- Card Header -->
+      <path d="M 0,10 a 10,10 0 0 1 10,-10 h 300 a 10,10 0 0 1 10,10 v 42 h -320 z" fill="#DBEAFE"/>
+      <text x="160" y="27" text-anchor="middle" font-size="15" font-weight="700" fill="#1E3A8A">ส่วนประสานผู้ใช้ (Client Side)</text>
+      <text x="160" y="44" text-anchor="middle" font-size="11" fill="#2563EB">Web Browser / Single Page Application</text>
+
+      <!-- Inner Component 1: Technologies -->
+      <rect x="20" y="60" width="280" height="68" rx="6" fill="#FFFFFF" stroke="#CBD5E1"/>
+      <text x="35" y="82" font-size="13" font-weight="700" fill="#0F172A">เทคโนโลยีฝั่งฟรอนต์เอนด์</text>
+      <text x="35" y="101" font-size="11" fill="#475569">• HTML5 Semantic Web Structure</text>
+      <text x="35" y="118" font-size="11" fill="#475569">• Modern CSS3 (Grid, Flexbox, Responsive UI)</text>
+
+      <!-- Inner Component 2: JS Logic & DOM -->
+      <rect x="20" y="138" width="280" height="98" rx="6" fill="#FFFFFF" stroke="#CBD5E1"/>
+      <text x="35" y="160" font-size="13" font-weight="700" fill="#0F172A">ตรรกะและการประมวลผล (SPA Logic)</text>
+      <text x="35" y="180" font-size="11" fill="#475569">• Vanilla JavaScript (ES6+ Modular Architecture)</text>
+      <text x="35" y="198" font-size="11" fill="#475569">• Dynamic DOM Manipulation (ไม่ต้องรีเฟรชหน้า)</text>
+      <text x="35" y="216" font-size="11" fill="#475569">• State Management ผ่าน In-Memory JS Object</text>
+
+      <!-- Inner Component 3: Views / Features -->
+      <rect x="20" y="246" width="280" height="115" rx="6" fill="#FFFFFF" stroke="#CBD5E1"/>
+      <text x="35" y="268" font-size="13" font-weight="700" fill="#0F172A">โมดูลการแสดงผลหลัก (UI Views)</text>
+      <text x="35" y="288" font-size="11" fill="#475569">• ระบบเลือกทักษะ 216 ทักษะ &amp; แท็กความถนัด</text>
+      <text x="35" y="305" font-size="11" fill="#475569">• การวิเคราะห์ช่องว่างทักษะ (Skill Gap Visualizer)</text>
+      <text x="35" y="322" font-size="11" fill="#475569">• กราฟเรดาร์คะแนนความสอดคล้อง 8 กลุ่มอาชีพ</text>
+      <text x="35" y="339" font-size="11" fill="#475569">• ตารางสนับสนุนการตัดสินใจเลือกตำแหน่งงาน</text>
+
+      <!-- Inner Component 4: Async Engine -->
+      <rect x="20" y="371" width="280" height="105" rx="6" fill="#EFF6FF" stroke="#3B82F6"/>
+      <text x="35" y="394" font-size="12" font-weight="700" fill="#1D4ED8">โมดูลการสื่อสาร Asynchronous (AJAX)</text>
+      <text x="35" y="414" font-size="11" fill="#1E40AF">• js/api.js (Fetch API รับ/ส่งข้อมูลแบบ Async)</text>
+      <text x="35" y="432" font-size="11" fill="#1E40AF">• Single Page State Sync (อัปเดตข้อมูล Real-time)</text>
+      <text x="35" y="450" font-size="11" fill="#1E40AF">• Error Handling &amp; Network Resilience</text>
+    </g>
+
+    <!-- MIDDLE: COMMUNICATION BUS -->
+    <g transform="translate(365, 50)">
+      
+      <!-- Top Arrow & Label: Request -->
+      <line x1="-10" y1="95" x2="250" y2="95" stroke="#1D4ED8" stroke-width="2.5" marker-end="url(#arrow-req)"/>
+      <rect x="20" y="35" width="210" height="50" rx="8" fill="#EFF6FF" stroke="#3B82F6" stroke-width="1.5"/>
+      <text x="125" y="55" text-anchor="middle" font-size="12" font-weight="700" fill="#1D4ED8">HTTP Request (REST API)</text>
+      <text x="125" y="72" text-anchor="middle" font-size="11" fill="#1E40AF">POST /api/match (JSON Payload)</text>
+
+      <!-- Center Exchange Format Icon/Badge -->
+      <g transform="translate(45, 185)">
+        <rect x="0" y="0" width="160" height="75" rx="8" fill="#F8FAFC" stroke="#CBD5E1" stroke-dasharray="4 3"/>
+        <text x="80" y="24" text-anchor="middle" font-size="12" font-weight="700" fill="#334155">ช่องทางแลกเปลี่ยนข้อมูล</text>
+        <text x="80" y="44" text-anchor="middle" font-size="11" fill="#0284C7">JSON Data Interchange</text>
+        <text x="80" y="62" text-anchor="middle" font-size="10" fill="#64748B">RESTful Architecture</text>
+      </g>
+
+      <!-- Bottom Arrow & Label: Response -->
+      <line x1="250" y1="350" x2="-10" y2="350" stroke="#047857" stroke-width="2.5" marker-end="url(#arrow-res)"/>
+      <rect x="20" y="365" width="210" height="50" rx="8" fill="#ECFDF5" stroke="#10B981" stroke-width="1.5"/>
+      <text x="125" y="385" text-anchor="middle" font-size="12" font-weight="700" fill="#047857">HTTP Response (JSON)</text>
+      <text x="125" y="402" text-anchor="middle" font-size="11" fill="#065F46">Status 200 OK (Match Results)</text>
+
+    </g>
+
+    <!-- TIER 3: SERVER (BACKEND, MODEL & DATABASE) -->
+    <g transform="translate(635, 20)" filter="url(#card-shadow)">
+      <!-- Outer Card -->
+      <rect width="320" height="495" rx="10" fill="#F8FAFC" stroke="#94A3B8" stroke-width="1.5"/>
+      
+      <!-- Card Header -->
+      <path d="M 0,10 a 10,10 0 0 1 10,-10 h 300 a 10,10 0 0 1 10,10 v 42 h -320 z" fill="#DCFCE7"/>
+      <text x="160" y="27" text-anchor="middle" font-size="15" font-weight="700" fill="#065F46">ส่วนประมวลผล (Server Side)</text>
+      <text x="160" y="44" text-anchor="middle" font-size="11" fill="#047857">FastAPI Backend, ML Engine &amp; Database</text>
+
+      <!-- Inner Component 1: API Framework -->
+      <rect x="20" y="60" width="280" height="62" rx="6" fill="#FFFFFF" stroke="#CBD5E1"/>
+      <text x="35" y="82" font-size="13" font-weight="700" fill="#0F172A">API Framework &amp; Web Server</text>
+      <text x="35" y="100" font-size="11" fill="#475569">• FastAPI (High-performance Async Python)</text>
+      <text x="35" y="115" font-size="11" fill="#475569">• Uvicorn ASGI Server (Fast Async I/O Loop)</text>
+
+      <!-- Inner Component 2: Logic Modules -->
+      <rect x="20" y="132" width="280" height="98" rx="6" fill="#FFFFFF" stroke="#CBD5E1"/>
+      <text x="35" y="154" font-size="13" font-weight="700" fill="#0F172A">โมดูลประมวลผลหลัก (Core Logic)</text>
+      <text x="35" y="174" font-size="11" fill="#475569">• src/main.py (Endpoint Routing &amp; Validation)</text>
+      <text x="35" y="191" font-size="11" fill="#475569">• src/recommend.py (Cosine &amp; Gap Calculator)</text>
+      <text x="35" y="208" font-size="11" fill="#475569">• src/skills_taxonomy.py (ทักษะสัมพันธ์ &amp; คำพ้อง)</text>
+
+      <!-- Inner Component 3: ML Models -->
+      <rect x="20" y="240" width="280" height="98" rx="6" fill="#FFFFFF" stroke="#CBD5E1"/>
+      <text x="35" y="262" font-size="13" font-weight="700" fill="#0F172A">แบบจำลองและอัลกอริทึม (ML &amp; Math)</text>
+      <text x="35" y="282" font-size="11" fill="#475569">• Scikit-Learn TF-IDF Feature Extraction</text>
+      <text x="35" y="299" font-size="11" fill="#475569">• Logistic Regression (จำแนก 8 กลุ่มอาชีพ)</text>
+      <text x="35" y="316" font-size="11" fill="#475569">• Set Theory Matching (ทักษะตรง/ทักษะขาด)</text>
+
+      <!-- Inner Component 4: Database & Memory Cache (UPDATED WITH DB ARCHITECTURE) -->
+      <rect x="20" y="348" width="280" height="128" rx="6" fill="#F0FDF4" stroke="#16A34A"/>
+      <text x="35" y="370" font-size="12" font-weight="700" fill="#15803D">คลังข้อมูลและฐานข้อมูล (Database &amp; Storage)</text>
+      <text x="35" y="390" font-size="11" fill="#166534">• ฐานข้อมูลตำแหน่งงานไอที (Database: SQLite / PostgreSQL)</text>
+      <text x="35" y="407" font-size="11" fill="#166534">• แหล่งข้อมูลอ้างอิงหลักสูตร (Dataset: thai_jobs_dataset.csv)</text>
+      <text x="35" y="424" font-size="11" fill="#166534">• พจนานุกรมทักษะ 216 ด้าน &amp; ทักษะสัมพันธ์ (Taxonomy)</text>
+      <text x="35" y="441" font-size="11" fill="#166534">• In-Memory Precomputed Vectors (ความเร็วสูงระดับ RAM)</text>
+      <text x="35" y="458" font-size="10" fill="#15803D">• Structured Persistence &amp; Read-Only Analytics Cache</text>
+    </g>
+  </svg>
+</div>
+</body>
+</html>
+"""
+
+with open("HELPME/images/figure_2_3_spa_architecture.html", "w", encoding="utf-8") as f:
+    f.write(spa_html)
+
+print("Updated figure_2_3_spa_architecture.html with Database tier")

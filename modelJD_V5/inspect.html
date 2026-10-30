@@ -1,0 +1,1088 @@
+<!DOCTYPE html>
+<html lang="th">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SkillMatch IT — Data & Pipeline Inspector (ระบบตรวจสอบข้อมูลจริงทุกขั้นตอน)</title>
+
+    <!-- Tailwind CSS (CDN) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Google Fonts: Prompt, Inter & JetBrains Mono -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Prompt:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Font Awesome 6 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- KaTeX for Beautiful Academic Formulas -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"
+        onload="renderMathInElement(document.body, {delimiters: [{left: '$$', right: '$$', display: true}, {left: '$', right: '$', display: false}]});"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Prompt', 'Inter', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    },
+                    colors: {
+                        brand: {
+                            50: '#fff1f2',
+                            100: '#ffe4e6',
+                            500: '#f43f5e',
+                            600: '#e11d48',
+                            700: '#be123c',
+                            900: '#881337',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            font-family: 'Prompt', 'Inter', sans-serif;
+            -webkit-font-smoothing: antialiased;
+        }
+        .font-mono {
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 9999px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+
+        /* Thesis Mode: Pure White Background, Sharp High-Contrast Borders for Academic Figures */
+        body.thesis-mode {
+            background-color: #ffffff !important;
+            color: #0f172a !important;
+        }
+        body.thesis-mode .stage-card {
+            background-color: #ffffff !important;
+            border: 2px solid #0f172a !important;
+            box-shadow: none !important;
+            border-radius: 12px !important;
+        }
+        body.thesis-mode .thesis-hide {
+            display: none !important;
+        }
+        body.thesis-mode .thesis-figure-caption {
+            display: block !important;
+        }
+
+        .thesis-figure-caption {
+            display: none;
+        }
+
+        /* Smooth Collapse Animation */
+        .collapse-transition {
+            transition: max-height 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.25s ease;
+        }
+        .rotate-chevron {
+            transition: transform 0.25s ease;
+        }
+        .collapsed .rotate-chevron {
+            transform: rotate(-90deg);
+        }
+    </style>
+</head>
+
+<body class="bg-slate-100 text-slate-800 min-h-screen flex flex-col selection:bg-rose-500 selection:text-white transition-colors duration-300">
+
+    <!-- Top Sticky Navigation Bar -->
+    <header class="bg-white/95 backdrop-blur-md border-b border-slate-200 sticky top-0 z-50 shadow-xs">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 py-2.5 flex items-center justify-between gap-4">
+            <!-- Left: Title & Back Link -->
+            <div class="flex items-center gap-3">
+                <a href="/" class="flex items-center gap-1.5 text-xs font-bold text-slate-500 hover:text-rose-600 bg-slate-50 hover:bg-rose-50 border border-slate-200 px-3 py-1.5 rounded-lg transition-colors thesis-hide">
+                    <i class="fa-solid fa-arrow-left"></i>
+                    <span>กลับหน้าหลัก</span>
+                </a>
+                <div class="flex items-center gap-2.5">
+                    <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-rose-500 to-rose-700 text-white flex items-center justify-center font-black text-base shadow-sm">
+                        <i class="fa-solid fa-microscope"></i>
+                    </div>
+                    <div>
+                        <div class="flex items-center gap-2">
+                            <h1 class="text-base sm:text-lg font-bold text-slate-900 tracking-tight leading-none">
+                                Data & Pipeline Inspector
+                            </h1>
+                            <span class="text-2xs font-extrabold uppercase px-2 py-0.5 rounded-md bg-rose-100 text-rose-700 font-mono tracking-wider">
+                                Empirical Trace
+                            </span>
+                        </div>
+                        <p class="text-2xs text-slate-500 mt-0.5">ระบบแกะรอยและเปิดเผยข้อมูลจริงทุกขั้นตอน (สำหรับงานวิจัยและภาพประกอบบทที่ 3–4)</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Controls: Expand All / Collapse All & Thesis Mode -->
+            <div class="flex items-center gap-2">
+                <!-- Global Accordion Toggle -->
+                <div class="flex items-center bg-slate-100 p-1 rounded-xl border border-slate-200 text-xs font-semibold thesis-hide">
+                    <button onclick="expandAllStages()" class="px-2.5 py-1 rounded-lg text-slate-700 hover:text-rose-600 hover:bg-white transition-all flex items-center gap-1">
+                        <i class="fa-solid fa-angles-down text-3xs"></i>
+                        <span>ขยายทั้งหมด</span>
+                    </button>
+                    <button onclick="collapseAllStages()" class="px-2.5 py-1 rounded-lg text-slate-700 hover:text-rose-600 hover:bg-white transition-all flex items-center gap-1">
+                        <i class="fa-solid fa-angles-up text-3xs"></i>
+                        <span>พับทั้งหมด</span>
+                    </button>
+                </div>
+
+                <button id="btnThesisMode" onclick="toggleThesisMode()"
+                    class="text-xs font-bold px-3.5 py-1.5 rounded-xl border border-slate-300 bg-white hover:bg-slate-50 text-slate-800 flex items-center gap-2 shadow-2xs transition-all active:scale-95"
+                    title="โหมดถ่ายภาพขาว-ดำคมชัดสำหรับตัดแปะลงเล่มวิทยานิพนธ์">
+                    <i class="fa-solid fa-camera text-rose-600" id="thesisModeIcon"></i>
+                    <span id="thesisModeLabel">โหมดภาพถ่ายลงเล่ม</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Sticky Stage Filter / Quick Nav Tabs -->
+        <nav class="bg-slate-50 border-t border-slate-200/80 px-4 sm:px-6 py-2 overflow-x-auto thesis-hide">
+            <div class="max-w-7xl mx-auto flex items-center gap-1.5 text-xs font-semibold text-slate-600">
+                <span class="text-2xs font-bold text-slate-400 uppercase tracking-wider mr-1 shrink-0">ข้ามไปยังขั้นตอน:</span>
+                <button onclick="scrollToStage('stage-control')" class="stage-nav-btn px-2.5 py-1 rounded-lg bg-white border border-slate-200 text-slate-800 hover:border-rose-400 hover:text-rose-600 transition-colors shrink-0">
+                    ⚙️ ข้อมูลนำเข้า
+                </button>
+                <i class="fa-solid fa-chevron-right text-3xs text-slate-300 shrink-0"></i>
+                <button onclick="scrollToAndExpand('stage-1', 'stage-1-body')" class="stage-nav-btn px-2.5 py-1 rounded-lg bg-white border border-slate-200 text-slate-800 hover:border-rose-400 hover:text-rose-600 transition-colors shrink-0">
+                    <span class="font-mono text-2xs font-bold text-rose-600 mr-1">01</span>จัดคำพ้อง
+                </button>
+                <i class="fa-solid fa-chevron-right text-3xs text-slate-300 shrink-0"></i>
+                <button onclick="scrollToAndExpand('stage-2', 'stage-2-body')" class="stage-nav-btn px-2.5 py-1 rounded-lg bg-white border border-slate-200 text-slate-800 hover:border-rose-400 hover:text-rose-600 transition-colors shrink-0">
+                    <span class="font-mono text-2xs font-bold text-rose-600 mr-1">02</span>เวกเตอร์ TF-IDF
+                </button>
+                <i class="fa-solid fa-chevron-right text-3xs text-slate-300 shrink-0"></i>
+                <button onclick="scrollToAndExpand('stage-3', 'stage-3-body')" class="stage-nav-btn px-2.5 py-1 rounded-lg bg-white border border-slate-200 text-slate-800 hover:border-rose-400 hover:text-rose-600 transition-colors shrink-0">
+                    <span class="font-mono text-2xs font-bold text-rose-600 mr-1">03</span>คะแนนโมเดล & Softmax
+                </button>
+                <i class="fa-solid fa-chevron-right text-3xs text-slate-300 shrink-0"></i>
+                <button onclick="scrollToAndExpand('stage-4', 'stage-4-body')" class="stage-nav-btn px-2.5 py-1 rounded-lg bg-white border border-slate-200 text-slate-800 hover:border-rose-400 hover:text-rose-600 transition-colors shrink-0">
+                    <span class="font-mono text-2xs font-bold text-rose-600 mr-1">04</span>ฟันธง Argmax
+                </button>
+                <i class="fa-solid fa-chevron-right text-3xs text-slate-300 shrink-0"></i>
+                <button onclick="scrollToAndExpand('stage-5-6', 'stage-5-6-body')" class="stage-nav-btn px-2.5 py-1 rounded-lg bg-rose-50 border border-rose-200 text-rose-700 font-bold hover:bg-rose-100 transition-colors shrink-0">
+                    <span class="font-mono text-2xs font-bold text-rose-700 mr-1">05–06</span>ทฤษฎีเซต & Skill Gap
+                </button>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Main Content Area -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 py-6 w-full flex-1 space-y-6">
+
+        <!-- ================================================================= -->
+        <!-- CONTROL PANEL: INPUT & 8 QUICK PRESETS -->
+        <!-- ================================================================= -->
+        <section id="stage-control" class="stage-card bg-white p-5 sm:p-6 rounded-2xl border border-slate-200/90 shadow-sm space-y-4">
+            <div class="flex flex-col md:flex-row md:items-center justify-between gap-3">
+                <div class="space-y-1">
+                    <div class="flex items-center gap-2">
+                        <span class="px-2 py-0.5 rounded-md bg-slate-900 text-white text-2xs font-mono font-bold">STAGE 00</span>
+                        <h2 class="text-sm sm:text-base font-bold text-slate-900">
+                            กำหนดชุดทักษะทดสอบ (Skill Query Input)
+                        </h2>
+                    </div>
+                    <p class="text-xs text-slate-500">
+                        พิมพ์ทักษะที่ต้องการตรวจสอบ คั่นด้วยเครื่องหมายจุลภาค (,) หรือคลิก Preset 8 กลุ่มอาชีพ มคอ.2 ด้านล่าง
+                    </p>
+                </div>
+                <div class="flex items-center gap-2 shrink-0">
+                    <span class="text-2xs font-bold text-slate-400 uppercase tracking-wider">ฐานข้อมูลทดสอบ:</span>
+                    <span class="text-xs font-bold text-slate-700 bg-slate-100 border border-slate-200 px-3 py-1 rounded-full font-mono flex items-center gap-1.5">
+                        <span class="w-2 h-2 rounded-full bg-emerald-500 inline-block animate-pulse"></span>
+                        115 งานจริง (G1–G8)
+                    </span>
+                </div>
+            </div>
+
+            <!-- Input Bar -->
+            <div class="flex flex-col sm:flex-row gap-2">
+                <div class="relative flex-1">
+                    <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
+                        <i class="fa-solid fa-code font-mono text-sm"></i>
+                    </div>
+                    <input type="text" id="inputSkills"
+                        value="python, sql, docker, js"
+                        placeholder="เช่น python, sql, docker, js, figma, uat..."
+                        class="w-full text-sm font-semibold pl-10 pr-4 py-3 rounded-xl border-2 border-slate-200 bg-slate-50/50 text-slate-900 focus:outline-hidden focus:border-rose-500 focus:bg-white focus:ring-4 focus:ring-rose-50 font-mono transition-all"
+                        onkeydown="if(event.key === 'Enter') runInspection();">
+                </div>
+                <button onclick="runInspection()" id="btnRun"
+                    class="px-6 py-3 bg-gradient-to-r from-rose-600 to-rose-700 hover:from-rose-700 hover:to-rose-800 active:scale-98 text-white text-sm font-bold rounded-xl shadow-md shadow-rose-600/20 transition-all flex items-center justify-center gap-2 shrink-0">
+                    <i class="fa-solid fa-play text-xs"></i>
+                    <span>ประมวลผลทันที</span>
+                </button>
+            </div>
+
+            <!-- 8 Quick Presets -->
+            <div class="pt-2 border-t border-slate-100 space-y-2">
+                <div class="flex items-center justify-between">
+                    <span class="text-2xs font-bold text-slate-400 uppercase tracking-wider">
+                        กดจำลองทักษะตาม 8 กลุ่มอาชีพ มคอ.2 (ตารางที่ 3.1):
+                    </span>
+                    <span class="text-3xs text-slate-400">คลิกปุ่มเพื่อโหลดชุดทักษะทันที</span>
+                </div>
+                <div class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-1.5">
+                    <button onclick="setPreset('python, sql, git, docker, rest api', 'G1')" class="preset-btn text-left p-2 rounded-xl border border-slate-200 bg-slate-50/70 hover:bg-rose-50 hover:border-rose-300 hover:text-rose-700 transition-all group">
+                        <span class="block font-mono text-3xs font-bold text-slate-400 group-hover:text-rose-500">G1</span>
+                        <span class="text-xs font-bold text-slate-800 group-hover:text-rose-700 block truncate">💻 Software Dev</span>
+                    </button>
+                    <button onclick="setPreset('oracle, sql, postgresql, database, ssis', 'G2')" class="preset-btn text-left p-2 rounded-xl border border-slate-200 bg-slate-50/70 hover:bg-rose-50 hover:border-rose-300 hover:text-rose-700 transition-all group">
+                        <span class="block font-mono text-3xs font-bold text-slate-400 group-hover:text-rose-500">G2</span>
+                        <span class="text-xs font-bold text-slate-800 group-hover:text-rose-700 block truncate">🗄️ Database Admin</span>
+                    </button>
+                    <button onclick="setPreset('api, sql, uat, system analysis, figma', 'G3')" class="preset-btn text-left p-2 rounded-xl border border-slate-200 bg-slate-50/70 hover:bg-rose-50 hover:border-rose-300 hover:text-rose-700 transition-all group">
+                        <span class="block font-mono text-3xs font-bold text-slate-400 group-hover:text-rose-500">G3</span>
+                        <span class="text-xs font-bold text-slate-800 group-hover:text-rose-700 block truncate">📐 System Analyst</span>
+                    </button>
+                    <button onclick="setPreset('windows, vpn, hardware, troubleshooting, m365', 'G4')" class="preset-btn text-left p-2 rounded-xl border border-slate-200 bg-slate-50/70 hover:bg-rose-50 hover:border-rose-300 hover:text-rose-700 transition-all group">
+                        <span class="block font-mono text-3xs font-bold text-slate-400 group-hover:text-rose-500">G4</span>
+                        <span class="text-xs font-bold text-slate-800 group-hover:text-rose-700 block truncate">🛠️ Tech Officer</span>
+                    </button>
+                    <button onclick="setPreset('linux, windows server, vmware, active directory, azure', 'G5')" class="preset-btn text-left p-2 rounded-xl border border-slate-200 bg-slate-50/70 hover:bg-rose-50 hover:border-rose-300 hover:text-rose-700 transition-all group">
+                        <span class="block font-mono text-3xs font-bold text-slate-400 group-hover:text-rose-500">G5</span>
+                        <span class="text-xs font-bold text-slate-800 group-hover:text-rose-700 block truncate">🖥️ Sys Admin</span>
+                    </button>
+                    <button onclick="setPreset('html, css, javascript, react, next.js', 'G6')" class="preset-btn text-left p-2 rounded-xl border border-slate-200 bg-slate-50/70 hover:bg-rose-50 hover:border-rose-300 hover:text-rose-700 transition-all group">
+                        <span class="block font-mono text-3xs font-bold text-slate-400 group-hover:text-rose-500">G6</span>
+                        <span class="text-xs font-bold text-slate-800 group-hover:text-rose-700 block truncate">🌐 Web Developer</span>
+                    </button>
+                    <button onclick="setPreset('excel, project management, agile, scrum, jira', 'G7')" class="preset-btn text-left p-2 rounded-xl border border-slate-200 bg-slate-50/70 hover:bg-rose-50 hover:border-rose-300 hover:text-rose-700 transition-all group">
+                        <span class="block font-mono text-3xs font-bold text-slate-400 group-hover:text-rose-500">G7</span>
+                        <span class="text-xs font-bold text-slate-800 group-hover:text-rose-700 block truncate">📋 IT Project Asst</span>
+                    </button>
+                    <button onclick="setPreset('tiktok, canva, video editing, premiere pro, facebook', 'G8')" class="preset-btn text-left p-2 rounded-xl border border-slate-200 bg-slate-50/70 hover:bg-rose-50 hover:border-rose-300 hover:text-rose-700 transition-all group">
+                        <span class="block font-mono text-3xs font-bold text-slate-400 group-hover:text-rose-500">G8</span>
+                        <span class="text-xs font-bold text-slate-800 group-hover:text-rose-700 block truncate">🎨 Content Creator</span>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Loading State -->
+        <div id="loadingState" class="hidden py-16 text-center space-y-4">
+            <div class="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-rose-50 text-rose-600 border border-rose-200 shadow-sm animate-bounce">
+                <i class="fa-solid fa-microchip text-2xl"></i>
+            </div>
+            <div>
+                <h3 class="text-sm font-bold text-slate-800">กำลังประมวลผล Scikit-learn Pipeline สดๆ...</h3>
+                <p class="text-xs text-slate-500">คำนวณ TF-IDF Transformation, Logits, Softmax Probability, และ Set Difference</p>
+            </div>
+        </div>
+
+        <!-- 6 PIPELINE STAGES CONTAINER -->
+        <div id="inspectorContainer" class="space-y-6">
+
+            <!-- ================================================================= -->
+            <!-- STAGE 1: INPUT TOKENIZATION & CANONICAL NORMALIZATION -->
+            <!-- ================================================================= -->
+            <div id="stage-1" class="stage-card bg-white rounded-2xl border border-slate-200/90 shadow-sm overflow-hidden">
+                <!-- Academic Figure Caption for Thesis -->
+                <div class="thesis-figure-caption p-3 bg-slate-100 border-b border-slate-300 font-bold text-xs text-slate-800 font-mono">
+                    รูปที่ 3.X: ขั้นตอนการจัดระเบียบคำย่อและคำพ้องทางทักษะไอที (Canonical Normalization)
+                </div>
+
+                <!-- Collapsible Header -->
+                <div onclick="toggleStageAccordion('stage-1', 'stage-1-body')"
+                    class="bg-gradient-to-r from-slate-900 to-slate-800 px-5 py-3.5 text-white flex items-center justify-between cursor-pointer select-none group">
+                    <div class="flex items-center gap-3">
+                        <span class="px-2.5 py-1 rounded-lg bg-rose-600 text-white text-xs font-mono font-black shadow-xs">STAGE 01</span>
+                        <div>
+                            <h3 class="text-sm sm:text-base font-bold tracking-tight group-hover:text-rose-300 transition-colors">
+                                การจัดระเบียบคำย่อและคำพ้องทักษะ (Canonical Normalization)
+                            </h3>
+                            <p class="text-2xs text-slate-300">แก้ปัญหา Synonymy Problem โดยแปลงคำศัพท์ทางเลือกให้เข้าสู่รูปมาตรฐานเดียว</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <span class="text-2xs font-mono font-semibold px-2.5 py-1 rounded-full bg-slate-800 text-slate-300 border border-slate-700 thesis-hide">
+                            O(1) Hash Map
+                        </span>
+                        <i class="fa-solid fa-chevron-down text-xs text-slate-400 group-hover:text-white rotate-chevron thesis-hide ml-1"></i>
+                    </div>
+                </div>
+
+                <!-- Stage 1 Body -->
+                <div id="stage-1-body" class="p-5 sm:p-6 space-y-5">
+                    
+                    <!-- 💡 Focal Cheat Sheet: 1-Minute Concept for Defense -->
+                    <div class="bg-amber-50/70 border-l-4 border-amber-500 rounded-r-xl p-4 text-xs space-y-2">
+                        <div class="flex items-center justify-between">
+                            <span class="font-bold text-amber-950 flex items-center gap-1.5">
+                                <i class="fa-solid fa-lightbulb text-amber-600"></i> โพยจุดเน้นสำคัญสำหรับตอบอาจารย์ (Stage 1 Cheat Sheet):
+                            </span>
+                            <span class="text-3xs font-mono font-bold uppercase text-amber-700 bg-amber-100 px-2 py-0.5 rounded">Core Logic</span>
+                        </div>
+                        <ul class="list-disc list-inside space-y-1 text-slate-700 text-2xs leading-relaxed">
+                            <li><strong>ทำไมต้องมีขั้นตอนนี้:</strong> ทักษะไอทีมีหลายตัวสะกด เช่น <code class="font-mono text-slate-900">js</code> กับ <code class="font-mono text-slate-900">javascript</code> หรือ <code class="font-mono text-slate-900">k8s</code> กับ <code class="font-mono text-slate-900">kubernetes</code></li>
+                            <li><strong>ถ้าไม่ทำจะเกิดอะไรขึ้น:</strong> โมเดล TF-IDF ในขั้นตอนที่ 2 จะหาคำไม่เจอ (แต้มเป็น 0 ทันที) ทำให้ผลทำนายเพี้ยน</li>
+                            <li><strong>วิธีแก้ปัญหา:</strong> ใช้พจนานุกรมแฮชแมป (<code class="font-mono text-slate-900">src/skills_taxonomy.py</code>) แปลงคำพ้องเข้าสู่ Canonical Form ในเวลาความเร็วระดับ <code class="font-mono text-slate-900">O(1)</code></li>
+                        </ul>
+                    </div>
+
+                    <!-- Flow Visualization Grid -->
+                    <div class="space-y-2">
+                        <span class="text-2xs font-bold text-slate-400 uppercase tracking-wider block">
+                            ตรรกะการแปลงคำศัพท์รายทักษะ (Token Mapping Flow):
+                        </span>
+                        <div id="mappingCardsContainer" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+                            <!-- Dynamic Render Mapping Cards -->
+                        </div>
+                    </div>
+
+                    <!-- Cleaned String Banner -->
+                    <div class="bg-slate-50 border-2 border-dashed border-slate-200 rounded-xl p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                        <div class="space-y-0.5">
+                            <span class="text-2xs font-bold uppercase tracking-wider text-slate-500 block">
+                                ข้อความมาตรฐานที่รวมเป็นสตริงเดียว (Normalized Query String for Vectorizer):
+                            </span>
+                            <span class="text-3xs text-slate-400">นำไปป้อนเข้าสู่โมเดล TF-IDF ในขั้นตอนที่ 2</span>
+                        </div>
+                        <div class="bg-white border border-slate-200 px-4 py-2 rounded-xl shadow-2xs">
+                            <code id="labelFinalQuery" class="font-mono text-sm font-bold text-rose-600">"-"</code>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ================================================================= -->
+            <!-- STAGE 2: TF-IDF SPARSE VECTOR REPRESENTATION -->
+            <!-- ================================================================= -->
+            <div id="stage-2" class="stage-card bg-white rounded-2xl border border-slate-200/90 shadow-sm overflow-hidden">
+                <!-- Academic Figure Caption for Thesis -->
+                <div class="thesis-figure-caption p-3 bg-slate-100 border-b border-slate-300 font-bold text-xs text-slate-800 font-mono">
+                    รูปที่ 3.X: การแปลงข้อความทักษะเป็นเวกเตอร์คุณลักษณะเบาบาง (TF-IDF Sparse Vector Representation)
+                </div>
+
+                <!-- Collapsible Header -->
+                <div onclick="toggleStageAccordion('stage-2', 'stage-2-body')"
+                    class="bg-gradient-to-r from-slate-900 to-slate-800 px-5 py-3.5 text-white flex items-center justify-between cursor-pointer select-none group">
+                    <div class="flex items-center gap-3">
+                        <span class="px-2.5 py-1 rounded-lg bg-blue-600 text-white text-xs font-mono font-black shadow-xs">STAGE 02</span>
+                        <div>
+                            <h3 class="text-sm sm:text-base font-bold tracking-tight group-hover:text-blue-300 transition-colors">
+                                การแปลงข้อความเป็นเวกเตอร์ตัวเลข (TF-IDF Feature Space)
+                            </h3>
+                            <p class="text-2xs text-slate-300">แปลงข้อความเป็นเวกเตอร์ตัวเลข x ในมิติ R^458 เพื่อป้อนเข้าสู่โมเดลคณิตศาสตร์</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <span class="text-2xs font-mono font-semibold px-2.5 py-1 rounded-full bg-slate-800 text-slate-300 border border-slate-700 thesis-hide">
+                            Dim: 458
+                        </span>
+                        <i class="fa-solid fa-chevron-down text-xs text-slate-400 group-hover:text-white rotate-chevron thesis-hide ml-1"></i>
+                    </div>
+                </div>
+
+                <!-- Stage 2 Body -->
+                <div id="stage-2-body" class="p-5 sm:p-6 space-y-5">
+                    
+                    <!-- 💡 Focal Cheat Sheet: TF-IDF Concept (Mapped from Infographic) -->
+                    <div class="bg-blue-50/70 border-l-4 border-blue-500 rounded-r-xl p-4 text-xs space-y-2">
+                        <div class="flex items-center justify-between">
+                            <span class="font-bold text-blue-950 flex items-center gap-1.5">
+                                <i class="fa-solid fa-lightbulb text-blue-600"></i> โพยจุดเน้นสำคัญสำหรับตอบอาจารย์ (Stage 2 Cheat Sheet):
+                            </span>
+                            <span class="text-3xs font-mono font-bold uppercase text-blue-700 bg-blue-100 px-2 py-0.5 rounded">Infographic Logic</span>
+                        </div>
+                        <ul class="list-disc list-inside space-y-1 text-slate-700 text-2xs leading-relaxed">
+                            <li><strong>TF (Term Frequency):</strong> ยิ่งคำนั้นโผล่ในข้อความบ่อย แต้มยิ่งสูง</li>
+                            <li><strong>IDF (Inverse Document Frequency):</strong> ตัวคอยลดทอนคำเกร่อ! คำที่โผล่ในทุกงาน (เช่น English, Communication) ค่า IDF จะดิ่งลงเกือบ 0 ถูกตัดทิ้ง</li>
+                            <li><strong>คำเฉพาะทาง (Docker, Figma, Oracle):</strong> โผล่เฉพาะบางสายอาชีพ จึงได้ค่า IDF สูงมาก และเป็นตัวคูณชี้ขาดสายอาชีพ!</li>
+                            <li><strong>ทำไมต้อง Unigram (1, 1):</strong> ทักษะไอทีเป็นคำเดี่ยวที่มีความหมายสมบูรณ์ในตัวเอง การใช้ Unigram ทำให้ระบบตรวจจับทักษะซ้อนได้แม่นยำ</li>
+                        </ul>
+                    </div>
+
+                    <!-- Metric Stat Badges -->
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                        <div class="p-4 rounded-xl border border-slate-200 bg-slate-50/60">
+                            <span class="text-2xs font-bold text-slate-400 uppercase tracking-wider block">มิติคำศัพท์ทั้งหมด (V Dimensions):</span>
+                            <div class="text-2xl font-black font-mono text-slate-900 mt-1" id="metricTotalDim">458</div>
+                            <span class="text-3xs text-slate-500">จำนวนคำศัพท์ทักษะเฉพาะในโมเดล</span>
+                        </div>
+                        <div class="p-4 rounded-xl border border-blue-200 bg-blue-50/40">
+                            <span class="text-2xs font-bold text-blue-700 uppercase tracking-wider block">มิติที่มีตัวเลข (Active Features):</span>
+                            <div class="text-2xl font-black font-mono text-blue-700 mt-1" id="metricActiveFeatures">0</div>
+                            <span class="text-3xs text-blue-600">คำที่ตรงกับฐานคำศัพท์ของโมเดล</span>
+                        </div>
+                        <div class="p-4 rounded-xl border border-slate-200 bg-slate-50/60">
+                            <span class="text-2xs font-bold text-slate-400 uppercase tracking-wider block">ความเบาบาง (Sparsity Ratio):</span>
+                            <div class="text-2xl font-black font-mono text-slate-700 mt-1" id="metricSparsity">99.1%</div>
+                            <span class="text-3xs text-slate-500">สัดส่วนช่องที่เป็นศูนย์ในเวกเตอร์</span>
+                        </div>
+                    </div>
+
+                    <!-- Mathematical Vector Preview (Bracket Visualizer) -->
+                    <div class="space-y-1.5">
+                        <div class="flex items-center justify-between">
+                            <span class="text-2xs font-bold text-slate-400 uppercase tracking-wider">
+                                หน้าตาเวกเตอร์ตัวเลขจริงในหน่วยความจำ (Raw Vector Mathematical Representation):
+                            </span>
+                            <span class="text-3xs font-mono text-slate-400">L2 Normalized: ||x|| = 1.0</span>
+                        </div>
+                        <div class="bg-slate-900 text-slate-100 p-4 rounded-xl font-mono text-xs overflow-x-auto shadow-inner leading-relaxed">
+                            <div class="text-slate-400 text-2xs mb-1">// แถวตัวเลขเวกเตอร์ 458 มิติ (ช่องที่เป็น 0 จะไม่ถูกนำมาคิดแต้ม):</div>
+                            <div id="vectorMathPreview" class="text-emerald-400 font-bold whitespace-nowrap">
+                                <!-- Dynamic Vector Array Preview -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Active Features Table / Cards -->
+                    <div class="space-y-2">
+                        <span class="text-2xs font-bold text-slate-400 uppercase tracking-wider block">
+                            รายการคำศัพท์ทักษะที่ได้ค่าน้ำหนักจริง (Non-Zero Active Features):
+                        </span>
+                        <div id="activeFeaturesCards" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+                            <!-- Dynamic Active Feature Cards -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ================================================================= -->
+            <!-- STAGE 3: MULTI-CLASS LOGISTIC REGRESSION & SOFTMAX PROBABILITY -->
+            <!-- ================================================================= -->
+            <div id="stage-3" class="stage-card bg-white rounded-2xl border border-slate-200/90 shadow-sm overflow-hidden">
+                <!-- Academic Figure Caption for Thesis -->
+                <div class="thesis-figure-caption p-3 bg-slate-100 border-b border-slate-300 font-bold text-xs text-slate-800 font-mono">
+                    รูปที่ 3.X: การกระจายตัวของความน่าจะเป็นตาม 8 กลุ่มอาชีพ มคอ.2 จากฟังก์ชัน Softmax
+                </div>
+
+                <!-- Collapsible Header -->
+                <div onclick="toggleStageAccordion('stage-3', 'stage-3-body')"
+                    class="bg-gradient-to-r from-slate-900 to-slate-800 px-5 py-3.5 text-white flex items-center justify-between cursor-pointer select-none group">
+                    <div class="flex items-center gap-3">
+                        <span class="px-2.5 py-1 rounded-lg bg-purple-600 text-white text-xs font-mono font-black shadow-xs">STAGE 03</span>
+                        <div>
+                            <h3 class="text-sm sm:text-base font-bold tracking-tight group-hover:text-purple-300 transition-colors">
+                                การคำนวณคะแนนและ Softmax Probability (8 กลุ่มอาชีพ มคอ.2)
+                            </h3>
+                            <p class="text-2xs text-slate-300">แปลงคะแนนดิบ Logit z_k ของแต่ละกลุ่มอาชีพให้เป็นความน่าจะเป็นรวม 100%</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <span class="text-2xs font-mono font-semibold px-2.5 py-1 rounded-full bg-slate-800 text-slate-300 border border-slate-700 thesis-hide">
+                            Sum(P_k) = 100%
+                        </span>
+                        <i class="fa-solid fa-chevron-down text-xs text-slate-400 group-hover:text-white rotate-chevron thesis-hide ml-1"></i>
+                    </div>
+                </div>
+
+                <!-- Stage 3 Body -->
+                <div id="stage-3-body" class="p-5 sm:p-6 space-y-5">
+                    
+                    <!-- 💡 Focal Cheat Sheet: Softmax Concept -->
+                    <div class="bg-purple-50/70 border-l-4 border-purple-500 rounded-r-xl p-4 text-xs space-y-2">
+                        <div class="flex items-center justify-between">
+                            <span class="font-bold text-purple-950 flex items-center gap-1.5">
+                                <i class="fa-solid fa-lightbulb text-purple-600"></i> โพยจุดเน้นสำคัญสำหรับตอบอาจารย์ (Stage 3 Cheat Sheet):
+                            </span>
+                            <span class="text-3xs font-mono font-bold uppercase text-purple-700 bg-purple-100 px-2 py-0.5 rounded">Mathematics</span>
+                        </div>
+                        <ul class="list-disc list-inside space-y-1 text-slate-700 text-2xs leading-relaxed">
+                            <li><strong>คะแนนดิบ Logit (z_k):</strong> เกิดจากผลคูณเชิงเส้น w * x + b มีทั้งค่าบวกและติดลบได้ตามน้ำหนัก</li>
+                            <li><strong>ทำไมต้องใช้ Softmax:</strong> เอาคะแนนติดลบมาบวกกันตรงๆ ไม่ได้ Softmax จึงนำคะแนนดิบไปยกกำลังด้วยค่าคงที่ e ทำให้ค่าเป็นบวกทั้งหมดเสมอ แล้วหารด้วยผลรวมเพื่อให้ความน่าจะเป็นทั้ง 8 กลุ่มรวมกันได้ 100% พอดี</li>
+                            <li><strong>ค่า C=0.5:</strong> คือ L2 Regularization ช่วยคุมวินัยโมเดล ไม่ให้น้ำหนักคำใดคำหนึ่งสูงเว่อร์ ป้องกันการท่องจำข้อมูลจน Overfitting</li>
+                        </ul>
+                    </div>
+
+                    <!-- 8 Roles Visual Comparison Cards -->
+                    <div class="space-y-2">
+                        <span class="text-2xs font-bold text-slate-400 uppercase tracking-wider block">
+                            ผลการแจกแจงความน่าจะเป็นของ 8 กลุ่มอาชีพ (เรียงลำดับจากสูงไปต่ำ):
+                        </span>
+                        <div id="rolesDistributionList" class="space-y-2">
+                            <!-- Dynamic Render 8 Class Rows -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ================================================================= -->
+            <!-- STAGE 4: ARGMAX VERDICT & TRACK SELECTION -->
+            <!-- ================================================================= -->
+            <div id="stage-4" class="stage-card bg-white rounded-2xl border border-slate-200/90 shadow-sm overflow-hidden">
+                <!-- Academic Figure Caption for Thesis -->
+                <div class="thesis-figure-caption p-3 bg-slate-100 border-b border-slate-300 font-bold text-xs text-slate-800 font-mono">
+                    รูปที่ 3.X: ผลการตัดสินใจเลือกกลุ่มสายอาชีพตามหลักสูตร มคอ.2 ด้วยกฎ Argmax
+                </div>
+
+                <!-- Collapsible Header -->
+                <div onclick="toggleStageAccordion('stage-4', 'stage-4-body')"
+                    class="bg-gradient-to-r from-slate-900 to-slate-800 px-5 py-3.5 text-white flex items-center justify-between cursor-pointer select-none group">
+                    <div class="flex items-center gap-3">
+                        <span class="px-2.5 py-1 rounded-lg bg-amber-500 text-slate-950 text-xs font-mono font-black shadow-xs">STAGE 04</span>
+                        <div>
+                            <h3 class="text-sm sm:text-base font-bold tracking-tight group-hover:text-amber-300 transition-colors">
+                                การฟันธงเลือกสายอาชีพตามหลักสูตร (Argmax Decision Rule)
+                            </h3>
+                            <p class="text-2xs text-slate-300">กฎการตัดสินใจเลือกสายอาชีพที่มีความน่าจะเป็นสูงสุด: k* = argmax P(y=k | x)</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <span class="text-2xs font-mono font-semibold px-2.5 py-1 rounded-full bg-slate-800 text-slate-300 border border-slate-700 thesis-hide">
+                            Optimal Choice
+                        </span>
+                        <i class="fa-solid fa-chevron-down text-xs text-slate-400 group-hover:text-white rotate-chevron thesis-hide ml-1"></i>
+                    </div>
+                </div>
+
+                <!-- Stage 4 Body -->
+                <div id="stage-4-body" class="p-5 sm:p-6 space-y-4">
+                    
+                    <!-- 💡 Focal Cheat Sheet: Argmax Decision -->
+                    <div class="bg-amber-50/70 border-l-4 border-amber-500 rounded-r-xl p-4 text-xs space-y-2">
+                        <div class="flex items-center justify-between">
+                            <span class="font-bold text-amber-950 flex items-center gap-1.5">
+                                <i class="fa-solid fa-lightbulb text-amber-600"></i> โพยจุดเน้นสำคัญสำหรับตอบอาจารย์ (Stage 4 Cheat Sheet):
+                            </span>
+                            <span class="text-3xs font-mono font-bold uppercase text-amber-700 bg-amber-100 px-2 py-0.5 rounded">Decision Rule</span>
+                        </div>
+                        <ul class="list-disc list-inside space-y-1 text-slate-700 text-2xs leading-relaxed">
+                            <li><strong>Argmax ทำหน้าที่อะไร:</strong> ชี้ตัวเลือกที่มีค่าความน่าจะเป็นสูงสุดในบรรดา 8 กลุ่ม เพื่อเป็น "เข็มทิศ" นำทางเข้าสู่ Stage 2</li>
+                            <li><strong>บทบาทของ Stage 1 จบลงตรงนี้:</strong> โมเดลคายผลลัพธ์มาแค่ตัวย่อกลุ่มอาชีพ (เช่น G1) มันไม่รู้ว่ามีตำแหน่งงานของบริษัทอะไรบ้าง</li>
+                        </ul>
+                    </div>
+
+                    <div class="bg-gradient-to-br from-amber-50/60 to-orange-50/40 border-2 border-amber-200 rounded-2xl p-5 flex flex-col md:flex-row items-center justify-between gap-5">
+                        <div class="flex items-center gap-4">
+                            <div class="w-16 h-16 rounded-2xl bg-amber-500 text-white font-mono font-black text-2xl flex items-center justify-center shadow-md shadow-amber-500/20 shrink-0" id="badgeTopRoleId">
+                                G1
+                            </div>
+                            <div class="space-y-1">
+                                <div class="flex items-center gap-2">
+                                    <span class="text-2xs font-bold px-2 py-0.5 rounded bg-amber-200 text-amber-900 font-mono uppercase">
+                                        Predicted Target Role
+                                    </span>
+                                    <span class="text-xs font-mono text-slate-400">มคอ.2 สาขา IT</span>
+                                </div>
+                                <h4 id="labelTopRoleTitle" class="text-lg sm:text-xl font-black text-slate-900">
+                                    -
+                                </h4>
+                                <p id="labelTopRoleEn" class="text-xs font-semibold text-slate-600">
+                                    -
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- Confidence & Margin Metrics -->
+                        <div class="flex items-center gap-4 bg-white/90 border border-amber-200/80 px-5 py-3 rounded-xl shadow-2xs shrink-0">
+                            <div>
+                                <span class="text-2xs font-bold text-slate-400 uppercase tracking-wider block">ระดับความมั่นใจ (Confidence):</span>
+                                <span id="metricTopConfidence" class="text-2xl font-black text-amber-600 font-mono">0.0%</span>
+                            </div>
+                            <div class="border-l border-slate-200 pl-4">
+                                <span class="text-2xs font-bold text-slate-400 uppercase tracking-wider block">ทิ้งห่างอันดับ 2 (Margin):</span>
+                                <span id="metricMargin" class="text-base font-bold text-slate-700 font-mono">+0.0%</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ================================================================= -->
+            <!-- STAGE 5 & 6: TARGET JOB & SET THEORY ARITHMETIC -->
+            <!-- ================================================================= -->
+            <div id="stage-5-6" class="stage-card bg-white rounded-2xl border border-slate-200/90 shadow-sm overflow-hidden">
+                <!-- Academic Figure Caption for Thesis -->
+                <div class="thesis-figure-caption p-3 bg-slate-100 border-b border-slate-300 font-bold text-xs text-slate-800 font-mono">
+                    รูปที่ 3.X: การจับคู่ตำแหน่งงานจริงและการคำนวณผลต่างเชิงเซต (Set Difference) เพื่อชี้เป้า Skill Gap
+                </div>
+
+                <!-- Collapsible Header -->
+                <div onclick="toggleStageAccordion('stage-5-6', 'stage-5-6-body')"
+                    class="bg-gradient-to-r from-slate-900 to-slate-800 px-5 py-3.5 text-white flex items-center justify-between cursor-pointer select-none group">
+                    <div class="flex items-center gap-3">
+                        <span class="px-2.5 py-1 rounded-lg bg-emerald-600 text-white text-xs font-mono font-black shadow-xs">STAGE 05–06</span>
+                        <div>
+                            <h3 class="text-sm sm:text-base font-bold tracking-tight group-hover:text-emerald-300 transition-colors">
+                                การจับคู่ตำแหน่งงานจริง & การคำนวณทฤษฎีเซต (Job Matching & Skill Gap)
+                            </h3>
+                            <p class="text-2xs text-slate-300">ดึงประกาศงานจริงในสายอาชีพที่ทำนายได้ และเปรียบเทียบหาจุดร่วม (Match) และผลต่าง (Gap)</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <span class="text-2xs font-mono font-semibold px-2.5 py-1 rounded-full bg-slate-800 text-slate-300 border border-slate-700 thesis-hide">
+                            Set Difference
+                        </span>
+                        <i class="fa-solid fa-chevron-down text-xs text-slate-400 group-hover:text-white rotate-chevron thesis-hide ml-1"></i>
+                    </div>
+                </div>
+
+                <!-- Stage 5-6 Body -->
+                <div id="stage-5-6-body" class="p-5 sm:p-6 space-y-6">
+                    
+                    <!-- 💡 Focal Cheat Sheet: Set Theory Logic (Answers Committee Question) -->
+                    <div class="bg-emerald-50/70 border-l-4 border-emerald-500 rounded-r-xl p-4 text-xs space-y-2">
+                        <div class="flex items-center justify-between">
+                            <span class="font-bold text-emerald-950 flex items-center gap-1.5">
+                                <i class="fa-solid fa-shield-halved text-emerald-600"></i> โพยจุดตายสำคัญที่สุด: ตอบคำถามอาจารย์เรื่อง Set Theory:
+                            </span>
+                            <span class="text-3xs font-mono font-bold uppercase text-emerald-700 bg-emerald-100 px-2 py-0.5 rounded">Vital Defense Answer</span>
+                        </div>
+                        <ul class="list-disc list-inside space-y-1 text-slate-700 text-2xs leading-relaxed">
+                            <li><strong>อาจารย์ถาม:</strong> <em>"ทักษะที่มีกับขาด ไม่ได้ออกมาจากโมเดลเหรอ ทำไมต้องใช้ทฤษฎีเซต?"</em></li>
+                            <li><strong>คำตอบฟันธง:</strong> โมเดล Machine Learning มีหน้าที่แค่จำแนกประเภท (Classifier) ให้ผลลัพธ์เป็นแค่ตัวเลขความน่าจะเป็น 8 ช่อง ตัวโมเดลไม่รู้ประกาศงานจริงของบริษัท</li>
+                            <li><strong>ทักษะที่ขาดมาจากไหน:</strong> มาจากการใช้ <strong>Set Difference (B \ A)</strong> ในขั้นตอนนี้เท่านั้น โดยเอาทักษะที่บริษัทรับจริง (เซต B) ลบด้วยทักษะที่ผู้ใช้มี (เซต A) อย่างโปร่งใส ตรวจสอบได้ 100% ปราศจากการนั่งเดาค่าน้ำหนัก!</li>
+                        </ul>
+                    </div>
+
+                    <!-- Target Job Switcher Box -->
+                    <div class="bg-slate-50 border border-slate-200 rounded-xl p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                        <div class="space-y-0.5">
+                            <span class="text-xs font-bold text-slate-800 block">
+                                ตำแหน่งงานจริงในตลาดที่นำมาเทียบเซต (Target Job from 115 Thai Jobs Dataset):
+                            </span>
+                            <span class="text-3xs text-slate-500">
+                                คุณสามารถเลือกดูตำแหน่งงานอื่นในสายอาชีพนี้เพื่อดูผลการคิดเลขเซตสดๆ
+                            </span>
+                        </div>
+                        <select id="selectTargetJob" onchange="changeTargetJob(this.value)"
+                            class="text-xs font-semibold bg-white border border-slate-300 rounded-xl px-3.5 py-2 text-slate-800 focus:outline-hidden focus:border-rose-500 shadow-2xs font-mono">
+                            <!-- Dynamic Job Options -->
+                        </select>
+                    </div>
+
+                    <!-- Selected Job Card Info -->
+                    <div class="border border-slate-200 rounded-xl p-4 bg-white shadow-2xs flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                        <div class="space-y-1">
+                            <div class="flex items-center gap-2">
+                                <span id="labelJobId" class="text-2xs font-bold px-2.5 py-0.5 rounded-md bg-slate-900 text-white font-mono">JOB-001</span>
+                                <h4 id="labelJobTitle" class="text-sm sm:text-base font-bold text-slate-900">-</h4>
+                            </div>
+                            <div class="flex flex-wrap items-center gap-3 text-2xs text-slate-500">
+                                <span><i class="fa-solid fa-building text-slate-400 mr-1"></i><strong id="labelJobCompany" class="text-slate-700">-</strong></span>
+                                <span><i class="fa-solid fa-location-dot text-slate-400 mr-1"></i><strong id="labelJobProvince" class="text-slate-700">-</strong></span>
+                                <span><i class="fa-solid fa-money-bill-wave text-slate-400 mr-1"></i><strong id="labelJobSalary" class="text-slate-700">-</strong></span>
+                            </div>
+                        </div>
+                        <div class="text-right shrink-0">
+                            <span class="text-3xs font-bold uppercase tracking-wider text-slate-400 block">ทักษะที่งานต้องการ:</span>
+                            <span id="labelJobSkillsCount" class="text-lg font-black font-mono text-slate-800">0 ทักษะ</span>
+                        </div>
+                    </div>
+
+                    <!-- Visual Set Theory 3-Column Grid -->
+                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
+                        
+                        <!-- Col 1: Set A (User Skills) -->
+                        <div class="border border-slate-200 rounded-xl p-4 bg-slate-50/50 space-y-3">
+                            <div class="flex items-center justify-between pb-2 border-b border-slate-200">
+                                <span class="text-xs font-bold text-slate-800 flex items-center gap-1.5">
+                                    <i class="fa-solid fa-user-check text-indigo-600"></i> เซตทักษะผู้ใช้ (S_user)
+                                </span>
+                                <span id="badgeUserCount" class="text-2xs font-bold font-mono px-2 py-0.5 rounded bg-indigo-50 text-indigo-700 border border-indigo-200">0 คำ</span>
+                            </div>
+                            <div id="pillsUserSet" class="flex flex-wrap gap-1.5 font-mono text-xs min-h-[60px]">
+                                <!-- User pills -->
+                            </div>
+                        </div>
+
+                        <!-- Col 2: Set B (Job Skills from DB) -->
+                        <div class="border border-slate-200 rounded-xl p-4 bg-slate-50/50 space-y-3">
+                            <div class="flex items-center justify-between pb-2 border-b border-slate-200">
+                                <span class="text-xs font-bold text-slate-800 flex items-center gap-1.5">
+                                    <i class="fa-solid fa-briefcase text-slate-600"></i> เซตทักษะที่งานต้องการ (S_job)
+                                </span>
+                                <span id="badgeJobCount" class="text-2xs font-bold font-mono px-2 py-0.5 rounded bg-slate-200 text-slate-700">0 คำ</span>
+                            </div>
+                            <div id="pillsJobSet" class="flex flex-wrap gap-1.5 font-mono text-xs min-h-[60px]">
+                                <!-- Job pills -->
+                            </div>
+                        </div>
+
+                        <!-- Col 3: Mathematical Operation & Score Card -->
+                        <div class="border-2 border-emerald-300 rounded-xl p-4 bg-emerald-50/40 space-y-4 flex flex-col justify-between">
+                            <div class="space-y-3">
+                                <div class="flex items-center justify-between pb-2 border-b border-emerald-200">
+                                    <span class="text-xs font-bold text-emerald-950 flex items-center gap-1.5">
+                                        <i class="fa-solid fa-calculator text-emerald-600"></i> ผลการคำนวณทางเซต
+                                    </span>
+                                    <span class="text-3xs font-mono font-bold text-emerald-700 uppercase">Stage 2 Result</span>
+                                </div>
+
+                                <!-- Intersection -->
+                                <div class="bg-white p-3 rounded-xl border border-emerald-200/80 shadow-2xs space-y-1.5">
+                                    <div class="flex items-center justify-between">
+                                        <span class="text-xs font-bold text-emerald-800">1. จุดร่วม (S_user ∩ S_job):</span>
+                                        <span id="badgeMatchedCount" class="text-xs font-black text-emerald-700 font-mono">0 ทักษะ</span>
+                                    </div>
+                                    <div id="pillsMatched" class="flex flex-wrap gap-1 font-mono text-2xs">
+                                        <!-- Matched pills -->
+                                    </div>
+                                </div>
+
+                                <!-- Set Difference (Skill Gap) -->
+                                <div class="bg-white p-3 rounded-xl border border-rose-200/80 shadow-2xs space-y-1.5">
+                                    <div class="flex items-center justify-between">
+                                        <span class="text-xs font-bold text-rose-800">2. ผลต่าง / สิ่งที่ขาด (S_job \ S_user):</span>
+                                        <span id="badgeMissingCount" class="text-xs font-black text-rose-700 font-mono">0 ทักษะ (Skill Gap)</span>
+                                    </div>
+                                    <div id="pillsMissing" class="flex flex-wrap gap-1 font-mono text-2xs">
+                                        <!-- Missing pills -->
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Final Match Score Banner -->
+                            <div class="bg-gradient-to-r from-emerald-600 to-emerald-700 text-white p-4 rounded-xl shadow-sm flex items-center justify-between">
+                                <div>
+                                    <span class="text-2xs font-bold uppercase tracking-wider block opacity-90">ร้อยละความสอดคล้อง (Match Score):</span>
+                                    <span class="text-3xs font-mono opacity-80">(|Matched| / |Total Job Skills|) × 100</span>
+                                </div>
+                                <div id="metricMatchScore" class="text-3xl font-black font-mono">
+                                    0.0%
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Simple Footer -->
+    <footer class="py-4 border-t border-slate-200 bg-white text-xs text-slate-500 text-center thesis-hide">
+        SkillMatch IT — มหาวิทยาลัยราชภัฏนครปฐม | Empirical Pipeline Inspector
+    </footer>
+
+    <!-- JAVASCRIPT CONTROLLER -->
+    <script>
+        let currentInspectionData = null;
+        let isThesisMode = false;
+
+        // Stage Accordion Controller
+        function toggleStageAccordion(stageId, bodyId) {
+            const body = document.getElementById(bodyId);
+            const card = document.getElementById(stageId);
+            if (!body || !card) return;
+
+            const isCurrentlyHidden = body.classList.contains('hidden');
+            if (isCurrentlyHidden) {
+                body.classList.remove('hidden');
+                card.classList.remove('collapsed');
+            } else {
+                body.classList.add('hidden');
+                card.classList.add('collapsed');
+            }
+        }
+
+        function expandAllStages() {
+            ['stage-1', 'stage-2', 'stage-3', 'stage-4', 'stage-5-6'].forEach(id => {
+                const body = document.getElementById(id + '-body');
+                const card = document.getElementById(id);
+                if (body && card) {
+                    body.classList.remove('hidden');
+                    card.classList.remove('collapsed');
+                }
+            });
+        }
+
+        function collapseAllStages() {
+            ['stage-1', 'stage-2', 'stage-3', 'stage-4', 'stage-5-6'].forEach(id => {
+                const body = document.getElementById(id + '-body');
+                const card = document.getElementById(id);
+                if (body && card) {
+                    body.classList.add('hidden');
+                    card.classList.add('collapsed');
+                }
+            });
+        }
+
+        function scrollToAndExpand(stageId, bodyId) {
+            const body = document.getElementById(bodyId);
+            const card = document.getElementById(stageId);
+            if (body && card) {
+                body.classList.remove('hidden');
+                card.classList.remove('collapsed');
+            }
+            scrollToStage(stageId);
+        }
+
+        function toggleThesisMode() {
+            isThesisMode = !isThesisMode;
+            document.body.classList.toggle('thesis-mode', isThesisMode);
+            const label = document.getElementById('thesisModeLabel');
+            const icon = document.getElementById('thesisModeIcon');
+            if (isThesisMode) {
+                label.innerText = 'กลับสู่โหมดปกติ';
+                icon.className = 'fa-solid fa-sun text-amber-500';
+                expandAllStages(); // In thesis capture mode, show all bodies
+            } else {
+                label.innerText = 'โหมดภาพถ่ายลงเล่ม';
+                icon.className = 'fa-solid fa-camera text-rose-600';
+            }
+        }
+
+        function scrollToStage(id) {
+            const el = document.getElementById(id);
+            if (el) {
+                const yOffset = -120;
+                const y = el.getBoundingClientRect().top + window.pageYOffset + yOffset;
+                window.scrollTo({ top: y, behavior: 'smooth' });
+            }
+        }
+
+        function setPreset(skillsStr, roleId) {
+            document.getElementById('inputSkills').value = skillsStr;
+            runInspection();
+        }
+
+        async function runInspection(targetJobId = null) {
+            const rawInput = document.getElementById('inputSkills').value.trim();
+            if (!rawInput) return;
+
+            const skillsList = rawInput.split(',').map(s => s.trim()).filter(Boolean);
+            document.getElementById('loadingState').classList.remove('hidden');
+            document.getElementById('inspectorContainer').classList.add('opacity-40');
+
+            try {
+                const response = await fetch('/api/inspect', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        skills: skillsList,
+                        target_job_id: targetJobId
+                    })
+                });
+                const data = await response.json();
+                currentInspectionData = data;
+                renderInspectionData(data);
+            } catch (err) {
+                console.error('Inspection failed:', err);
+                alert('เกิดข้อผิดพลาดในการดึงข้อมูลตรวจสอบ: ' + err.message);
+            } finally {
+                document.getElementById('loadingState').classList.add('hidden');
+                document.getElementById('inspectorContainer').classList.remove('opacity-40');
+            }
+        }
+
+        function changeTargetJob(newJobId) {
+            runInspection(newJobId);
+        }
+
+        function renderInspectionData(data) {
+            // =========================================================
+            // Stage 1: Mapping Cards
+            // =========================================================
+            const container1 = document.getElementById('mappingCardsContainer');
+            container1.innerHTML = '';
+            data.stage_1_normalization.mappings.forEach((m, idx) => {
+                const card = document.createElement('div');
+                card.className = `p-3 rounded-xl border ${m.is_mapped ? 'border-amber-300 bg-amber-50/40' : 'border-slate-200 bg-white'} space-y-2 shadow-2xs`;
+                card.innerHTML = `
+                    <div class="flex items-center justify-between text-2xs">
+                        <span class="font-mono font-bold text-slate-400">#${idx + 1}</span>
+                        <span class="px-2 py-0.5 rounded-full font-bold ${m.is_mapped ? 'bg-amber-100 text-amber-800' : 'bg-slate-100 text-slate-600'}">
+                            ${m.is_mapped ? 'แปลงคำพ้อง' : 'คำมาตรฐาน'}
+                        </span>
+                    </div>
+                    <div class="flex items-center gap-2 font-mono text-xs">
+                        <span class="px-2 py-1 rounded bg-slate-100 text-slate-800 font-bold truncate">${escapeHtml(m.raw_input)}</span>
+                        <i class="fa-solid fa-arrow-right text-3xs ${m.is_mapped ? 'text-amber-600' : 'text-slate-300'}"></i>
+                        <span class="px-2 py-1 rounded ${m.is_mapped ? 'bg-amber-100 text-amber-900 font-extrabold' : 'bg-slate-100 text-slate-700 font-bold'} truncate">
+                            ${escapeHtml(m.canonical_token)}
+                        </span>
+                    </div>
+                `;
+                container1.appendChild(card);
+            });
+            document.getElementById('labelFinalQuery').innerText = `"${data.stage_2_tfidf_vector.query_string}"`;
+
+            // =========================================================
+            // Stage 2: TF-IDF Vector & Active Features
+            // =========================================================
+            document.getElementById('metricTotalDim').innerText = data.stage_2_tfidf_vector.total_vocabulary_dimensions;
+            document.getElementById('metricActiveFeatures').innerText = data.stage_2_tfidf_vector.non_zero_count;
+            document.getElementById('metricSparsity').innerText = `${data.stage_2_tfidf_vector.sparsity_percentage}%`;
+
+            // Vector math preview bracket
+            const preview = data.stage_2_tfidf_vector.raw_vector_preview;
+            const previewStr = `x = [ ${preview.map(v => v > 0 ? `<span class="text-rose-400 font-black">${v.toFixed(4)}</span>` : `<span class="text-slate-600">0.0</span>`).join(', ')}, ... (${data.stage_2_tfidf_vector.total_vocabulary_dimensions - preview.length} dims) ]`;
+            document.getElementById('vectorMathPreview').innerHTML = previewStr;
+
+            // Active features grid cards
+            const featuresContainer = document.getElementById('activeFeaturesCards');
+            featuresContainer.innerHTML = '';
+            if (data.stage_2_tfidf_vector.active_features.length === 0) {
+                featuresContainer.innerHTML = `<div class="col-span-full py-4 text-center text-slate-400 text-xs">ไม่มีคำทักษะที่ตรงกับพจนานุกรมโมเดล</div>`;
+            } else {
+                data.stage_2_tfidf_vector.active_features.forEach(f => {
+                    const card = document.createElement('div');
+                    card.className = 'p-3.5 rounded-xl border border-blue-200 bg-blue-50/30 space-y-2 shadow-2xs';
+                    const pctBar = Math.min(100, Math.round(f.weight * 100));
+                    card.innerHTML = `
+                        <div class="flex items-center justify-between text-2xs">
+                            <span class="font-mono text-slate-400 font-bold">Col #${f.feature_index}</span>
+                            <span class="font-mono font-black text-blue-700 bg-blue-100 px-2 py-0.5 rounded">${f.weight.toFixed(4)}</span>
+                        </div>
+                        <div class="font-mono font-bold text-sm text-slate-900">${escapeHtml(f.token)}</div>
+                        <div class="w-full bg-slate-200 rounded-full h-1.5 overflow-hidden">
+                            <div class="bg-blue-600 h-1.5 rounded-full" style="width: ${pctBar}%"></div>
+                        </div>
+                    `;
+                    featuresContainer.appendChild(card);
+                });
+            }
+
+            // =========================================================
+            // Stage 3: Roles Distribution
+            // =========================================================
+            const rolesList = document.getElementById('rolesDistributionList');
+            rolesList.innerHTML = '';
+            data.stage_3_model_distribution.distribution.forEach((role, idx) => {
+                const isTop = idx === 0;
+                const row = document.createElement('div');
+                row.className = `p-3 rounded-xl border ${isTop ? 'border-purple-300 bg-purple-50/50 shadow-xs' : 'border-slate-200 bg-white'} flex flex-col sm:flex-row sm:items-center justify-between gap-3`;
+                
+                const logitBadge = role.raw_logit > 0
+                    ? `<span class="text-2xs font-mono font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">+${role.raw_logit.toFixed(4)}</span>`
+                    : `<span class="text-2xs font-mono text-slate-400 bg-slate-50 px-2 py-0.5 rounded">${role.raw_logit.toFixed(4)}</span>`;
+
+                row.innerHTML = `
+                    <div class="flex items-center gap-3">
+                        <span class="w-8 h-8 rounded-lg ${isTop ? 'bg-purple-600 text-white' : 'bg-slate-100 text-slate-600'} font-mono font-bold text-xs flex items-center justify-center shrink-0">
+                            ${role.role_id}
+                        </span>
+                        <div>
+                            <div class="flex items-center gap-2">
+                                <h5 class="text-xs sm:text-sm font-bold ${isTop ? 'text-purple-950' : 'text-slate-800'}">
+                                    ${escapeHtml(role.title)}
+                                </h5>
+                                ${isTop ? '<span class="text-3xs font-extrabold uppercase px-2 py-0.5 rounded-full bg-purple-600 text-white font-mono">Rank 1</span>' : ''}
+                            </div>
+                            <span class="text-2xs text-slate-500">${escapeHtml(role.en_title)}</span>
+                        </div>
+                    </div>
+
+                    <div class="flex items-center gap-4 shrink-0">
+                        <div class="text-right">
+                            <span class="text-3xs text-slate-400 font-mono block">Logit z_k</span>
+                            ${logitBadge}
+                        </div>
+                        <div class="w-32 sm:w-44 space-y-1">
+                            <div class="flex items-center justify-between text-2xs font-mono">
+                                <span class="text-slate-400">Softmax:</span>
+                                <strong class="${isTop ? 'text-purple-700 text-sm font-black' : 'text-slate-700 font-bold'}">${role.probability_pct.toFixed(2)}%</strong>
+                            </div>
+                            <div class="w-full bg-slate-100 rounded-full h-2 overflow-hidden">
+                                <div class="${isTop ? 'bg-purple-600' : 'bg-slate-300'} h-2 rounded-full transition-all duration-500" style="width: ${role.probability_pct}%"></div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                rolesList.appendChild(row);
+            });
+
+            // =========================================================
+            // Stage 4: Argmax Decision
+            // =========================================================
+            document.getElementById('badgeTopRoleId').innerText = data.stage_4_argmax_decision.selected_role_id;
+            document.getElementById('labelTopRoleTitle').innerText = data.stage_4_argmax_decision.selected_role_title;
+            document.getElementById('labelTopRoleEn').innerText = data.stage_4_argmax_decision.selected_role_en;
+            document.getElementById('metricTopConfidence').innerText = `${data.stage_4_argmax_decision.confidence_percentage.toFixed(2)}%`;
+            document.getElementById('metricMargin').innerText = `+${data.stage_4_argmax_decision.margin_over_second.toFixed(2)}%`;
+
+            // =========================================================
+            // Stage 5 & 6: Set Theory Results
+            // =========================================================
+            const jobSelect = document.getElementById('selectTargetJob');
+            jobSelect.innerHTML = '';
+            data.available_jobs_in_track.forEach(j => {
+                const opt = document.createElement('option');
+                opt.value = j.job_id;
+                opt.innerText = `${j.job_id}: ${j.title} (${j.company}) [${j.skills_count} สกิล]`;
+                if (j.job_id === data.stage_5_6_set_theory.target_job.job_id) {
+                    opt.selected = true;
+                }
+                jobSelect.appendChild(opt);
+            });
+
+            const tj = data.stage_5_6_set_theory.target_job;
+            document.getElementById('labelJobId').innerText = tj.job_id;
+            document.getElementById('labelJobTitle').innerText = tj.title;
+            document.getElementById('labelJobCompany').innerText = tj.company;
+            document.getElementById('labelJobSalary').innerText = tj.salary;
+            document.getElementById('labelJobProvince').innerText = tj.province;
+            document.getElementById('labelJobSkillsCount').innerText = `${data.stage_5_6_set_theory.total_job_skills_count} ทักษะ`;
+
+            document.getElementById('badgeUserCount').innerText = `${data.stage_5_6_set_theory.user_skill_set.length} คำ`;
+            document.getElementById('badgeJobCount').innerText = `${data.stage_5_6_set_theory.job_skill_set.length} คำ`;
+
+            // Render Pills
+            const renderChips = (containerId, items, bgClass) => {
+                const el = document.getElementById(containerId);
+                el.innerHTML = '';
+                if (!items || items.length === 0) {
+                    el.innerHTML = `<span class="text-slate-400 text-xs italic">ไม่มีทักษะ</span>`;
+                    return;
+                }
+                items.forEach(item => {
+                    const chip = document.createElement('span');
+                    chip.className = `px-2.5 py-1 rounded-lg text-xs font-semibold ${bgClass} shadow-2xs`;
+                    chip.innerText = item;
+                    el.appendChild(chip);
+                });
+            };
+
+            renderChips('pillsUserSet', data.stage_5_6_set_theory.user_skill_set, 'bg-white border border-indigo-200 text-indigo-900');
+            renderChips('pillsJobSet', data.stage_5_6_set_theory.job_skill_set, 'bg-white border border-slate-300 text-slate-800');
+            renderChips('pillsMatched', data.stage_5_6_set_theory.matched_skills, 'bg-emerald-100 text-emerald-800 border border-emerald-300 font-bold');
+            renderChips('pillsMissing', data.stage_5_6_set_theory.missing_skills, 'bg-rose-100 text-rose-800 border border-rose-300 font-bold');
+
+            document.getElementById('badgeMatchedCount').innerText = `${data.stage_5_6_set_theory.matched_count} ทักษะ`;
+            document.getElementById('badgeMissingCount').innerText = `${data.stage_5_6_set_theory.missing_count} ทักษะ (Skill Gap)`;
+            document.getElementById('metricMatchScore').innerText = `${data.stage_5_6_set_theory.match_score_percentage.toFixed(1)}%`;
+
+            // Render math formulas with KaTeX if loaded
+            if (typeof renderMathInElement === 'function') {
+                renderMathInElement(document.body, {
+                    delimiters: [
+                        { left: '$$', right: '$$', display: true },
+                        { left: '$', right: '$', display: false }
+                    ]
+                });
+            }
+        }
+
+        function escapeHtml(text) {
+            if (!text) return '';
+            return String(text).replace(/[&<>"']/g, function(m) {
+                return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' }[m];
+            });
+        }
+
+        // Run inspection on initial load
+        window.addEventListener('DOMContentLoaded', () => {
+            runInspection();
+        });
+    </script>
+</body>
+
+</html>

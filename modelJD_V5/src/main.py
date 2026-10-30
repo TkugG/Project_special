@@ -41,6 +41,7 @@ SRC_DIR = BASE_DIR / "src"
 JS_DIR = BASE_DIR / "js"
 CSS_DIR = BASE_DIR / "css"
 INDEX_HTML_PATH = BASE_DIR / "index.html"
+INSPECT_HTML_PATH = BASE_DIR / "inspect.html"
 
 if JS_DIR.exists():
     app.mount("/js", StaticFiles(directory=str(JS_DIR)), name="js")
@@ -48,102 +49,103 @@ if CSS_DIR.exists():
     app.mount("/css", StaticFiles(directory=str(CSS_DIR)), name="css")
 
 # ---------------------------------------------------------
-# 2. DEFINITION OF 8 CURRICULUM ROLES (มคอ.2 สาขา IT)
+# 2. DEFINITION OF 8 CURRICULUM ROLES (มคอ.2 สาขา IT ตารางที่ 3.1)
 # ---------------------------------------------------------
 CURRICULUM_ROLES = {
-    "8.1": {
-        "id": "8.1",
-        "title": "เจ้าหน้าที่คอมพิวเตอร์",
-        "en_title": "Computer Officer / IT Support",
-        "full_name": "เจ้าหน้าที่คอมพิวเตอร์ (Computer Officer / IT Support)",
-        "desc": "ติดตั้ง บำรุงรักษา แก้ไขปัญหาฮาร์ดแวร์ ซอฟต์แวร์ และให้บริการสนับสนุนงานเทคโนโลยีสารสนเทศแก่ผู้ใช้งานในองค์กร",
-        "core_skills": ["windows", "linux", "hardware", "troubleshooting", "basic networking", "helpdesk", "active directory", "backup", "ms office"],
-        "patterns": [
-            r"\b(it support|helpdesk|technical support|computer officer|desktop support|system operator|it officer|service desk|sales support|it technician)\b",
-            r"(เจ้าหน้าที่คอมพิวเตอร์|เจ้าหน้าที่สารสนเทศ|บริการเทคนิค|ช่างคอมพิวเตอร์|ซัพพอร์ต|เจ้าหน้าที่ไอที)"
-        ]
-    },
-    "8.2": {
-        "id": "8.2",
-        "title": "ผู้ดูแลระบบเครือข่ายคอมพิวเตอร์",
-        "en_title": "Network Administrator / Engineer",
-        "full_name": "ผู้ดูแลระบบเครือข่ายคอมพิวเตอร์ (Network Administrator / Engineer)",
-        "desc": "ออกแบบ ติดตั้ง กำหนดค่า และบริหารจัดการระบบเครือข่ายคอมพิวเตอร์ ความมั่นคงปลอดภัย และเครื่องแม่ข่าย (Server)",
-        "core_skills": ["tcp/ip", "cisco", "routing", "switching", "firewall", "vpn", "dns", "dhcp", "linux server", "windows server", "network security"],
-        "patterns": [
-            r"\b(network engineer|network admin|network analyst|noc engineer|cisco|network security|firewall|system admin|sysadmin|infrastructure engineer|cloud network|devops|sre|cloud engineer)\b",
-            r"(ผู้ดูแลระบบเครือข่าย|วิศวกรเครือข่าย|เครือข่ายคอมพิวเตอร์|ดูแลเซิร์ฟเวอร์|วิศวกรระบบ)"
-        ]
-    },
-    "8.3": {
-        "id": "8.3",
-        "title": "นักพัฒนาและออกแบบสื่อผสม",
-        "en_title": "Multimedia Designer & Developer",
-        "full_name": "นักพัฒนาและออกแบบสื่อผสม (Multimedia Designer & Developer)",
-        "desc": "ออกแบบและพัฒนาสื่อดิจิทัล สื่อมัลติมีเดีย ภาพกราฟิก แอนิเมชัน วิดีโอ ตัวต้นแบบส่วนต่อประสานผู้ใช้ (UI/UX) สื่อปฏิสัมพันธ์ และเกม",
-        "core_skills": ["ui/ux", "figma", "photoshop", "illustrator", "premiere pro", "after effects", "blender", "3d animation", "unity", "game development", "prototyping"],
-        "patterns": [
-            r"\b(multimedia|ux/ui|ui/ux|ui designer|ux designer|product designer|graphic designer|motion graphic|3d artist|3d animator|game developer|unity|unreal|interactive media|video editor)\b",
-            r"(ออกแบบสื่อ|สื่อผสม|แอนิเมชัน|เกม|ออกแบบกราฟิก|ยูเอ็กซ์|ยูไอ|กราฟิกดีไซน์)"
-        ]
-    },
-    "8.4": {
-        "id": "8.4",
-        "title": "นักจัดการโครงการสารสนเทศ",
-        "en_title": "IT Project Manager / Coordinator",
-        "full_name": "นักจัดการโครงการสารสนเทศ (IT Project Manager / Coordinator)",
-        "desc": "วางแผน ประสานงาน บริหารจัดการทรัพยากร ติดตามความก้าวหน้า และควบคุมคุณภาพการส่งมอบโครงการด้านเทคโนโลยีสารสนเทศ",
-        "core_skills": ["agile", "scrum", "jira", "project management", "trello", "communication", "risk management", "sdlc", "budgeting"],
-        "patterns": [
-            r"\b(it project manager|project manager|scrum master|product owner|project coordinator|it delivery manager|agile coach|it manager|account executive)\b",
-            r"(จัดการโครงการ|ผู้จัดการโครงการ|ประสานงานโครงการ)"
-        ]
-    },
-    "8.5": {
-        "id": "8.5",
-        "title": "นักวิเคราะห์และออกแบบระบบงาน",
-        "en_title": "System Analyst / Business Analyst",
-        "full_name": "นักวิเคราะห์และออกแบบระบบงาน (System Analyst / Business Analyst)",
-        "desc": "รวบรวมและวิเคราะห์ความต้องการทางธุรกิจ ออกแบบผังกระบวนการทำงาน สถาปัตยกรรมระบบ ฐานข้อมูล และจัดทำข้อกำหนดระบบ (SRS)",
-        "core_skills": ["system analysis", "business analysis", "uml", "use case", "dfd", "er diagram", "database design", "sql", "requirement gathering", "wireframing"],
-        "patterns": [
-            r"\b(system analyst|systems analyst|business analyst|\bsa\b|\bba\b|solutions analyst|enterprise architect|functional consultant|data analyst|bi analyst)\b",
-            r"(นักวิเคราะห์ระบบ|วิเคราะห์และออกแบบระบบ|นักวิเคราะห์ธุรกิจ|วิเคราะห์ข้อมูล)"
-        ]
-    },
-    "8.6": {
-        "id": "8.6",
+    "G1": {
+        "id": "G1",
         "title": "นักพัฒนาซอฟต์แวร์",
-        "en_title": "Software Developer / Engineer",
-        "full_name": "นักพัฒนาซอฟต์แวร์ (Software Developer / Engineer)",
-        "desc": "ออกแบบและเขียนโปรแกรมพัฒนาแอปพลิเคชัน เว็บเซอร์วิส ไมโครเซอร์วิส และระบบประยุกต์บนแพลตฟอร์มต่างๆ ตามมาตรฐานวิศวกรรมซอฟต์แวร์",
-        "core_skills": ["python", "java", "c#", ".net", "javascript", "typescript", "react", "node.js", "sql", "rest api", "git", "oop", "docker"],
+        "en_title": "Software Developer",
+        "full_name": "G1: นักพัฒนาซอฟต์แวร์ (Software Developer)",
+        "desc": "ออกแบบ พัฒนา เขียนชุดคำสั่ง และทดสอบระบบซอฟต์แวร์หรือแอปพลิเคชัน",
+        "core_skills": ["sql", ".net", "java", "angular", "javascript", "git", "c#", "python", "rest api", "react"],
         "patterns": [
-            r"\b(software engineer|software developer|programmer|backend developer|frontend developer|full stack developer|fullstack|mobile developer|ios developer|android developer|flutter developer|python developer|java developer|\.net developer|c# developer|golang developer|react developer|data engineer|qa engineer|automation tester|developer|ai engineer|machine learning)\b",
+            r"\b(software engineer|software developer|programmer|backend developer|frontend developer|full stack developer|fullstack|mobile developer|c# developer|python developer|java developer|\.net developer|golang developer|react developer)\b",
             r"(นักพัฒนาซอฟต์แวร์|โปรแกรมเมอร์|พัฒนาโปรแกรม|วิศวกรซอฟต์แวร์|เดเวลอปเปอร์)"
         ]
     },
-    "8.7": {
-        "id": "8.7",
-        "title": "นักออกแบบและพัฒนาเว็บไซต์",
-        "en_title": "Web Designer & Developer",
-        "full_name": "นักออกแบบและพัฒนาเว็บไซต์ (Web Designer & Developer)",
-        "desc": "ออกแบบและพัฒนาเว็บไซต์ เว็บแอปพลิเคชัน ส่วนต่อประสานผู้ใช้ที่รองรับทุกอุปกรณ์ (Responsive Web Design) และระบบบริหารจัดการเนื้อหา (CMS)",
-        "core_skills": ["html5", "css3", "javascript", "responsive web design", "tailwind", "bootstrap", "wordpress", "php", "mysql", "rest api"],
+    "G2": {
+        "id": "G2",
+        "title": "ผู้ดูแลระบบฐานข้อมูล",
+        "en_title": "Database Administrator",
+        "full_name": "G2: ผู้ดูแลระบบฐานข้อมูล (Database Administrator)",
+        "desc": "ออกแบบ บริหารจัดการ ดูแลความมั่นคงปลอดภัย และสำรองข้อมูลระบบฐานข้อมูล",
+        "core_skills": ["sql", "python", "postgresql", "sql server", "mysql", "oracle", "api", "ssis", "oracle rac", "mongodb"],
         "patterns": [
-            r"\b(web developer|web designer|wordpress developer|frontend web|webmaster|web application developer|web programmer)\b",
+            r"\b(database administrator|dba|database engineer|oracle dba|sql administrator|data engineer|etl developer|data warehouse)\b",
+            r"(ผู้ดูแลระบบฐานข้อมูล|ฐานข้อมูล|ดีบีเอ|วิศวกรข้อมูล)"
+        ]
+    },
+    "G3": {
+        "id": "G3",
+        "title": "นักวิเคราะห์และออกแบบระบบ",
+        "en_title": "System Analyst / Designer",
+        "full_name": "G3: นักวิเคราะห์และออกแบบระบบ (System Analyst / Designer)",
+        "desc": "วิเคราะห์ความต้องการทางธุรกิจ ออกแบบผังกระบวนการทำงาน และข้อกำหนดระบบสารสนเทศ",
+        "core_skills": ["api", "sql", "sql server", "java", "postgresql", "react", "uat", "mysql", ".net", "system analysis"],
+        "patterns": [
+            r"\b(system analyst|systems analyst|business analyst|\bsa\b|\bba\b|solutions analyst|system designer|functional consultant)\b",
+            r"(นักวิเคราะห์ระบบ|วิเคราะห์และออกแบบระบบ|นักวิเคราะห์ธุรกิจ|ออกแบบระบบ)"
+        ]
+    },
+    "G4": {
+        "id": "G4",
+        "title": "เจ้าหน้าที่เทคนิคคอมพิวเตอร์",
+        "en_title": "Computer Technical Officer",
+        "full_name": "G4: เจ้าหน้าที่เทคนิคคอมพิวเตอร์ (Computer Technical Officer)",
+        "desc": "ตรวจสอบ ติดตั้ง ซ่อมบำรุงฮาร์ดแวร์ อุปกรณ์ต่อพ่วง และแก้ไขปัญหาการใช้งานคอมพิวเตอร์",
+        "core_skills": ["windows", "vpn", "microsoft 365", "active directory", "printers", "hardware", "troubleshooting", "sql", "helpdesk", "basic networking"],
+        "patterns": [
+            r"\b(it support|helpdesk|technical support|computer officer|desktop support|system operator|it officer|service desk|it technician|hardware support)\b",
+            r"(เจ้าหน้าที่คอมพิวเตอร์|เจ้าหน้าที่เทคนิค|บริการเทคนิค|ช่างคอมพิวเตอร์|ซัพพอร์ต|เจ้าหน้าที่ไอที)"
+        ]
+    },
+    "G5": {
+        "id": "G5",
+        "title": "ผู้ดูแลระบบ",
+        "en_title": "System Administrator",
+        "full_name": "G5: ผู้ดูแลระบบ (System Administrator)",
+        "desc": "ติดตั้ง กำหนดค่า และบริหารจัดการระบบปฏิบัติการเครื่องแม่ข่ายและระบบเครือข่าย",
+        "core_skills": ["linux", "windows server", "active directory", "vmware", "azure", "firewall", "vpn", "microsoft 365", "switches", "network security"],
+        "patterns": [
+            r"\b(system administrator|sysadmin|network engineer|network administrator|infrastructure engineer|cloud engineer|devops|server engineer)\b",
+            r"(ผู้ดูแลระบบ|ดูแลเซิร์ฟเวอร์|วิศวกรระบบ|เครือข่ายคอมพิวเตอร์|วิศวกรเครือข่าย)"
+        ]
+    },
+    "G6": {
+        "id": "G6",
+        "title": "นักพัฒนาเว็บไซต์",
+        "en_title": "Web Developer",
+        "full_name": "G6: นักพัฒนาเว็บไซต์ (Web Developer)",
+        "desc": "ออกแบบ พัฒนา และบำรุงรักษาเว็บไซต์ เว็บแอปพลิเคชัน และระบบบริการส่วนหน้า",
+        "core_skills": ["html5", "css3", "javascript", "react", "next.js", "git", "mysql", "node.js", "php", "tailwind"],
+        "patterns": [
+            r"\b(web developer|web designer|frontend web|web application developer|wordpress developer|webmaster)\b",
             r"(พัฒนาเว็บไซต์|ออกแบบเว็บไซต์|เว็บมาสเตอร์|นักพัฒนาเว็บ)"
         ]
     },
-    "8.8": {
-        "id": "8.8",
-        "title": "ผู้เชี่ยวชาญด้านเทคโนโลยีสารสนเทศ",
-        "en_title": "Specialized IT Professional",
-        "full_name": "ผู้เชี่ยวชาญด้านเทคโนโลยีสารสนเทศ (Specialized IT Professional)",
-        "desc": "งานเฉพาะทางด้านเทคโนโลยีสารสนเทศ เช่น ปัญญาประดิษฐ์ วิทยาการข้อมูล ความมั่นคงปลอดภัยไซเบอร์ หรือการบริหารจัดการข้อมูลขนาดใหญ่",
-        "core_skills": ["machine learning", "deep learning", "nlp", "cybersecurity", "cloud architecture", "big data", "data science", "devsecops"],
+    "G7": {
+        "id": "G7",
+        "title": "ผู้ช่วยผู้จัดการโครงการสารสนเทศ",
+        "en_title": "IT Project Assistant",
+        "full_name": "G7: ผู้ช่วยผู้จัดการโครงการสารสนเทศ (IT Project Assistant)",
+        "desc": "ประสานงาน ติดตามแผนงาน จัดทำเอกสารข้อกำหนด และสนับสนุนการบริหารโครงการไอที",
+        "core_skills": ["project management", "agile", "scrum", "jira", "ms office", "excel", "powerpoint", "erp", "sap", "communication"],
         "patterns": [
-            r"\b(ai specialist|data scientist|cybersecurity analyst|cloud architect|security specialist|blockchain developer)\b"
+            r"\b(it project manager|project manager|project assistant|project coordinator|it coordinator|scrum master|product owner|agile coach)\b",
+            r"(จัดการโครงการ|ผู้จัดการโครงการ|ประสานงานโครงการ|ผู้ช่วยผู้จัดการโครงการ)"
+        ]
+    },
+    "G8": {
+        "id": "G8",
+        "title": "ผู้สร้างสรรค์เนื้อหาดิจิทัล",
+        "en_title": "Content Creator",
+        "full_name": "G8: ผู้สร้างสรรค์เนื้อหาดิจิทัล (Content Creator)",
+        "desc": "ออกแบบ ผลิต และจัดการสื่อดิจิทัล สื่อประสม กราฟิก และมัลติมีเดียเพื่อการสื่อสาร",
+        "core_skills": ["tiktok", "canva", "capcut", "premiere pro", "video editing", "youtube", "photoshop", "instagram", "facebook", "content creator"],
+        "patterns": [
+            r"\b(content creator|multimedia|ux/ui|ui/ux|ui designer|graphic designer|video editor|motion graphic|media creator|social media specialist)\b",
+            r"(สร้างสรรค์เนื้อหา|คอนเทนต์|สื่อดิจิทัล|สื่อผสม|แอนิเมชัน|กราฟิก|วิดีโอ)"
         ]
     }
 }
@@ -225,24 +227,30 @@ def clean_text_pipeline(text: str) -> str:
     return t
 
 def match_curriculum_role(preference_str: str) -> Optional[dict]:
-    """ค้นหาข้อมูล 8 อาชีพ จากข้อความ preference ให้แม่นยำสูงสุด"""
+    """ค้นหาข้อมูล 8 อาชีพ จากข้อความ preference ให้แม่นยำสูงสุด รองรับทั้ง G1-G8 และ 8.1-8.8"""
     if not preference_str:
         return None
     p_lower = preference_str.lower().strip()
     
-    # 1. ตรวจสอบรหัสโดยตรง (เช่น "8.7", "8.1", "8.6")
+    from src.recommend import ROLE_ALIASES, normalize_role_id
+    # 1. ตรวจสอบรหัส G1-G8 หรือ 8.1-8.8 โดยตรง
+    p_upper = preference_str.upper().strip()
+    if p_upper in CURRICULUM_ROLES:
+        return CURRICULUM_ROLES[p_upper]
+    if p_lower in ROLE_ALIASES:
+        return CURRICULUM_ROLES[ROLE_ALIASES[p_lower]]
+
     for role_id, info in CURRICULUM_ROLES.items():
-        if re.search(rf'\b{re.escape(role_id)}\b', p_lower) or p_lower.startswith(role_id):
+        if re.search(rf'\b{re.escape(role_id.lower())}\b', p_lower) or p_lower.startswith(role_id.lower()):
             return info
             
-    # 2. ตรวจสอบชื่อตำแหน่งภาษาไทย
+    # 2. ตรวจสอบชื่อตำแหน่งภาษาไทยและอังกฤษ
     for role_id, info in CURRICULUM_ROLES.items():
-        if info["title"].lower() in p_lower:
+        if info["title"].lower() in p_lower or info["en_title"].lower() in p_lower:
             return info
             
-    # 3. ตรวจสอบชื่อเฉพาะเจาะจงก่อน (8.7 เว็บไซต์, 8.3 สื่อผสม/UI, 8.5 วิเคราะห์ระบบ)
-    priority_order = ["8.7", "8.3", "8.5", "8.4", "8.2", "8.1", "8.6", "8.8"]
-    for role_id in priority_order:
+    # 3. ตรวจสอบตามลำดับความจำเพาะของ Pattern
+    for role_id in ["G6", "G8", "G3", "G2", "G5", "G7", "G4", "G1"]:
         info = CURRICULUM_ROLES[role_id]
         for pat in info["patterns"]:
             if re.search(pat, p_lower):
@@ -320,6 +328,11 @@ class RecommendRequest(BaseModel):
     preference: Optional[str] = ""     # รหัสหรือชื่อสายงานเป้าหมาย (เช่น 8.6 หรือ 8.7)
     target_career: Optional[str] = ""  # alias
     skills: Optional[List[str]] = []   # ชุดทักษะที่มี
+
+class InspectRequest(BaseModel):
+    # 💡 [ทำไมต้องแบบนี้]: กำหนด Schema สำหรับรับข้อมูลทักษะและตำแหน่งงานเป้าหมายในการแกะรอย Pipeline
+    skills: Optional[List[str]] = []
+    target_job_id: Optional[str] = None
 
 # ---------------------------------------------------------
 # 6. API ENDPOINTS
@@ -432,6 +445,25 @@ def recommend_jobs(data: RecommendRequest):
     )
     res["unrecognized_skills"] = unrecognized_skills
     return res
+
+@app.post("/api/inspect")
+def inspect_pipeline_endpoint(data: InspectRequest):
+    """
+    แกะรอย Pipeline และคืนค่าข้อมูลจริงครบ 6 ขั้นตอน
+    สำหรับใช้แสดงผลบนหน้าจอ Inspector และแคปเจอร์ภาพประกอบเล่มบทที่ 3-4
+    """
+    # 💡 [ทำไมต้องแบบนี้]: Lazy-import inspector_engine เพื่อให้เซิร์ฟเวอร์สตาร์ตได้เร็ว และไม่สร้าง overhead กับ request ปกติ
+    from src.inspector import inspector_engine
+    skills = data.skills or []
+    return inspector_engine.inspect(skills, data.target_job_id)
+
+@app.get("/inspect.html")
+@app.get("/inspect")
+def serve_inspect_page():
+    """เปิดหน้าจอ Data & Pipeline Inspector ทันทีจากเซิร์ฟเวอร์"""
+    if INSPECT_HTML_PATH.exists():
+        return FileResponse(str(INSPECT_HTML_PATH))
+    return HTMLResponse("<h1>inspect.html not found</h1>", status_code=404)
 
 if __name__ == "__main__":
     import uvicorn

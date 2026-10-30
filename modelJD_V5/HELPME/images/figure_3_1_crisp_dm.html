@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Sarabun:wght@400;500;600;700&display=swap');
+  * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Sarabun', 'Leelawadee UI', Tahoma, sans-serif; }
+  body {
+    background: #FFFFFF;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 15px;
+  }
+  .canvas {
+    width: 960px;
+    height: 720px;
+    background: #FFFFFF;
+    position: relative;
+    border: 1px solid #E2E8F0;
+    border-radius: 10px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.04);
+  }
+  svg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
+</style>
+</head>
+<body>
+<div class="canvas">
+  <svg viewBox="0 0 960 720">
+    <defs>
+      <marker id="arrow-blue" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse">
+        <path d="M 0 1.5 L 9 5 L 0 8.5 z" fill="#1D4ED8"/>
+      </marker>
+      <marker id="arrow-green" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse">
+        <path d="M 0 1.5 L 9 5 L 0 8.5 z" fill="#047857"/>
+      </marker>
+      <marker id="arrow-red" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse">
+        <path d="M 0 1.5 L 9 5 L 0 8.5 z" fill="#DC2626"/>
+      </marker>
+      <marker id="arrow-slate" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse">
+        <path d="M 0 1.5 L 9 5 L 0 8.5 z" fill="#475569"/>
+      </marker>
+      <marker id="arrow-outer-bold" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="10" markerHeight="10" orient="auto-start-reverse">
+        <path d="M 0 1.5 L 9 5 L 0 8.5 z" fill="#334155"/>
+      </marker>
+      
+      <linearGradient id="blueBox" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stop-color="#EFF6FF"/>
+        <stop offset="100%" stop-color="#DBEAFE"/>
+      </linearGradient>
+      <linearGradient id="greenBox" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stop-color="#ECFDF5"/>
+        <stop offset="100%" stop-color="#D1FAE5"/>
+      </linearGradient>
+      <linearGradient id="dataGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stop-color="#F8FAFC"/>
+        <stop offset="100%" stop-color="#E2E8F0"/>
+      </linearGradient>
+      <filter id="shadow" x="-5%" y="-5%" width="110%" height="115%" filterUnits="userSpaceOnUse">
+        <feDropShadow dx="0" dy="2" stdDeviation="3" flood-opacity="0.06"/>
+      </filter>
+    </defs>
+
+    <!-- Outer Cycle Circle -->
+    <path d="M 485,55 A 305,305 0 1,1 465,55" fill="none" stroke="#334155" stroke-width="5" marker-end="url(#arrow-outer-bold)"/>
+
+    <!-- Central Data Cylinder -->
+    <g transform="translate(405, 290)" filter="url(#shadow)">
+      <path d="M 0,30 v 52 a 75,25 0 0,0 150,0 v -52 z" fill="url(#dataGrad)" stroke="#334155" stroke-width="2"/>
+      <ellipse cx="75" cy="30" rx="75" ry="25" fill="#E2E8F0" stroke="#334155" stroke-width="2"/>
+      <text x="75" y="52" text-anchor="middle" font-size="16" font-weight="700" fill="#0F172A">ข้อมูล</text>
+      <text x="75" y="70" text-anchor="middle" font-size="12" font-weight="600" fill="#475569">(Data 160 Jobs)</text>
+    </g>
+
+    <!-- BOX 1: Business Understanding -->
+    <g transform="translate(180, 80)" filter="url(#shadow)">
+      <rect width="190" height="92" rx="8" fill="url(#blueBox)" stroke="#1D4ED8" stroke-width="2"/>
+      <text x="95" y="32" text-anchor="middle" font-size="14" font-weight="700" fill="#1E3A8A">1. ทำความเข้าใจบริบท</text>
+      <text x="95" y="50" text-anchor="middle" font-size="12" font-weight="600" fill="#2563EB">(Business Understanding)</text>
+      <text x="95" y="72" text-anchor="middle" font-size="11" fill="#475569">• วิเคราะห์ปัญหาการหางานไอที</text>
+    </g>
+
+    <!-- BOX 2: Data Understanding -->
+    <g transform="translate(590, 80)" filter="url(#shadow)">
+      <rect width="190" height="92" rx="8" fill="url(#blueBox)" stroke="#1D4ED8" stroke-width="2"/>
+      <text x="95" y="32" text-anchor="middle" font-size="14" font-weight="700" fill="#1E3A8A">2. ทำความเข้าใจข้อมูล</text>
+      <text x="95" y="50" text-anchor="middle" font-size="12" font-weight="600" fill="#2563EB">(Data Understanding)</text>
+      <text x="95" y="72" text-anchor="middle" font-size="11" fill="#475569">• สุ่ม 160 งาน 8 สายงาน (TPQI)</text>
+    </g>
+
+    <!-- BOX 3: Data Preparation -->
+    <g transform="translate(680, 305)" filter="url(#shadow)">
+      <rect width="190" height="92" rx="8" fill="url(#blueBox)" stroke="#1D4ED8" stroke-width="2"/>
+      <text x="95" y="32" text-anchor="middle" font-size="14" font-weight="700" fill="#1E3A8A">3. การเตรียมข้อมูล</text>
+      <text x="95" y="50" text-anchor="middle" font-size="12" font-weight="600" fill="#2563EB">(Data Preparation)</text>
+      <text x="95" y="72" text-anchor="middle" font-size="11" fill="#475569">• ล้างคำพ้อง / แปลง TF-IDF</text>
+    </g>
+
+    <!-- BOX 4: Modeling -->
+    <g transform="translate(590, 530)" filter="url(#shadow)">
+      <rect width="190" height="92" rx="8" fill="url(#blueBox)" stroke="#1D4ED8" stroke-width="2"/>
+      <text x="95" y="32" text-anchor="middle" font-size="14" font-weight="700" fill="#1E3A8A">4. การสร้างแบบจำลอง</text>
+      <text x="95" y="50" text-anchor="middle" font-size="12" font-weight="600" fill="#2563EB">(Modeling)</text>
+      <text x="95" y="72" text-anchor="middle" font-size="11" fill="#475569">• Logistic Regression + Set Overlap</text>
+    </g>
+
+    <!-- BOX 5: Evaluation -->
+    <g transform="translate(180, 530)" filter="url(#shadow)">
+      <rect width="190" height="92" rx="8" fill="url(#blueBox)" stroke="#1D4ED8" stroke-width="2"/>
+      <text x="95" y="32" text-anchor="middle" font-size="14" font-weight="700" fill="#1E3A8A">5. การประเมินผล</text>
+      <text x="95" y="50" text-anchor="middle" font-size="12" font-weight="600" fill="#2563EB">(Evaluation)</text>
+      <text x="95" y="72" text-anchor="middle" font-size="11" fill="#475569">• 5-Fold CV + วัดผล SUS 30 คน</text>
+    </g>
+
+    <!-- BOX 6: Deployment -->
+    <g transform="translate(90, 305)" filter="url(#shadow)">
+      <rect width="190" height="92" rx="8" fill="url(#greenBox)" stroke="#047857" stroke-width="2"/>
+      <text x="95" y="32" text-anchor="middle" font-size="14" font-weight="700" fill="#065F46">6. การนำไปใช้งานจริง</text>
+      <text x="95" y="50" text-anchor="middle" font-size="12" font-weight="600" fill="#047857">(Deployment)</text>
+      <text x="95" y="72" text-anchor="middle" font-size="11" fill="#475569">• เว็บแอปพลิเคชัน FastAPI SPA</text>
+    </g>
+
+    <!-- Arrows between boxes -->
+    <!-- 1 <-> 2 Bidirectional -->
+    <path d="M 370,116 H 580" stroke="#1D4ED8" stroke-width="2" marker-end="url(#arrow-blue)"/>
+    <path d="M 580,136 H 380" stroke="#1D4ED8" stroke-width="2" marker-end="url(#arrow-blue)"/>
+
+    <!-- 2 -> 3 -->
+    <path d="M 720,172 V 295" stroke="#1D4ED8" stroke-width="2.5" marker-end="url(#arrow-blue)"/>
+
+    <!-- 3 <-> 4 Bidirectional -->
+    <path d="M 760,397 V 520" stroke="#1D4ED8" stroke-width="2" marker-end="url(#arrow-blue)"/>
+    <path d="M 740,520 V 407" stroke="#1D4ED8" stroke-width="2" marker-end="url(#arrow-blue)"/>
+
+    <!-- 4 -> 5 -->
+    <path d="M 590,576 H 380" stroke="#1D4ED8" stroke-width="2.5" marker-end="url(#arrow-blue)"/>
+
+    <!-- 5 -> 1 Loopback to Business Understanding: ROUTED CLEANLY THROUGH OPEN SPACE WITH A SHIELDED BADGE -->
+    <path d="M 275,530 C 345,410 345,260 275,182" fill="none" stroke="#DC2626" stroke-width="2" stroke-dasharray="5,4" marker-end="url(#arrow-red)"/>
+    <g transform="translate(300, 335)">
+      <rect width="90" height="24" rx="4" fill="#FFFFFF" stroke="#FECACA" stroke-width="1.5"/>
+      <text x="45" y="16" font-size="11" font-weight="700" fill="#DC2626" text-anchor="middle">ปรับปรุงโมเดล</text>
+    </g>
+
+    <!-- 5 -> 6 -->
+    <path d="M 235,530 V 407" stroke="#047857" stroke-width="2.5" marker-end="url(#arrow-green)"/>
+
+    <!-- Data connections to central cylinder -->
+    <path d="M 590,155 L 535,295" stroke="#475569" stroke-width="1.5" stroke-dasharray="4,4" marker-end="url(#arrow-slate)"/>
+    <path d="M 680,345 L 565,345" stroke="#475569" stroke-width="1.5" stroke-dasharray="4,4" marker-end="url(#arrow-slate)"/>
+    <path d="M 590,535 L 525,400" stroke="#475569" stroke-width="1.5" stroke-dasharray="4,4" marker-end="url(#arrow-slate)"/>
+
+  </svg>
+</div>
+</body>
+</html>

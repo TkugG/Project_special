@@ -7,7 +7,6 @@ window.App = {
 
         // 1. Register SPA Routes (ลบ '#/' ซ้ำซ้อนออก — getCleanHash() จัดการ normalize แล้ว)
         AppRouter.register('#/matcher', MatcherView, { title: 'SkillMatch IT - ค้นหาตำแหน่งงานที่ใช่' });
-        AppRouter.register('#/careers', CareersView, { title: 'IT Career Explorer - สำรวจสายงานไอที' });
         AppRouter.register('#/skills', SkillsView, { title: 'IT Skills Taxonomy - คลังทักษะไอที' });
 
         // 2. Detect backend API

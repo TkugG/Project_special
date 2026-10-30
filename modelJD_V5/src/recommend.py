@@ -21,65 +21,92 @@ if str(BASE_DIR) not in sys.path:
 DATA_DIR = BASE_DIR / "data"
 MODELS_DIR = BASE_DIR / "models"
 
-# 8 อาชีพตามมาตรฐานหลักสูตร มคอ.2 สาขา IT
+# 8 กลุ่มอาชีพตามมาตรฐานหลักสูตร มคอ.2 สาขา IT (ตารางที่ 3.1)
 CURRICULUM_ROLES = {
-    "8.1": {
-        "id": "8.1",
-        "title": "เจ้าหน้าที่คอมพิวเตอร์",
-        "en_title": "Computer Officer / IT Support",
-        "desc": "ติดตั้ง บำรุงรักษา และแก้ปัญหาฮาร์ดแวร์ ซอฟต์แวร์ และระบบเครือข่ายพื้นฐาน",
-        "core_skills": ["windows", "linux", "hardware", "troubleshooting", "basic networking", "helpdesk", "active directory", "ms office"]
-    },
-    "8.2": {
-        "id": "8.2",
-        "title": "ผู้ดูแลระบบเครือข่ายคอมพิวเตอร์",
-        "en_title": "Network Administrator / Engineer",
-        "desc": "ออกแบบ ติดตั้ง กำหนดค่า และดูแลความมั่นคงปลอดภัยระบบเครือข่ายและเซิร์ฟเวอร์",
-        "core_skills": ["tcp/ip", "cisco", "routing", "switching", "firewall", "vpn", "dns", "dhcp", "linux server", "network security"]
-    },
-    "8.3": {
-        "id": "8.3",
-        "title": "นักพัฒนาและออกแบบสื่อผสม (Multimedia Designer & Developer)",
-        "en_title": "Multimedia Designer & Developer",
-        "desc": "ออกแบบสื่อดิจิทัล ภาพกราฟิก แอนิเมชัน วิดีโอ ตัวต้นแบบ UI/UX และสื่อปฏิสัมพันธ์",
-        "core_skills": ["ui/ux", "figma", "photoshop", "illustrator", "premiere pro", "after effects", "blender", "3d animation", "unity", "game development", "prototyping"]
-    },
-    "8.4": {
-        "id": "8.4",
-        "title": "นักจัดการโครงการสารสนเทศ",
-        "en_title": "IT Project Manager / Coordinator",
-        "desc": "วางแผน ประสานงาน ติดตามความก้าวหน้า และควบคุมคุณภาพโครงการด้านไอที",
-        "core_skills": ["agile", "scrum", "jira", "project management", "trello", "communication", "risk management", "sdlc"]
-    },
-    "8.5": {
-        "id": "8.5",
-        "title": "นักวิเคราะห์และออกแบบระบบงาน",
-        "en_title": "System Analyst / Business Analyst",
-        "desc": "รวบรวมความต้องการ วิเคราะห์กระบวนการ ออกแบบสถาปัตยกรรมระบบ ฐานข้อมูล และจัดทำ SRS",
-        "core_skills": ["system analysis", "business analysis", "uml", "use case", "dfd", "er diagram", "database design", "sql", "requirement gathering"]
-    },
-    "8.6": {
-        "id": "8.6",
+    "G1": {
+        "id": "G1",
         "title": "นักพัฒนาซอฟต์แวร์",
-        "en_title": "Software Developer / Engineer",
-        "desc": "ออกแบบและเขียนโปรแกรม พัฒนาเว็บเซอร์วิส แอปพลิเคชัน และฐานข้อมูล",
-        "core_skills": ["python", "java", "c#", ".net", "javascript", "typescript", "react", "node.js", "sql", "rest api", "git", "docker"]
+        "en_title": "Software Developer",
+        "desc": "ออกแบบ พัฒนา เขียนชุดคำสั่ง และทดสอบระบบซอฟต์แวร์หรือแอปพลิเคชัน",
+        "core_skills": ["sql", ".net", "java", "angular", "javascript", "git", "c#", "python", "rest api", "react"]
     },
-    "8.7": {
-        "id": "8.7",
-        "title": "นักออกแบบและพัฒนาเว็บไซต์",
-        "en_title": "Web Designer & Developer",
-        "desc": "ออกแบบและพัฒนาเว็บไซต์ เว็บแอปพลิเคชันแบบ Responsive และระบบ CMS",
-        "core_skills": ["html5", "css3", "javascript", "responsive web design", "tailwind", "bootstrap", "wordpress", "php", "mysql"]
+    "G2": {
+        "id": "G2",
+        "title": "ผู้ดูแลระบบฐานข้อมูล",
+        "en_title": "Database Administrator",
+        "desc": "ออกแบบ บริหารจัดการ ดูแลความมั่นคงปลอดภัย และสำรองข้อมูลระบบฐานข้อมูล",
+        "core_skills": ["sql", "python", "postgresql", "sql server", "mysql", "oracle", "api", "ssis", "oracle rac", "mongodb"]
     },
-    "8.8": {
-        "id": "8.8",
-        "title": "ผู้เชี่ยวชาญด้านเทคโนโลยีสารสนเทศ",
-        "en_title": "Specialized IT Professional",
-        "desc": "พัฒนางานเฉพาะทางขั้นสูง เช่น ปัญญาประดิษฐ์ วิทยาการข้อมูล ความมั่นคงปลอดภัย และคลาวด์",
-        "core_skills": ["machine learning", "deep learning", "nlp", "cybersecurity", "cloud architecture", "big data", "data science"]
+    "G3": {
+        "id": "G3",
+        "title": "นักวิเคราะห์และออกแบบระบบ",
+        "en_title": "System Analyst / Designer",
+        "desc": "วิเคราะห์ความต้องการทางธุรกิจ ออกแบบผังกระบวนการทำงาน และข้อกำหนดระบบสารสนเทศ",
+        "core_skills": ["api", "sql", "sql server", "java", "postgresql", "react", "uat", "mysql", ".net", "system analysis"]
+    },
+    "G4": {
+        "id": "G4",
+        "title": "เจ้าหน้าที่เทคนิคคอมพิวเตอร์",
+        "en_title": "Computer Technical Officer",
+        "desc": "ตรวจสอบ ติดตั้ง ซ่อมบำรุงฮาร์ดแวร์ อุปกรณ์ต่อพ่วง และแก้ไขปัญหาการใช้งานคอมพิวเตอร์",
+        "core_skills": ["windows", "vpn", "microsoft 365", "active directory", "printers", "hardware", "troubleshooting", "sql", "helpdesk", "basic networking"]
+    },
+    "G5": {
+        "id": "G5",
+        "title": "ผู้ดูแลระบบ",
+        "en_title": "System Administrator",
+        "desc": "ติดตั้ง กำหนดค่า และบริหารจัดการระบบปฏิบัติการเครื่องแม่ข่ายและระบบเครือข่าย",
+        "core_skills": ["linux", "windows server", "active directory", "vmware", "azure", "firewall", "vpn", "microsoft 365", "switches", "network security"]
+    },
+    "G6": {
+        "id": "G6",
+        "title": "นักพัฒนาเว็บไซต์",
+        "en_title": "Web Developer",
+        "desc": "ออกแบบ พัฒนา และบำรุงรักษาเว็บไซต์ เว็บแอปพลิเคชัน และระบบบริการส่วนหน้า",
+        "core_skills": ["html5", "css3", "javascript", "react", "next.js", "git", "mysql", "node.js", "php", "tailwind"]
+    },
+    "G7": {
+        "id": "G7",
+        "title": "ผู้ช่วยผู้จัดการโครงการสารสนเทศ",
+        "en_title": "IT Project Assistant",
+        "desc": "ประสานงาน ติดตามแผนงาน จัดทำเอกสารข้อกำหนด และสนับสนุนการบริหารโครงการไอที",
+        "core_skills": ["project management", "agile", "scrum", "jira", "ms office", "excel", "powerpoint", "erp", "sap", "communication"]
+    },
+    "G8": {
+        "id": "G8",
+        "title": "ผู้สร้างสรรค์เนื้อหาดิจิทัล",
+        "en_title": "Content Creator",
+        "desc": "ออกแบบ ผลิต และจัดการสื่อดิจิทัล สื่อประสม กราฟิก และมัลติมีเดียเพื่อการสื่อสาร",
+        "core_skills": ["tiktok", "canva", "capcut", "premiere pro", "video editing", "youtube", "photoshop", "instagram", "facebook", "content creator"]
     }
 }
+
+# แมปชื่อและรหัสเดิม (8.1 - 8.8) เพื่อ Backward Compatibility
+ROLE_ALIASES = {
+    "8.1": "G4",
+    "8.2": "G5",
+    "8.3": "G8",
+    "8.4": "G7",
+    "8.5": "G3",
+    "8.6": "G1",
+    "8.7": "G6",
+    "8.8": "G2"
+}
+
+def normalize_role_id(role_id: Optional[str]) -> str:
+    """แปลงรหัสกลุ่มอาชีพทั้งรูปแบบ G1-G8 และ 8.1-8.8 ให้เป็นรหัสมาตรฐาน G1-G8"""
+    if not role_id:
+        return "G1"
+    r = str(role_id).strip()
+    if r in CURRICULUM_ROLES:
+        return r
+    if r in ROLE_ALIASES:
+        return ROLE_ALIASES[r]
+    r_lower = r.lower()
+    for gid, info in CURRICULUM_ROLES.items():
+        if gid.lower() == r_lower or info["title"].lower() in r_lower or info["en_title"].lower() in r_lower:
+            return gid
+    return "G1"
 
 from src.skills_taxonomy import (
     normalize_skill,
@@ -103,10 +130,10 @@ class JobRecommender:
     2. จัดอันดับงานด้วย Skill Overlap % + TF-IDF Cosine Similarity
     """
     def __init__(self):
-        # 1. โหลดข้อมูลตำแหน่งงานไทย
-        csv_path = DATA_DIR / "thai_jobs_dataset.csv"
+        # 1. โหลดข้อมูลตำแหน่งงานไทย (115 งานจริง)
+        csv_path = DATA_DIR / "เก็บข้อมูล.csv"
         if not csv_path.exists():
-            csv_path = DATA_DIR / "job_dataset.csv"
+            csv_path = DATA_DIR / "thai_jobs_dataset.csv"
         self.df_jobs = pd.read_csv(csv_path).fillna("")
 
         # 2. โหลดโมเดลจำแนกกลุ่มอาชีพ
@@ -174,12 +201,12 @@ class JobRecommender:
         """
         # 🔄 [การแปลงข้อมูล]: รวมทักษะมาตรฐานเป็น String เดียว เพื่อเตรียมป้อนเข้าสู่โมเดลจำแนก
         query_text = " ".join([clean_skill(s) for s in user_skills if clean_skill(s)])
-        # ⚠️ [จุดระวัง]: หากผู้ใช้ไม่ส่งทักษะเข้ามา ให้ Fallback เป็นสายงานเริ่มต้น (8.6) ป้องกันโมเดลแครช
+        # ⚠️ [จุดระวัง]: หากผู้ใช้ไม่ส่งทักษะเข้ามา ให้ Fallback เป็นสายงานเริ่มต้น (G1) ป้องกันโมเดลแครช
         if not query_text:
             return {
-                "predicted_role_id": "8.6",
+                "predicted_role_id": "G1",
                 "confidence": 0.0,
-                "role_info": CURRICULUM_ROLES["8.6"],
+                "role_info": CURRICULUM_ROLES["G1"],
                 "probabilities": {}
             }
 
@@ -189,17 +216,18 @@ class JobRecommender:
         
         # 💡 [ทำไมต้องแบบนี้]: ใช้ argmax เพื่อเลือกกลุ่มอาชีพที่โมเดลประเมินว่ามีค่าน้ำหนักความน่าจะเป็นสูงสุด
         top_idx = int(np.argmax(probs))
-        predicted_role_id = str(classes[top_idx])
+        predicted_role_id = normalize_role_id(str(classes[top_idx]))
         confidence = float(probs[top_idx]) * 100.0
 
         prob_breakdown = {}
         for role_id, prob in zip(classes, probs):
-            prob_breakdown[str(role_id)] = round(float(prob) * 100.0, 1)
+            role_k = normalize_role_id(str(role_id))
+            prob_breakdown[role_k] = round(float(prob) * 100.0, 1)
 
         return {
             "predicted_role_id": predicted_role_id,
             "confidence": round(confidence, 1),
-            "role_info": CURRICULUM_ROLES.get(predicted_role_id, CURRICULUM_ROLES["8.6"]),
+            "role_info": CURRICULUM_ROLES.get(predicted_role_id, CURRICULUM_ROLES["G1"]),
             "probabilities": prob_breakdown
         }
 
@@ -210,70 +238,42 @@ class JobRecommender:
         top_k: int = 5
     ) -> Dict[str, Any]:
         """
-        แนะนำตำแหน่งงาน Top 5:
-        - วิเคราะห์สายงานเป้าหมาย (Target Career Analysis)
-        - จัดอันดับงานด้วยคะแนน: 50% Skill Overlap + 30% Cosine Similarity + 20% Softmax Role Probability
+        แนะนำตำแหน่งงาน Top 5 ตามระเบียบวิธีวิจัยบทที่ 3 (หัวข้อ 3.4.2):
+        - Stage 1: Role Classification Stage ทำนายกลุ่มสายงานอาชีพด้วย Multi-Class Logistic Regression
+        - Stage 2: Job Matching & Skill Gap Analysis คำนวณความตรงกันด้วยทฤษฎีเซต (Skill Match Percentage = |S_user ∩ S_job| / |S_job| * 100)
         """
         user_skills_clean = [clean_skill(s) for s in user_skills if clean_skill(s)]
-        # 💡 [ทำไมต้องแบบนี้]: แปลงเป็น set เพื่อให้การเปรียบเทียบหาทักษะที่ตรงกันทำงานได้เร็วระดับ O(1)
+        # 💡 [ทำไมต้องแบบนี้]: แปลงเป็น set เพื่อให้การเปรียบเทียบหาทักษะที่ตรงกันทำงานได้เร็วระดับ O(1) ตามทฤษฎีเซต
         user_skills_set = set(user_skills_clean)
-        query_text = " ".join(user_skills_clean)
 
-        # 1. ทำนายอาชีพด้วย Logistic Regression
+        # 1. Stage 1: ทำนายอาชีพด้วย Multi-Class Logistic Regression (บทที่ 3 หัวข้อ 3.4.1)
         career_pred = self.predict_career(user_skills_clean)
-        # 💡 [ทำไมต้องแบบนี้]: ให้ความสำคัญกับสายงานเป้าหมายที่ผู้ใช้เลือกเองก่อน หากไม่เลือกจึงใช้ผลทำนายจาก ML
-        target_role_id = preference_role_id if (preference_role_id and preference_role_id in CURRICULUM_ROLES) else career_pred["predicted_role_id"]
-        # ⚠️ [จุดระวัง]: ใช้ .get() คู่กับ Default Fallback (8.6) ป้องกัน KeyError กรณีส่งรหัสที่ไม่มีใน มคอ.2
-        target_role_info = CURRICULUM_ROLES.get(target_role_id, CURRICULUM_ROLES["8.6"])
+        # 💡 [ทำไมต้องแบบนี้]: ให้ความสำคัญกับสายงานเป้าหมายที่ผู้ใช้เลือกเองก่อน หากไม่เลือกจึงใช้ผลทำนายจากโมเดล ML
+        norm_pref = normalize_role_id(preference_role_id) if preference_role_id else ""
+        target_role_id = norm_pref if norm_pref else career_pred["predicted_role_id"]
+        # ⚠️ [จุดระวัง]: ใช้ .get() คู่กับ Default Fallback (G1) ป้องกัน KeyError กรณีส่งรหัสที่ไม่มีใน มคอ.2
+        target_role_info = CURRICULUM_ROLES.get(target_role_id, CURRICULUM_ROLES["G1"])
 
-        # =========================================================================
-        # [จุดสำคัญที่ 7: Unsupervised NLP - TF-IDF Vector Space & Cosine Similarity]
-        # แปลงข้อความทักษะของผู้ใช้เป็น Sparse Vector ในมิติเดียวกับฐานข้อมูลงาน
-        # แล้วคำนวณ Dot Product หารด้วย Norm เพื่อหามุมความคล้ายคลึงเชิงคำศัพท์ (0.0 - 1.0)
-        # =========================================================================
-        # 🎯 [หัวใจหลัก]: แปลงทักษะผู้ใช้เป็น Sparse Vector แล้วคำนวณ Cosine Similarity เทียบกับทุกงานในคราวเดียว
-        user_vec = self.vectorizer.transform([query_text]) if query_text else None
-        if user_vec is not None:
-            cosine_sims = cosine_similarity(user_vec, self.job_tfidf_matrix).flatten()
-        else:
-            # ⚠️ [จุดระวัง]: หาก query_text ว่าง ให้เซ็ตความคล้ายคลึงเป็น 0 ทั้งหมด ป้องกัน Sparse Matrix Error
-            cosine_sims = np.zeros(len(self.cached_jobs))
-
-        # 3. คำนวณคะแนนสำหรับทุกตำแหน่งงาน (ดึงจากหน่วยความจำที่แคชไว้)
+        # 2. Stage 2: คำนวณคะแนนด้วยทฤษฎีเซต (บทที่ 3 หัวข้อ 3.4.2)
+        # กรองและจัดอันดับด้วยสูตร: Skill Match Percentage = (|S_user ∩ S_job| / |S_job|) * 100
         scored_jobs = []
-        for idx, job in enumerate(self.cached_jobs):
+        for job in self.cached_jobs:
             job_skills = job["job_skills"]
 
             # =========================================================================
-            # [จุดสำคัญที่ 8: การหา Matching / Missing Skills ด้วย Set Theory]
-            # ใช้คณิตศาสตร์ทฤษฎีเซตของ Python:
-            # - Matched Skills: User_Skills ∩ Job_Skills (อินเตอร์เซกชัน)
-            # - Missing Skills: Job_Skills \ User_Skills (ผลต่างเชิงเซต)
-            # โปร่งใส ตรวจสอบได้ 100% ไม่มีการเดาสุ่มหรือมโนคำศัพท์
+            # [การหา Matching / Missing Skills ด้วยทฤษฎีเซต]
+            # - Matched Skills: S_user ∩ S_job (อินเตอร์เซกชัน)
+            # - Missing Skills (Skill Gap): S_job \ S_user (ผลต่างเชิงเซต)
+            # โปร่งใส ตรวจสอบได้ 100% ปราศจาก Arbitrary Weights
             # =========================================================================
-            # 🎯 [หัวใจหลัก]: ทฤษฎีเซตแยกทักษะที่ตรงกัน (Intersection) และทักษะที่ต้องศึกษาเพิ่ม (Difference)
             matched_skills = [s for s in job_skills if s in user_skills_set]
             missing_skills = [s for s in job_skills if s not in user_skills_set]
-
-            # 3.1 สัดส่วนทักษะตรงเป๊ะ (Exact Skill Overlap %)
             total_req = len(job_skills)
+
+            # ร้อยละความสอดคล้องของทักษะ (Skill Match Percentage):
             # ⚠️ [จุดระวัง]: ใช้ max(1, total_req) ป้องกันกรณีหารด้วยศูนย์ (ZeroDivisionError)
             overlap_pct = (len(matched_skills) / max(1, total_req)) * 100.0
-
-            # 3.2 ความคล้ายคลึงเชิงคำศัพท์ (TF-IDF Cosine Similarity %)
-            # 💡 [ทำไมต้องแบบนี้]: ใช้ np.clip จำกัดขอบเขตให้อยู่ใน [0.0, 1.0] ป้องกัน Floating Point Error
-            cos_pct = float(np.clip(cosine_sims[idx], 0.0, 1.0)) * 100.0
-
-            # =========================================================================
-            # [จุดสำคัญที่ 9: Hybrid Scoring Function (Probability-Weighted)]
-            # สถาปัตยกรรมแบบรวมสัญญาณ (Multi-Signal Ranking 100% Bounded Scale):
-            # - 50% Exact Overlap: ความจำเป็นของ Hard Skills ตรงเป๊ะ (High Precision)
-            # - 30% Cosine Similarity: ความยืดหยุ่นเชิงบริบทคำศัพท์จากโมเดล ML (High Recall)
-            # - 20% ML Role Probability: ความน่าจะเป็นจากโมเดล Softmax (Career Alignment)
-            # =========================================================================
-            # 🎯 [หัวใจหลัก]: สูตรคะแนนแบบไฮบริด (50% Hard Skills + 30% Semantic + 20% Softmax Role Prob)
-            role_prob_pct = career_pred["probabilities"].get(job["curriculum_role_id"], 0.0)
-            final_score = int(round(0.50 * overlap_pct + 0.30 * cos_pct + 0.20 * role_prob_pct))
+            match_score = int(round(overlap_pct))
 
             scored_jobs.append({
                 "job_id": job["job_id"],
@@ -290,10 +290,10 @@ class JobRecommender:
                 "responsibilities_list": job["responsibilities_list"],
                 "keywords": job["keywords"],
                 "apply_url": job["apply_url"],
-                "score": final_score,
-                "ml_confidence": final_score,
-                "semantic_score": int(round(cos_pct)),
-                "exact_score": int(round(overlap_pct)),
+                "score": match_score,
+                "ml_confidence": match_score,
+                "exact_score": match_score,
+                "semantic_score": match_score,
                 "matched_skills": matched_skills,
                 "missing_skills": missing_skills,
                 "total_skills_count": total_req
@@ -306,8 +306,16 @@ class JobRecommender:
         core_skills_target = [clean_skill(s) for s in target_role_info["core_skills"]]
         matched_core = [s for s in core_skills_target if s in user_skills_set]
         missing_core = [s for s in core_skills_target if s not in user_skills_set]
-        # 🎯 [หัวใจหลัก]: คำนวณความพร้อมเทียบกับเกณฑ์มาตรฐาน มคอ.2 โดยมี max(1, ...) ดัก ZeroDivisionError
+        # 🎯 [หัวใจหลัก]: คำนวณความพร้อมเทียบกับเกณฑ์มาตรฐาน มคอ.2 (บทที่ 3 หัวข้อ 3.4.4)
         readiness_pct = round((len(matched_core) / max(1, len(core_skills_target))) * 100.0, 1)
+
+        # จำแนกระดับความพร้อมออกเป็น 3 ระดับตามเกณฑ์บทที่ 3 (หน้า 10):
+        if readiness_pct >= 80.0:
+            readiness_level = "ระดับเชี่ยวชาญ (Advanced)"
+        elif readiness_pct >= 50.0:
+            readiness_level = "ระดับพร้อมทำงาน (Job-Ready)"
+        else:
+            readiness_level = "ระดับเริ่มต้น (Developing)"
 
         target_analysis = {
             "target_role_id": target_role_id,
@@ -328,11 +336,17 @@ class JobRecommender:
             "matched_skills": matched_core,
             "missing_skills": missing_core,
             "skill_readiness": readiness_pct,
+            "readiness_level": readiness_level,
             "total_skills_count": len(core_skills_target)
         }
 
-        # 5. ส่วนที่ 2: จัดอันดับ Top 5 งานที่ตรงที่สุด (Diversity-Aware Ranking)
-        sorted_jobs = sorted(scored_jobs, key=lambda x: x["score"], reverse=True)
+        # 5. ส่วนที่ 2: จัดอันดับ Top 5 งานที่ตรงที่สุด (Diversity-Aware Ranking ตามบทที่ 3 หัวข้อ 3.4.3)
+        # 💡 [ทำไมต้องแบบนี้]: กรองงานในสายอาชีพเป้าหมายก่อน (Stage 1 Filter) แล้วเรียงตามคะแนน Match Score และจำนวนทักษะตรง
+        sorted_jobs = sorted(
+            scored_jobs,
+            key=lambda x: (x["curriculum_role_id"] == target_role_id, x["score"], len(x["matched_skills"])),
+            reverse=True
+        )
         top_results = []
         seen_title_company = set()
         title_counts = {}

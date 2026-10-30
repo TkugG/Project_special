@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Sarabun:wght@400;500;600;700&display=swap');
+  * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Sarabun', 'Leelawadee UI', Tahoma, sans-serif; }
+  body {
+    background: #FFFFFF;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 15px;
+  }
+  .canvas {
+    width: 1020px;
+    height: 560px;
+    background: #FFFFFF;
+    position: relative;
+    border: 1px solid #E2E8F0;
+    border-radius: 10px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.04);
+    overflow: hidden;
+  }
+  svg {
+    width: 100%;
+    height: 100%;
+  }
+</style>
+</head>
+<body>
+<div class="canvas">
+  <svg viewBox="0 0 1020 560">
+    <defs>
+      <marker id="arrow" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+        <path d="M 0 1.5 L 9 5 L 0 8.5 z" fill="#2563EB"/>
+      </marker>
+      <marker id="arrow-green" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+        <path d="M 0 1.5 L 9 5 L 0 8.5 z" fill="#059669"/>
+      </marker>
+      <filter id="shadow" x="-5%" y="-5%" width="110%" height="110%">
+        <feDropShadow dx="0" dy="2" stdDeviation="3" flood-opacity="0.05"/>
+      </filter>
+    </defs>
+
+    <!-- STAGE 1: DATA COLLECTION -->
+    <g transform="translate(20, 20)" filter="url(#shadow)">
+      <rect width="170" height="520" rx="8" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="1.5"/>
+      <rect width="170" height="42" rx="8" fill="#DBEAFE"/>
+      <path d="M 0,34 h 170 v 8 h -170 z" fill="#DBEAFE"/>
+      <text x="85" y="26" text-anchor="middle" font-size="14" font-weight="700" fill="#1E3A8A">1. รวบรวมข้อมูล</text>
+      
+      <!-- Subcard 1 -->
+      <rect x="12" y="55" width="146" height="115" rx="6" fill="#FFFFFF" stroke="#E2E8F0"/>
+      <text x="22" y="75" font-size="12" font-weight="700" fill="#0F172A">แหล่งข้อมูลตลาดงาน</text>
+      <text x="22" y="95" font-size="11" fill="#475569">• JobsDB Thailand</text>
+      <text x="22" y="113" font-size="11" fill="#475569">• JobThai &amp; แพลตฟอร์มไอที</text>
+      <text x="22" y="131" font-size="11" fill="#475569">• ประกาศงานจริง 160 งาน</text>
+      <text x="22" y="151" font-size="11" font-weight="600" fill="#2563EB">กลุ่มละ 20 ตำแหน่งงาน</text>
+
+      <!-- Subcard 2 -->
+      <rect x="12" y="185" width="146" height="155" rx="6" fill="#FFFFFF" stroke="#E2E8F0"/>
+      <text x="22" y="205" font-size="12" font-weight="700" fill="#0F172A">การจัดกลุ่ม 8 อาชีพ</text>
+      <text x="22" y="225" font-size="11" fill="#475569">• G1: Software Dev</text>
+      <text x="22" y="243" font-size="11" fill="#475569">• G2: Database Admin</text>
+      <text x="22" y="261" font-size="11" fill="#475569">• G3: System Analyst</text>
+      <text x="22" y="279" font-size="11" fill="#475569">• G4: Technical Officer</text>
+      <text x="22" y="297" font-size="11" fill="#475569">• G5: System Admin</text>
+      <text x="22" y="315" font-size="11" fill="#475569">• G6–G8 (Web, Proj, Content)</text>
+
+      <!-- Subcard 3 -->
+      <rect x="12" y="355" width="146" height="145" rx="6" fill="#FFFFFF" stroke="#E2E8F0"/>
+      <text x="22" y="375" font-size="12" font-weight="700" fill="#0F172A">การรับรองความถูกต้อง</text>
+      <text x="22" y="395" font-size="11" fill="#475569">• กรอบมาตรฐาน TPQI</text>
+      <text x="22" y="413" font-size="11" fill="#475569">  ขจัดความกำกวมชื่อตำแหน่ง</text>
+      <text x="22" y="433" font-size="11" fill="#475569">• Ground Truth Verification</text>
+      <text x="22" y="451" font-size="11" fill="#475569">  รับรองโดยอาจารย์ที่ปรึกษา</text>
+      <text x="22" y="475" font-size="11" font-weight="600" fill="#059669">✓ Content Validity</text>
+    </g>
+
+    <!-- ARROW 1 -> 2 (Clear Space) -->
+    <path d="M 190,280 H 220" stroke="#2563EB" stroke-width="2.5" marker-end="url(#arrow)"/>
+
+    <!-- STAGE 2: PREPROCESSING -->
+    <g transform="translate(225, 20)" filter="url(#shadow)">
+      <rect width="170" height="520" rx="8" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="1.5"/>
+      <rect width="170" height="42" rx="8" fill="#E0E7FF"/>
+      <path d="M 0,34 h 170 v 8 h -170 z" fill="#E0E7FF"/>
+      <text x="85" y="26" text-anchor="middle" font-size="14" font-weight="700" fill="#3730A3">2. เตรียมข้อมูล</text>
+
+      <!-- Subcard 1 -->
+      <rect x="12" y="55" width="146" height="135" rx="6" fill="#FFFFFF" stroke="#E2E8F0"/>
+      <text x="22" y="75" font-size="12" font-weight="700" fill="#0F172A">คุ้มครองคำศัพท์เฉพาะ</text>
+      <text x="22" y="93" font-size="10" fill="#64748B">Protected Terms Substitution</text>
+      <text x="22" y="113" font-size="11" fill="#475569">• C++ &rarr; _CPP_</text>
+      <text x="22" y="131" font-size="11" fill="#475569">• C# &rarr; _CSHARP_</text>
+      <text x="22" y="149" font-size="11" fill="#475569">• .NET &rarr; _DOTNET_</text>
+      <text x="22" y="167" font-size="11" fill="#475569">• Node.js &rarr; _NODEJS_</text>
+
+      <!-- Subcard 2 -->
+      <rect x="12" y="205" width="146" height="140" rx="6" fill="#FFFFFF" stroke="#E2E8F0"/>
+      <text x="22" y="225" font-size="12" font-weight="700" fill="#0F172A">ทำความสะอาดข้อความ</text>
+      <text x="22" y="245" font-size="11" fill="#475569">• แปลงเป็นตัวพิมพ์เล็ก</text>
+      <text x="22" y="263" font-size="11" fill="#475569">• ตัดเครื่องหมายวรรคตอน</text>
+      <text x="22" y="281" font-size="11" fill="#475569">• Regex Tokenizer แยกคำ</text>
+      <text x="22" y="299" font-size="11" fill="#475569">• คืนรูปคำศัพท์คุ้มครอง</text>
+      <text x="22" y="322" font-size="11" font-weight="600" fill="#4338CA">✓ Atomic Skills</text>
+
+      <!-- Subcard 3 -->
+      <rect x="12" y="360" width="146" height="140" rx="6" fill="#FFFFFF" stroke="#E2E8F0"/>
+      <text x="22" y="380" font-size="12" font-weight="700" fill="#0F172A">แปลงคำพ้อง (Canonical)</text>
+      <text x="22" y="400" font-size="11" fill="#475569">• Hash Map พจนานุกรม</text>
+      <text x="22" y="418" font-size="11" fill="#475569">  ค้นหาคำด้วยความเร็ว O(1)</text>
+      <text x="22" y="438" font-size="11" fill="#475569">• golang &rarr; go</text>
+      <text x="22" y="456" font-size="11" fill="#475569">• k8s &rarr; kubernetes</text>
+      <text x="22" y="474" font-size="11" fill="#475569">• reactjs &rarr; react</text>
+    </g>
+
+    <!-- ARROW 2 -> 3 -->
+    <path d="M 395,280 H 425" stroke="#2563EB" stroke-width="2.5" marker-end="url(#arrow)"/>
+
+    <!-- STAGE 3: FEATURE EXTRACTION -->
+    <g transform="translate(430, 20)" filter="url(#shadow)">
+      <rect width="170" height="520" rx="8" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="1.5"/>
+      <rect width="170" height="42" rx="8" fill="#FEF3C7"/>
+      <path d="M 0,34 h 170 v 8 h -170 z" fill="#FEF3C7"/>
+      <text x="85" y="26" text-anchor="middle" font-size="14" font-weight="700" fill="#92400E">3. สกัดเวกเตอร์</text>
+
+      <!-- Subcard 1 -->
+      <rect x="12" y="55" width="146" height="155" rx="6" fill="#FFFFFF" stroke="#E2E8F0"/>
+      <text x="22" y="75" font-size="12" font-weight="700" fill="#0F172A">TF-IDF Vectorizer</text>
+      <text x="22" y="95" font-size="11" fill="#475569">• token_pattern ป้องกัน</text>
+      <text x="22" y="111" font-size="11" fill="#475569">  อักขระพิเศษ (+, #, .)</text>
+      <text x="22" y="129" font-size="11" fill="#475569">• ngram_range = (1, 1)</text>
+      <text x="22" y="147" font-size="11" fill="#475569">• max_features = 1,000</text>
+      <text x="22" y="165" font-size="11" fill="#475569">• sublinear_tf = True</text>
+      <text x="22" y="188" font-size="10" font-weight="600" fill="#B45309">มิติเวกเตอร์คุณลักษณะ</text>
+
+      <!-- Subcard 2 -->
+      <rect x="12" y="225" width="146" height="145" rx="6" fill="#FFFFFF" stroke="#E2E8F0"/>
+      <text x="22" y="245" font-size="12" font-weight="700" fill="#0F172A">ป้องกัน Data Leakage</text>
+      <text x="22" y="265" font-size="11" font-weight="600" fill="#DC2626">• ตัดฟิลด์ Title ทิ้ง</text>
+      <text x="22" y="285" font-size="11" fill="#475569">• ฝึกสอนด้วยฟิลด์</text>
+      <text x="22" y="303" font-size="11" font-weight="600" fill="#0F172A">  Skills (Features X)</text>
+      <text x="22" y="323" font-size="11" fill="#475569">• เฉลยด้วยฟิลด์</text>
+      <text x="22" y="341" font-size="11" font-weight="600" fill="#0F172A">  RoleID (Target y)</text>
+
+      <!-- Subcard 3 -->
+      <rect x="12" y="385" width="146" height="115" rx="6" fill="#FFFFFF" stroke="#E2E8F0"/>
+      <text x="22" y="405" font-size="12" font-weight="700" fill="#0F172A">ผลลัพธ์เวกเตอร์</text>
+      <text x="22" y="425" font-size="11" fill="#475569">• Sparse Matrix</text>
+      <text x="22" y="443" font-size="11" fill="#475569">• ขนาด: N &times; 1,000 มิติ</text>
+      <text x="22" y="468" font-size="11" font-weight="600" fill="#059669">✓ ส่งเข้าแบบจำลอง</text>
+    </g>
+
+    <!-- ARROW 3 -> 4 -->
+    <path d="M 600,280 H 630" stroke="#2563EB" stroke-width="2.5" marker-end="url(#arrow)"/>
+
+    <!-- STAGE 4: MODEL TRAINING -->
+    <g transform="translate(635, 20)" filter="url(#shadow)">
+      <rect width="170" height="520" rx="8" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="1.5"/>
+      <rect width="170" height="42" rx="8" fill="#FEE2E2"/>
+      <path d="M 0,34 h 170 v 8 h -170 z" fill="#FEE2E2"/>
+      <text x="85" y="26" text-anchor="middle" font-size="14" font-weight="700" fill="#991B1B">4. ฝึกสอนแบบจำลอง</text>
+
+      <!-- Subcard 1 -->
+      <rect x="12" y="55" width="146" height="145" rx="6" fill="#FFFFFF" stroke="#E2E8F0"/>
+      <text x="22" y="75" font-size="12" font-weight="700" fill="#0F172A">Logistic Regression</text>
+      <text x="22" y="93" font-size="10" fill="#64748B">Multiclass Classification</text>
+      <text x="22" y="113" font-size="11" fill="#475569">• Multi-class: Multinomial</text>
+      <text x="22" y="131" font-size="11" fill="#475569">• Solver: L-BFGS</text>
+      <text x="22" y="149" font-size="11" fill="#475569">• Softmax Function</text>
+      <text x="22" y="172" font-size="10" font-weight="600" fill="#B91C1C">คำนวณความน่าจะเป็น 8 คลาส</text>
+
+      <!-- Subcard 2 -->
+      <rect x="12" y="215" width="146" height="155" rx="6" fill="#FFFFFF" stroke="#E2E8F0"/>
+      <text x="22" y="235" font-size="12" font-weight="700" fill="#0F172A">การวัดผลทางสถิติ</text>
+      <text x="22" y="255" font-size="11" fill="#475569">• 5-Fold Stratified</text>
+      <text x="22" y="271" font-size="11" fill="#475569">  Cross-Validation</text>
+      <text x="22" y="289" font-size="11" fill="#475569">• Macro Precision</text>
+      <text x="22" y="307" font-size="11" fill="#475569">• Macro Recall</text>
+      <text x="22" y="325" font-size="11" fill="#475569">• Macro F1-Score</text>
+      <text x="22" y="348" font-size="11" font-weight="600" fill="#059669">✓ ป้องกัน Overfitting</text>
+
+      <!-- Subcard 3 -->
+      <rect x="12" y="385" width="146" height="115" rx="6" fill="#FFFFFF" stroke="#E2E8F0"/>
+      <text x="22" y="405" font-size="12" font-weight="700" fill="#0F172A">Confusion Matrix</text>
+      <text x="22" y="425" font-size="11" fill="#475569">• ตรวจสอบขนาด 8&times;8</text>
+      <text x="22" y="443" font-size="11" fill="#475569">• วิเคราะห์ข้อผิดพลาด</text>
+      <text x="22" y="461" font-size="11" fill="#475569">  การคาบเกี่ยวข้ามสายงาน</text>
+    </g>
+
+    <!-- ARROW 4 -> 5 -->
+    <path d="M 805,280 H 835" stroke="#059669" stroke-width="2.5" marker-end="url(#arrow-green)"/>
+
+    <!-- STAGE 5: ARTIFACT PERSISTENCE -->
+    <g transform="translate(840, 20)" filter="url(#shadow)">
+      <rect width="160" height="520" rx="8" fill="#ECFDF5" stroke="#A7F3D0" stroke-width="1.5"/>
+      <rect width="160" height="42" rx="8" fill="#D1FAE5"/>
+      <path d="M 0,34 h 160 v 8 h -160 z" fill="#D1FAE5"/>
+      <text x="80" y="26" text-anchor="middle" font-size="14" font-weight="700" fill="#065F46">5. ผลิตภัณฑ์โมเดล</text>
+
+      <!-- Subcard 1 -->
+      <rect x="10" y="75" width="140" height="170" rx="6" fill="#FFFFFF" stroke="#D1FAE5"/>
+      <text x="20" y="100" font-size="12" font-weight="700" fill="#065F46">Sklearn Pipeline</text>
+      <text x="20" y="125" font-size="11" fill="#475569">• รวม TF-IDF</text>
+      <text x="20" y="143" font-size="11" fill="#475569">  Vectorizer</text>
+      <text x="20" y="163" font-size="11" fill="#475569">• รวม Logistic</text>
+      <text x="20" y="181" font-size="11" fill="#475569">  Regression</text>
+      <text x="20" y="208" font-size="10" font-weight="600" fill="#2563EB">Single Artifact Unit</text>
+
+      <!-- Subcard 2 -->
+      <rect x="10" y="270" width="140" height="165" rx="6" fill="#FFFFFF" stroke="#D1FAE5"/>
+      <text x="20" y="295" font-size="12" font-weight="700" fill="#065F46">ไฟล์โมเดลที่บันทึก</text>
+      <text x="20" y="322" font-size="12" font-weight="700" fill="#0F172A">career_classifier</text>
+      <text x="20" y="342" font-size="12" font-weight="700" fill="#0F172A">.joblib</text>
+      <text x="20" y="370" font-size="11" fill="#475569">• Serialized Object</text>
+      <text x="20" y="395" font-size="11" font-weight="600" fill="#059669">✓ ส่งมอบเข้าสู่</text>
+      <text x="20" y="413" font-size="11" font-weight="600" fill="#059669">  Online Engine</text>
+    </g>
+  </svg>
+</div>
+</body>
+</html>
